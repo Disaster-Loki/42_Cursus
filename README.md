@@ -12,7 +12,7 @@ Welcome to my repository, which contains all the **42 Cursus** projects I've wor
 
 | Project        | Description                                                                 | Status       | 
 |----------------|-----------------------------------------------------------------------------|--------------|
-| [Born2beroot](#-born2beroot) | A virtual machine setup project focused on system administration.            | ✅ Completed |
+| [Born2beroot](#https://github.com/Disaster-Loki/42_Cursus/tree/main/Born2beroot) | A virtual machine setup project focused on system administration.            | ✅ Completed |
 | [Get_Next_Line](#-get_next_line) | A project that focuses on reading a line from a file descriptor efficiently. | ✅ Completed |
 | [Libft](#-libft) | My own C library, designed to recreate many standard C functions.           | ✅ Completed |
 | [Minitalk](#-minitalk) | A simple communication project using Unix signals.                     | ✅ Completed |
