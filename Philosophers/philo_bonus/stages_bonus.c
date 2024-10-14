@@ -14,27 +14,42 @@
 
 void	stage_thinking(t_philo *ph)
 {
-	print_msg(ph, "is thinking\n", BLUE);
+	if (ph->stop == 0)
+		print_msg(ph, "is thinking", BLUE);
+}
+
+void	pick_up_fork(t_philo *ph)
+{
+	if (ph->stop == 0)
+		print_msg(ph, "has taken a fork", YELLOW);
 }
 
 void	stage_eating(t_philo *ph)
 {
+	if (ph->stop == 1)
+		return ;
 	sem_wait(ph->forks);
-	print_msg(ph, "has taken a fork\n", YELLOW);
+	pick_up_fork(ph);
 	sem_wait(ph->forks);
-	print_msg(ph, "has taken a fork\n", YELLOW);
-	print_msg(ph, "is eating\n", LIME);
-	usleep(ph->conter->time_eat * 1000);
-	ph->time = current_time();
-	++ph->eat;
+	pick_up_fork(ph);
+	if (ph->stop == 0)
+	{
+		print_msg(ph, "is eating", LIME);
+		usleep(ph->conter->time_eat * 1000);
+		ph->time = current_time();
+		++ph->eat;	
+	}
 	sem_post(ph->forks);
 	sem_post(ph->forks);
 }
 
 void	stage_sleeping(t_philo *ph)
 {
-	print_msg(ph, "is sleeping\n", D_BLUE);
-	usleep(ph->conter->time_sleep * 1000);
+	if (ph->stop == 0)
+	{
+		print_msg(ph, "is sleeping", D_BLUE);
+		usleep(ph->conter->time_sleep * 1000);		
+	}
 }
 
 int	stage_deading(t_philo *ph)
@@ -42,9 +57,9 @@ int	stage_deading(t_philo *ph)
 	long long	time_elapsed;
 
 	time_elapsed = current_time() - ph->time;
-	if (time_elapsed >= ph->conter->time_die)
+	if (time_elapsed >= ph->conter->time_die && ph->stop == 0)
 	{
-		print_msg(ph, "died\n", RED);
+		print_msg(ph, "died", RED);
 		return (0);
 	}
 	return (1);

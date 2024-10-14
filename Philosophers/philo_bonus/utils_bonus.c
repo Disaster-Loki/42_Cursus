@@ -61,13 +61,26 @@ int	check_args(int av, char **args)
 	return (1);
 }
 
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	while (n > 0 && *s1 != '\0' && *s1 == *s2)
+	{
+		s1++;
+		s2++;
+		n--;
+	}
+	if (n == 0)
+		return (0);
+	return (*s1 - *s2);
+}
+
 void	print_msg(t_philo *ph, char *str, char *color)
 {
+	if (ph->stop == 1)
+		return ;
 	sem_wait(ph->conter->msg);
-	if (ph->stop == 0)
-	{
-		printf("[%lli] ", (current_time() - ph->start));
-		printf("%d %s%s%s", ph->id, color, str, RESET);
-	}
-	sem_post(ph->conter->msg);
+	printf("[%lli] ", (current_time() - ph->start));
+	printf("%d %s%s%s\n", ph->id, color, str, RESET);
+	if (strcmp(str, "died") != 0)
+		sem_post(ph->conter->msg);
 }

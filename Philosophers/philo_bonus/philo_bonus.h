@@ -42,7 +42,6 @@ typedef struct s_conter
 	sem_t			*msg;
 	sem_t			*dead;
 	sem_t			*forks;
-	sem_t			*order;
 }	t_conter;
 
 typedef struct s_philo
@@ -57,6 +56,7 @@ typedef struct s_philo
 	pthread_t		monitor;
 }	t_philo;
 
+void		pick_up_fork(t_philo *ph);
 void		error(char *msg);
 long long	current_time(void);
 int			ft_atoi(char *str);

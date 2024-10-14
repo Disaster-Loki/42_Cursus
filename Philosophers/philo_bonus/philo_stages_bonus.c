@@ -55,7 +55,6 @@ void	process_init(t_conter *conter, int n)
 	pthread_join(ph.monitor, NULL);
 	sem_close(ph.conter->msg);
 	sem_close(ph.conter->dead);
-	sem_close(ph.conter->order);
 	sem_close(ph.conter->forks);
 	free(ph.conter->pids);
 	if (ph.stop == 1)

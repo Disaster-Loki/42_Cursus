@@ -31,14 +31,12 @@ void	get_init(t_conter *conter)
 	conter->pids = malloc(sizeof(pid_t) * len);
 	conter->msg = sem_open("msg", O_CREAT, 0644, 1);
 	conter->dead = sem_open("dead", O_CREAT, 0644, 1);
-	conter->order = sem_open("order", O_CREAT, 0644, 1);
 	conter->forks = sem_open("forks", O_CREAT, 0644, len);
 	if (conter->msg == SEM_FAILED || conter->dead == SEM_FAILED
 		|| conter->forks == SEM_FAILED)
 		error("Error - Failed to open semaphore\n");
 	sem_unlink("msg");
 	sem_unlink("dead");
-	sem_unlink("order");
 	sem_unlink("forks");
 }
 
