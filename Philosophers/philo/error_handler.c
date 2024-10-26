@@ -29,6 +29,12 @@ int	error_handler(int av, char **args)
 		error("Error - Invalid number of philosophers\n");
 		return (0);
 	}
+	if (ft_atoi(args[2]) == -1 || ft_atoi(args[3]) == -1
+		|| ft_atoi(args[4]) == -1)
+	{
+		error("Error - Check the numbers parameters\n");
+		return (0);
+	}
 	if (!check_args(av, args))
 	{
 		error("Error - Invalid parameters\n");
