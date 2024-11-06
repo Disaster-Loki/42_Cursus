@@ -26,7 +26,7 @@ int	main(int av, char **args, char *env[])
 		shell.input = readline(BOLD_GREEN"MiniShell-> "RESET);
 		if (shell.input == NULL)
 		{
-			printf("exit qualquerl coisa\n");
+			printf("exit\n");
 			break ;
 		}
 		add_history(shell.input);

@@ -40,8 +40,9 @@ typedef struct s_shell
 	char	*input;
 }	t_shell;
 
+int		states_cmd(t_shell *sh, int i);
 void	treat_line(t_shell *sh);
-void	read_pipe(t_shell *sh);
+int		read_pipe(t_shell *sh);
 void	quotation_marks(t_shell *sh, char *str);
 void	cmd_pwd(void);
 void	signals(void);
