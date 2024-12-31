@@ -1,36 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptchipoc <ptchipoc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 13:29:07 by sde-carv          #+#    #+#             */
-/*   Updated: 2024/11/18 10:12:53 by ptchipoc         ###   ########.fr       */
+/*   Created: 2024/11/23 13:25:55 by sde-carv          #+#    #+#             */
+/*   Updated: 2024/12/14 11:05:04 by ptchipoc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/libft.h"
+#include "minishell.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+void	cmd_pwd(t_shell *sh)
 {
-	size_t	i;
+	char	cwd[PATH_MAX];
 
-	i = 0;
-	while (i < n && s1[i] && s2[i])
+	if (getcwd(cwd, sizeof(cwd)))
 	{
-		if (s1[i] == s2[i])
-		{
-			i++;
-		}
-		else
-		{
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		}
+		printf("%s\n", cwd);
+		sh->status = 0;
 	}
-	if (i == n)
-	{
-		return (0);
-	}
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }

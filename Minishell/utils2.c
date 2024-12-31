@@ -1,36 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptchipoc <ptchipoc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 13:29:07 by sde-carv          #+#    #+#             */
-/*   Updated: 2024/11/18 10:12:53 by ptchipoc         ###   ########.fr       */
+/*   Created: 2024/11/23 12:16:40 by sde-carv          #+#    #+#             */
+/*   Updated: 2024/12/14 11:05:59 by ptchipoc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/libft.h"
+#include "minishell.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+int	ft_isspace(char c)
 {
-	size_t	i;
+	if (c == ' ')
+		return (1);
+	if (c >= '\t' && c <= '\r')
+		return (1);
+	return (0);
+}
 
-	i = 0;
-	while (i < n && s1[i] && s2[i])
-	{
-		if (s1[i] == s2[i])
-		{
-			i++;
-		}
-		else
-		{
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		}
-	}
-	if (i == n)
-	{
-		return (0);
-	}
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+int	ft_get_digit(char c)
+{
+	if (c >= '0' && c <= '9')
+		return (c - '0');
+	if (c >= 'a' && c <= 'z')
+		return (c - 'a' + 10);
+	if (c >= 'A' && c <= 'Z')
+		return (c - 'A' + 10);
+	return (-1);
 }

@@ -1,36 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptchipoc <ptchipoc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 13:29:07 by sde-carv          #+#    #+#             */
-/*   Updated: 2024/11/18 10:12:53 by ptchipoc         ###   ########.fr       */
+/*   Created: 2024/11/14 11:43:17 by sde-carv          #+#    #+#             */
+/*   Updated: 2024/12/14 11:05:20 by ptchipoc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/libft.h"
+#include "minishell.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+int	type_of_redir(char **mt)
 {
-	size_t	i;
+	int	i;
 
-	i = 0;
-	while (i < n && s1[i] && s2[i])
+	i = -1;
+	while (mt[++i])
 	{
-		if (s1[i] == s2[i])
-		{
-			i++;
-		}
-		else
-		{
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		}
+		if ((!ft_strncmp(mt[i], "<", 1) && ft_strlen(mt[i]) == 1)
+			|| (!ft_strncmp(mt[i], "<<", 2) && ft_strlen(mt[i]) == 2))
+			return (1);
 	}
-	if (i == n)
-	{
-		return (0);
-	}
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	return (0);
+}
+
+void	operators(t_shell *sh)
+{
+	sh->flag = 1;
+	if (type_of_redir(sh->mat))
+		exec_left(sh);
+	else
+		exec_right(sh);
 }

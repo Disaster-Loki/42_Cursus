@@ -1,36 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   frees.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptchipoc <ptchipoc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 13:29:07 by sde-carv          #+#    #+#             */
-/*   Updated: 2024/11/18 10:12:53 by ptchipoc         ###   ########.fr       */
+/*   Created: 2024/11/14 12:48:53 by sde-carv          #+#    #+#             */
+/*   Updated: 2024/12/14 11:04:14 by ptchipoc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/libft.h"
+#include "minishell.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+void	free_args(t_shell *sh)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
-	while (i < n && s1[i] && s2[i])
+	while (sh->args[i].str)
+		free(sh->args[i++].str);
+	free(sh->args);
+	if (sh->mat)
+		free_mat(sh->mat);
+}
+
+void	free_mat(char **mt)
+{
+	int	i;
+
+	if (mt)
 	{
-		if (s1[i] == s2[i])
-		{
-			i++;
-		}
-		else
-		{
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		}
+		i = -1;
+		while (mt[++i])
+			free(mt[i]);
+		free(mt);
 	}
-	if (i == n)
+}
+
+void	handle_exec_error(char *tmp, char **arg, t_shell *sh)
+{
+	if (errno == EACCES)
 	{
-		return (0);
+		if (tmp)
+			free(tmp);
+		free_mat(arg);
+		free_mat(sh->split);
+		exit(126);
 	}
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }

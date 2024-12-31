@@ -1,36 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   doc_other_position.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptchipoc <ptchipoc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 13:29:07 by sde-carv          #+#    #+#             */
-/*   Updated: 2024/11/18 10:12:53 by ptchipoc         ###   ########.fr       */
+/*   Created: 2024/12/15 16:51:53 by ptchipoc          #+#    #+#             */
+/*   Updated: 2024/12/15 17:04:16 by ptchipoc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/libft.h"
+#include "minishell.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+void	more_than_tree_positions2(t_shell *sh)
 {
-	size_t	i;
+	if (verify_status(sh))
+	{
+		when_ordered(sh);
+	}
+	else
+	{
+		when_unordered(sh);
+	}
+}
 
-	i = 0;
-	while (i < n && s1[i] && s2[i])
-	{
-		if (s1[i] == s2[i])
-		{
-			i++;
-		}
-		else
-		{
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		}
-	}
-	if (i == n)
-	{
-		return (0);
-	}
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+void	other_position(t_shell *sh)
+{
+	if (!sh->mat[3])
+		tree_positions2(sh);
+	else
+		more_than_tree_positions2(sh);
 }

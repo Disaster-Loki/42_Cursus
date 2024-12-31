@@ -1,18 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   var_env_utils.c                                    :+:      :+:    :+:   */
+/*   gets.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sde-carv <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ptchipoc <ptchipoc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/06 14:12:32 by sde-carv          #+#    #+#             */
-/*   Updated: 2024/11/06 14:12:34 by sde-carv         ###   ########.fr       */
+/*   Created: 2024/11/14 11:43:17 by sde-carv          #+#    #+#             */
+/*   Updated: 2024/12/14 11:04:24 by ptchipoc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "minishell.h"
 
-char	*var_env(t_shell *sh, char *str)
+char	*get_name(char *str, int j)
+{
+	int		len;
+
+	len = j;
+	while (str[len] && !s_quotes(str[len])
+		&& (ft_isalnum(str[len]) || str[len] == '_'))
+		len++;
+	return (ft_substr(str, j, len - j));
+}
+
+char	*get_env(t_shell *sh, char *str)
 {
 	int		i;
 	int		len;
@@ -23,23 +34,4 @@ char	*var_env(t_shell *sh, char *str)
 		if (!ft_strncmp(sh->env[i], str, len) && sh->env[i][len] == '=')
 			return (sh->env[i] + len + 1);
 	return (NULL);
-}
-
-int	states_cmd(t_shell *sh, int i)
-{
-	char	*st;
-	char	*str;
-	char	*exp;
-	char	*rest;
-
-	st = ft_itoa(sh->stat);
-	str = ft_substr(sh->input, 0, i);
-	rest = ft_substr(sh->input, i + 2, ft_strlen(sh->input));
-	exp = ft_strjoin(str, st);
-	exp = ft_strjoin(exp, rest);
-	sh->input = exp;
-	free(st);
-	free(str);
-	free(rest);
-	return (1);
 }
