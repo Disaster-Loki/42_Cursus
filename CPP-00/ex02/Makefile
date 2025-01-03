@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME        = phonebook
+NAME        = account
 
 CPP          = c++
 CPPFLAGS      = -Wall -Wextra -Werror -std=c++98
@@ -22,10 +22,8 @@ YELLOW      = \033[33m
 ORANGE      = \033[38;5;208m
 GREEN       = \033[32m
 
-SRC_FILES = main.cpp		\
-			contact.cpp 	\
-			phonebook.cpp 	\
-
+SRC_FILES = Account.cpp		\
+			tests.cpp 		\
 
 OBJ_FILES = $(SRC_FILES:.cpp=.o)
 

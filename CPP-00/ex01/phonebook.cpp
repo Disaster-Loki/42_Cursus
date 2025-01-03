@@ -76,16 +76,16 @@ void PhoneBook::displayContacts()
     displayContentContact(index);
 }
 
-void PhoneBook::displayContentContact(int indexx)
+void PhoneBook::displayContentContact(int ind)
 {
-    if (indexx < 0 || indexx >= 8 || contact[indexx].getField("firstName").empty() || indexx >= index)
+    if (ind < 0 || ind >= 8 || contact[ind].getField("firstName").empty() || ind >= index)
     {
         std::cout << "Invalid index!" << std::endl;
         return;
     }
-    std::cout << "First Name: " << contact[indexx].getField("firstName") << std::endl;
-    std::cout << "Last Name: " << contact[indexx].getField("LastName") << std::endl;
-    std::cout << "Nickname: " << contact[indexx].getField("nickName") << std::endl;
-    std::cout << "Phone Number: " << contact[indexx].getField("phoneNumber") << std::endl;
-    std::cout << "Darkest Secret: " << contact[indexx].getField("darkestSecret") << std::endl << std::endl;
+    std::cout << "First Name: " << contact[ind].getField("firstName") << std::endl;
+    std::cout << "Last Name: " << contact[ind].getField("LastName") << std::endl;
+    std::cout << "Nickname: " << contact[ind].getField("nickName") << std::endl;
+    std::cout << "Phone Number: " << contact[ind].getField("phoneNumber") << std::endl;
+    std::cout << "Darkest Secret: " << contact[ind].getField("darkestSecret") << std::endl << std::endl;
 }
