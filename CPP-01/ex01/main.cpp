@@ -12,10 +12,12 @@
 
 #include "Zombie.hpp"
 
-int	main(void)
+int main(void)
 {
-	Zombie*	zb = zombieHorde(5, "Seba");
-	zb->announce();
-	delete[] zb;
-	return (0);
+    Zombie* zb = zombieHorde(5, "Seba");
+    for (int i = 0; i < 5; i++) {
+        zb[i].announce();
+    }
+    delete[] zb;
+    return 0;
 }
