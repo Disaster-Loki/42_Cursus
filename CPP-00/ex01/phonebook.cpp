@@ -78,7 +78,7 @@ void PhoneBook::displayContacts()
 
 void PhoneBook::displayContentContact(int ind)
 {
-    if (ind < 0 || ind >= 8 || contact[ind].getField("firstName").empty() || ind >= index)
+    if (ind < 0 || ind >= 8 || contact[ind].getField("firstName").empty())
     {
         std::cout << "Invalid index!" << std::endl;
         return;
