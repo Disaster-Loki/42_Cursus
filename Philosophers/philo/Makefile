@@ -36,17 +36,14 @@ all: $(NAME)
 
 $(NAME): $(S_OBJ)
 		$(CC) $(CFLAGS) -o $(NAME) $(S_OBJ)
-		clear
 		@echo "$(GREEN) MANDATORY - COMPILATION COMPLETE$(RESET)"
 
 clean: 	
 		rm -f $(S_OBJ)
-		clear
 		@echo "$(ORANGE) CLEANING THE OBJECTS$(RESET)"
 
 fclean:	
 		rm -f $(NAME)
-		clear
 		@echo "$(RED) CLEARING ALL FILES$(RESET)"
 
 re: fclean all

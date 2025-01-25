@@ -14,19 +14,21 @@
 
 int	ft_atoi(char *str)
 {
+	int	sig;
 	int	res;
 
+	sig = 1;
 	res = 0;
 	while (*str >= 9 && *str <= 13)
 		str++;
 	if (*str == '+' || *str == '-')
 	{
 		if (*str == '-')
-			return (-1);
+			sig = -1;
 	}
 	while (*str >= '0' && *str <= '9')
 		res = (res * 10) + (*str++ - '0');
-	return (res);
+	return (res * sig);
 }
 
 long long	current_time(void)
