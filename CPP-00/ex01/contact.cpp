@@ -12,7 +12,8 @@
 
 #include "contact.hpp"
 
-void Contact::setField(const std::string &fieldName, const std::string &value) {
+void Contact::setField(const std::string &fieldName, const std::string &value)
+{
     if (fieldName == "firstName") firstName = value;
     else if (fieldName == "lastName") lastName = value;
     else if (fieldName == "nickName") nickName = value;

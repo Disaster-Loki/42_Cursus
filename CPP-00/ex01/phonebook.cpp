@@ -13,36 +13,146 @@
 #include "phonebook.hpp"
 #include <iostream>
 #include <iomanip>
+#include <string>
 
 PhoneBook::PhoneBook():index(0) {}
+
+bool	contains_digit(const std::string &str)
+{
+    int    i = -1;
+
+    while (str[++i])
+    {
+        if (isdigit(str[i]))
+        {
+        	std::cout << "    Parameter cannot be number!" << std::endl;
+        	return (true);
+        }
+    }
+    return (false);
+}
+
+bool is_number(const std::string &str)
+{
+    if (str.empty())
+        return false;
+    for (size_t i = 0; i < str.length(); i++)
+    {
+        if (!std::isdigit(str[i]))
+            return false;
+    }
+    return true;
+}
+
+bool contains_space_tab(const std::string& input)
+{
+    std::string copy = input;
+    copy.erase(0, copy.find_first_not_of(" \t"));
+    copy.erase(copy.find_last_not_of(" \t") + 1);
+    return copy.empty();
+}
+
+bool is_valid_name(const std::string& name) {
+    if (contains_space_tab(name))
+    {
+    	std::cout << "    Parameter empty!" << std::endl;
+    	return false;
+    }
+    for (size_t i = 0; i < name.length(); i++)
+    {
+        if (std::isdigit(name[i]))
+        {
+        	std::cout << "    Invalid charater in input!!" << std::endl;
+        	return false;
+        }
+    }
+    return true;
+}
+
+bool is_valid_phone_number(const std::string& number)
+{
+    int num = 0;
+    if (contains_space_tab(number))
+    {
+    	std::cout << "    Parameter empty!" << std::endl;
+    	return false;
+    }
+    for (size_t i = 0; i < number.length(); i++)
+    {
+        char c = number[i];
+        if (!std::isdigit(c) && c != '+' && c != '-' && c != ' ' && c != '(' && c != ')')
+        {
+            std::cout << "    Invalid number !!" << std::endl;
+            return (false);
+        }
+    }
+    for (size_t i = 0; i < number.length(); i++)
+    {
+        char c = number[i];
+        if (c != '+' && c != '-' && c != ' ' && c != '(' && c != ')')
+            num++;
+    }
+    if (num > 15)
+    {
+        std::cout << "    Maximum digits reached !!" << std::endl;
+        return (false);
+    }
+    return (true);
+}
 
 void PhoneBook::addContact()
 {
     Contact new_contact;
     std::string input;
 
-    std::cout << "First Name: ";
+    std::cout << "   ========================================" << std::endl;
+    std::cout << "   |              ADD CONTACT             |" << std::endl;
+    std::cout << "   ========================================" << std::endl;
+    std::cout << "    First Name: ";
     std::getline(std::cin, input);
+    if (std::cin.eof())
+    	return ;
+    if (!is_valid_name(input))
+    	return ;
     new_contact.setField("firstName",input);
 
-    std::cout << "Last Name: ";
+    std::cout << "    Last Name: ";
     std::getline(std::cin, input);
+    if (std::cin.eof())
+    	return ;
+    if (!is_valid_name(input))
+    	return;
     new_contact.setField("lastName",input);
 
-    std::cout << "Nickname: ";
+    std::cout << "    Nickname: ";
     std::getline(std::cin, input);
+    if (std::cin.eof())
+    	return ;
+    if (contains_space_tab(input))
+    	return ;
     new_contact.setField("nickName",input);
 
-    std::cout << "Phone Number: ";
+    std::cout << "    Phone Number: ";
     std::getline(std::cin, input);
+    if (std::cin.eof())
+    	return ;
+    if (!is_valid_phone_number(input))
+    	return ;
     new_contact.setField("phoneNumber",input);
 
-    std::cout << "Darkest Secret: ";
+    std::cout << "    Darkest Secret: ";
     std::getline(std::cin, input);
+    if (std::cin.eof())
+    	return ;
+    if (contains_space_tab(input))
+    	return ;
     new_contact.setField("darkestSecret",input);
+
+    std::cout << "   ========================================" << std::endl;
 
     contact[index] = new_contact;
     index = (index + 1) % 8;
+    std::cout << "                 SUCCESSFULL" << std::endl << std::endl;
 }
 
 std::string truncate(const std::string &str) {
@@ -51,12 +161,41 @@ std::string truncate(const std::string &str) {
     return (str);
 }
 
+int	ft_atoi(const std::string& str)
+{
+	int	i;
+	int	neg;
+	int	res;
+
+	i = 0;
+	neg = 1;
+	res = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			neg *= -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		res = (str[i] - '0') + (res * 10);
+		i++;
+	}
+	return (res * neg);
+}
+
 void PhoneBook::displayContacts()
 {
     int i;
-    int index;
+    int	index;
+    std::string str;
 
     i = -1;
+    std::cout << "   ==========================================" << std::endl;
+    std::cout << "   |              CONTACT LIST              |" << std::endl;
+    std::cout << "   ==========================================" << std::endl;
     std::cout << std::setw(10) << "Index" << "|"
               << std::setw(10) << "First Name" << "|"
               << std::setw(10) << "Last Name" << "|"
@@ -70,9 +209,23 @@ void PhoneBook::displayContacts()
                   << std::setw(10) << truncate(contact[i].getField("lastName")) << "|"
                   << std::setw(10) << truncate(contact[i].getField("nickName")) << std::endl;
     }
+    std::cout << "   ==========================================" << std::endl;
     std::cout << std::endl << "Index: ";
-    std::cin >> index;
-    std::cin.ignore();
+    std::getline(std::cin, str);
+    if (std::cin.eof())
+        return ;
+    if (contains_space_tab(str))
+    {
+    	std::cout << "Parameter empty!" << std::endl;
+    	return ;
+    }
+    if (!is_number(str))
+    {
+        std::cout << "Invalid index!" << std::endl;
+        return;
+    }
+    index = ft_atoi(str);
+    //std::cin.ignore();
     displayContentContact(index);
 }
 
@@ -83,9 +236,13 @@ void PhoneBook::displayContentContact(int ind)
         std::cout << "Invalid index!" << std::endl;
         return;
     }
-    std::cout << "First Name: " << contact[ind].getField("firstName") << std::endl;
-    std::cout << "Last Name: " << contact[ind].getField("LastName") << std::endl;
-    std::cout << "Nickname: " << contact[ind].getField("nickName") << std::endl;
-    std::cout << "Phone Number: " << contact[ind].getField("phoneNumber") << std::endl;
-    std::cout << "Darkest Secret: " << contact[ind].getField("darkestSecret") << std::endl << std::endl;
+    std::cout << " ================================" << std::endl;
+    std::cout << " |            CONTACT           |" << std::endl;
+    std::cout << " ===============================" << std::endl;
+    std::cout << "  First Name: " << contact[ind].getField("firstName") << std::endl;
+    std::cout << "  Last Name: " << contact[ind].getField("lastName") << std::endl;
+    std::cout << "  Nickname: " << contact[ind].getField("nickName") << std::endl;
+    std::cout << "  Phone Number: " << contact[ind].getField("phoneNumber") << std::endl;
+    std::cout << "  Darkest Secret: " << contact[ind].getField("darkestSecret") << std::endl;
+    std::cout << " ================================" << std::endl << std::endl;
 }
