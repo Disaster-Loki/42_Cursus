@@ -14,8 +14,6 @@
 
 Zombie::Zombie(): name("") {}
 
-Zombie::Zombie(std::string name): name(name) {}
-
 Zombie:: ~Zombie()
 {
 	std::cout << name << " destroyed." << std::endl;

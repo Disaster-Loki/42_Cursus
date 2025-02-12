@@ -1,30 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Fixed.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sde-carv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/18 14:25:38 by sde-carv          #+#    #+#             */
-/*   Updated: 2025/01/18 14:30:32 by sde-carv         ###   ########.fr       */
+/*   Created: 2025/02/11 17:25:21 by sde-carv          #+#    #+#             */
+/*   Updated: 2025/02/11 17:25:26 by sde-carv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HARL_HPP
-#define HARL_HPP
+#include "Point.hpp"
 
-#include <iostream>
+Point::Point(): x(0), y(0) {}
 
-class Harl
-{
-    private:
-        Harl(std::string level);
-        void debug(void);
-        void info(void);
-        void warning(void);
-        void error(void);
-    public:
-        Harl();
-        void complain(std::string level);
-};
-#endif
+Point::Point(const Point &copy): x(copy.x), y(copy.y) {}
+
+Point::Point(float const x, float const y): x(Fixed(x)), y(Fixed(y)) {}
+
+Point::~Point() {}
+
+Fixed Point::getPoint_x() const { return (this->x); }
+
+Fixed Point::getPoint_y() const { return (this->y); }

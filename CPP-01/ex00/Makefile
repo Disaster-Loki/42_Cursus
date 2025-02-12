@@ -11,8 +11,8 @@
 # **************************************************************************** #
 
 NAME	= zombie
-CPP	= c++
-CPPFLAGS  = -Wall -Wextra -Werror -std=c++98
+CXX	= c++
+CXXFLAGS  = -Wall -Wextra -Werror -std=c++98
 
 SRC	= main.cpp	\
 	  Zombie.cpp	\
@@ -24,7 +24,7 @@ OBJ 	= $(SRC:.cpp=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CPP) $(CPPFLAGS) -o $(NAME) $(OBJ)
+	$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJ)
 
 clean: 
 	rm -f $(OBJ)

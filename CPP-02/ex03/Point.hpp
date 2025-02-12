@@ -1,30 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Fixed.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sde-carv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/18 14:25:38 by sde-carv          #+#    #+#             */
-/*   Updated: 2025/01/18 14:30:32 by sde-carv         ###   ########.fr       */
+/*   Created: 2025/02/11 17:25:42 by sde-carv          #+#    #+#             */
+/*   Updated: 2025/02/11 17:25:47 by sde-carv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HARL_HPP
-#define HARL_HPP
-
+#ifndef POINT_HPP
+#define POINT_HPP
 #include <iostream>
+#include "Fixed.hpp"
 
-class Harl
+class Point
 {
     private:
-        Harl(std::string level);
-        void debug(void);
-        void info(void);
-        void warning(void);
-        void error(void);
+        const Fixed x;
+        const Fixed y;
     public:
-        Harl();
-        void complain(std::string level);
+        Point();
+        ~Point();
+        Point(const Point &copy);
+        Point(const float x, const float y);
+        Point &operator=(const Point &y);
+        Fixed getPoint_x()const ;
+        Fixed getPoint_y() const;
 };
+
+bool bsp( Point const a, Point const b, Point const c, Point const point);
+
 #endif

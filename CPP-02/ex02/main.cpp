@@ -5,26 +5,24 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sde-carv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/18 14:25:38 by sde-carv          #+#    #+#             */
-/*   Updated: 2025/01/18 14:30:32 by sde-carv         ###   ########.fr       */
+/*   Created: 2025/01/11 11:32:18 by sde-carv          #+#    #+#             */
+/*   Updated: 2025/01/11 12:09:24 by sde-carv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HARL_HPP
-#define HARL_HPP
-
+#include "Fixed.hpp"
 #include <iostream>
 
-class Harl
+int main( void )
 {
-    private:
-        Harl(std::string level);
-        void debug(void);
-        void info(void);
-        void warning(void);
-        void error(void);
-    public:
-        Harl();
-        void complain(std::string level);
-};
-#endif
+	Fixed a;
+	Fixed const b( Fixed( 5.05f ) * Fixed( 2 ) );
+	std::cout << a << std::endl;
+	std::cout << ++a << std::endl;
+	std::cout << a << std::endl;
+	std::cout << a++ << std::endl;
+	std::cout << a << std::endl;
+	std::cout << b << std::endl;
+	std::cout << Fixed::max( a, b ) << std::endl;
+	return (0);
+}

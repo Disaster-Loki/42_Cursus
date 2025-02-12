@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sde-carv <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18 14:25:38 by sde-carv          #+#    #+#             */
+/*   Updated: 2025/01/18 14:30:32 by sde-carv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Harl.hpp"
 
 Harl::Harl() {}
@@ -18,7 +30,8 @@ void Harl::error(void) {
     std::cout << "This is unacceptable! I want to speak to the manager now." << std::endl;
 }
 
-void Harl::complain(std::string level) {
+void Harl::complain(std::string level)
+{
     std::string levers[] = {"DEBUG", "INFO", "WARNING","ERROR"};
     void (Harl::*functions[])(void) = {
         &Harl::debug,

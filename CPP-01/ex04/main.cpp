@@ -21,7 +21,7 @@ std::string replace_occur(const std::string &line, const std::string &s1, const 
 
     std::string result = line;
     std::string::size_type pos = 0;
-
+    std::cout << "npos: " << std::string::npos << std::endl;
     while ((pos = result.find(s1, pos)) != std::string::npos)
     {
         result.erase(pos, s1.length());
