@@ -63,7 +63,7 @@ float Fixed::toFloat(void) const
 
 int Fixed::toInt(void) const
 {
-    return this->fixed_point >> num_fract_bits; // Divide por 2^8
+    return this->fixed_point >> num_fract_bits;
 }
 
 

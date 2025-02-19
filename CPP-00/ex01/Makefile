@@ -12,8 +12,8 @@
 
 NAME        = phonebook
 
-CPP          = c++
-CPPFLAGS      = -Wall -Wextra -Werror -std=c++98
+CXX          = c++
+CXXFLAGS      = -Wall -Wextra -Werror -std=c++98
 
 RESET       = \033[0m
 RED         = \033[31m
@@ -22,17 +22,17 @@ YELLOW      = \033[33m
 ORANGE      = \033[38;5;208m
 GREEN       = \033[32m
 
-SRC_FILES = main.cpp		\
-			contact.cpp 	\
-			phonebook.cpp 	\
+SRC_FILES = main.CXX		\
+			contact.CXX 	\
+			phonebook.CXX 	\
 
 
-OBJ_FILES = $(SRC_FILES:.cpp=.o)
+OBJ_FILES = $(SRC_FILES:.CXX=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJ_FILES)
-	$(CPP) $(CPPFLAGS) -o $(NAME) $(OBJ_FILES)
+	$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJ_FILES)
 	clear
 	@echo "$(GREEN)COMPILATION COMPLETE$(RESET)"
 
