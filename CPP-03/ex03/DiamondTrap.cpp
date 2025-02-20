@@ -16,15 +16,6 @@
 DiamondTrap::DiamondTrap(std::string name)
     : ClapTrap(name + "_clap_name"), ScavTrap(name), FragTrap(name), name(name)
     {
-        std::cout << "hit_point: " << FragTrap::hit_point << std::endl;
-        std::cout << "energy_point: " << FragTrap::energy_point << std::endl;
-        std::cout << "attack_damage: " << FragTrap::attack_damage << std::endl;
-        std::cout << "hit_point: " << ScavTrap::hit_point << std::endl;
-        std::cout << "energy_point: " << ScavTrap::energy_point << std::endl;
-        std::cout << "attack_damage: " << ScavTrap::attack_damage << std::endl;
-        std::cout << "hit_point: " << ClapTrap::hit_point << std::endl;
-        std::cout << "energy_point: " << ClapTrap::energy_point << std::endl;
-        std::cout << "attack_damage: " << ClapTrap::attack_damage << std::endl;
     	this->hit_point = FragTrap::hit_point;
     	this->energy_point = ScavTrap::energy_point;
     	this->attack_damage = FragTrap::attack_damage;

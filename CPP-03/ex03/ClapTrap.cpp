@@ -24,7 +24,7 @@ ClapTrap::~ClapTrap()
 
 ClapTrap::ClapTrap(const ClapTrap &copy)
 {
-	std::cout << "Copy construtor called" << name << std::endl;
+	std::cout << "Copy construtor called " << name << std::endl;
 	*this = copy;
 }
 
