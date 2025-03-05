@@ -18,7 +18,7 @@
 
 int main(void)
 {
-	std::cout << "----- Testing Animal, Cat & Dog -----" << std::endl;
+	std::cout << "\n----- Testing Animal, Cat & Dog -----" << std::endl;
     const Animal* meta = new Animal();
     const Animal* j = new Dog();
     const Animal* i = new Cat();
@@ -33,7 +33,7 @@ int main(void)
     delete j;
     delete meta;
 
-    std::cout << "----- Testing WrongAnimal & WrongCat -----" << std::endl;
+    std::cout << "\n----- Testing WrongAnimal & WrongCat -----" << std::endl;
     const WrongAnimal* wa = new WrongAnimal();
     const WrongAnimal* wc = new WrongCat();
 

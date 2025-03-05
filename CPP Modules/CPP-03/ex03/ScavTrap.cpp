@@ -14,9 +14,6 @@
 
 ScavTrap::ScavTrap(std::string name) : ClapTrap(name)
 {
-    this->hit_point = 100;
-    this->energy_point = 50;
-    this->attack_damage = 20;
     std::cout << "ScavTrap constructor called for " << name << std::endl;
 }
 
@@ -37,39 +34,23 @@ ScavTrap::ScavTrap(const ScavTrap &copy) : ClapTrap(copy)
 
 ScavTrap &ScavTrap::operator=(const ScavTrap &copy)
 {
-    std::cout << "ScavTrap copy assignment operator called for " << copy.name << std::endl;
     if (this != &copy)
     {
         ClapTrap::operator=(copy);
+        std::cout << "ScavTrap copy assignment operator called for " << copy.name << std::endl;
     }
     return (*this);
 }
 
 void ScavTrap::attack(const std::string& target)
 {
-    std::cout << "ScavTrap " << this->name<< " attacks "
-              << target << ", causing " << this->attack_damage
-              << " points of damage!" << std::endl;
-}
-
-void ScavTrap::takeDamage(unsigned int amount)
-{
-    this->hit_point = this->hit_point - amount;
-    if (this->hit_point < 0)
-        this->hit_point = 0;
-    std::cout << "ScavTrap " << this->name << " takes "
-              << amount << " points of damage!" << std::endl;
-}
-
-void ScavTrap::beRepaired(unsigned int amount)
-{
     if (this->energy_point > 0 && this->hit_point > 0)
     {
-        this->hit_point += amount;
         this->energy_point -= 1;
-        std::cout << "ScavTrap " << this->name << " repairs itself, recovering "
-                  << amount << " hit points!" << std::endl;
+        std::cout << "ScavTrap " << this->name<< " attacks "
+              << target << ", causing " << this->attack_damage
+              << " points of damage!" << std::endl;
     }
     else
-        std::cout << "ScavTrap " << this->name << " has no energy to repair!" << std::endl;
+        std::cout << "ScavTrap " << this->name << " has no energy to attack!" << std::endl;
 }

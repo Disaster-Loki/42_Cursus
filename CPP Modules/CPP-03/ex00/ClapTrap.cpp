@@ -24,19 +24,19 @@ ClapTrap::~ClapTrap()
 
 ClapTrap::ClapTrap(const ClapTrap &copy)
 {
-	std::cout << "Copy construtor called" << name << std::endl;
+	std::cout << "Copy construtor called " << name << std::endl;
 	*this = copy;
 }
 
 ClapTrap &ClapTrap::operator=(const ClapTrap &copy)
 {
-	std::cout << "Copy assignment operator called" << name << std::endl;
 	if (this != &copy)
 	{
 	    this->name = copy.name;
 	    this->hit_point = copy.hit_point;
 	    this->energy_point = copy.energy_point;
 	    this->attack_damage = copy.attack_damage;
+        std::cout << "Copy assignment operator called " << name << std::endl;
 	}
 	return (*this);
 }
@@ -58,7 +58,6 @@ void ClapTrap::beRepaired(unsigned int amount)
         this->energy_point -= 1;
         std::cout << "ClapTrap " << this->name << " repairs itself, recovering "
                   << amount << " hit points!" << std::endl;
-    	std::cout << "Total hit_point = " << this->hit_point << std::endl;
     }
     else
         std::cout << "ClapTrap " << this->name << " has no energy to repair!" << std::endl;

@@ -24,8 +24,6 @@ int main()
     std::cout << "\n===== TESTE 2: Criando ScavTrap =====" << std::endl;
     ScavTrap scav("Scavvy");
     scav.attack("Intruder");
-    scav.takeDamage(30);
-    scav.beRepaired(15);
     scav.guardGate();
 
     std::cout << "\n===== TESTE 3: Energia e Vida Zeradas =====" << std::endl;

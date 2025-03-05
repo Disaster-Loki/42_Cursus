@@ -12,7 +12,7 @@
 
 #include "ClapTrap.hpp"
 
-ClapTrap::ClapTrap(std::string name): name(name), hit_point(10), energy_point(10), attack_damage(0)
+ClapTrap::ClapTrap(std::string name): name(name), hit_point(100), energy_point(100), attack_damage(30)
 {
 	std::cout << "Default constructor called " << name << std::endl;
 }
@@ -24,7 +24,7 @@ ClapTrap::~ClapTrap()
 
 ClapTrap::ClapTrap(const ClapTrap &copy)
 {
-	std::cout << "Copy construtor called" << name << std::endl;
+	std::cout << "Copy construtor called " << name << std::endl;
 	*this = copy;
 }
 
@@ -36,7 +36,7 @@ ClapTrap &ClapTrap::operator=(const ClapTrap &copy)
 	    this->hit_point = copy.hit_point;
 	    this->energy_point = copy.energy_point;
 	    this->attack_damage = copy.attack_damage;
-        std::cout << "Copy assignment operator called" << name << std::endl;
+        std::cout << "Copy assignment operator called " << name << std::endl;
 	}
 	return (*this);
 }
@@ -58,7 +58,6 @@ void ClapTrap::beRepaired(unsigned int amount)
         this->energy_point -= 1;
         std::cout << "ClapTrap " << this->name << " repairs itself, recovering "
                   << amount << " hit points!" << std::endl;
-    	std::cout << "Total hit_point = " << this->hit_point << std::endl;
     }
     else
         std::cout << "ClapTrap " << this->name << " has no energy to repair!" << std::endl;

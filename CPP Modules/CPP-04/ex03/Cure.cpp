@@ -19,12 +19,12 @@ Cure::Cure() : AMateria("cure")
 
 Cure::~Cure()
 {
-	std::cout << "Destructor called " << std::endl; 
+	std::cout << "Cure destructor called " << std::endl; 
 }
 
 Cure::Cure(const Cure &copy) : AMateria(copy)
 {
-	std::cout << "Copy construtor called" << std::endl;
+	std::cout << "Cure copy construtor called" << std::endl;
 	*this = copy;
 }
 
@@ -32,7 +32,7 @@ Cure &Cure::operator=(const Cure &copy)
 {
 	if (this != &copy)
 	    this->type = copy.type;
-	std::cout << "Copy assignment operator called" << std::endl;
+	std::cout << "Cure copy assignment operator called" << std::endl;
 	return (*this);
 }
 

@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME        = AMaterial
+NAME        = Interface
 CXX         = c++
 CXXFLAGS    = -Wall -Wextra -Werror -std=c++98
 

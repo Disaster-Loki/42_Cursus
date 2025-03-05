@@ -16,12 +16,14 @@ Character::Character(std::string const & name) : name(name)
 {
     for (int i = 0; i < 4; i++)
         inventory[i] = NULL;
+    std::cout << "Character constructor called "<< std::endl;
 }
 
 Character::Character(const Character& copy) : name(copy.name)
 {
     for (int i = 0; i < 4; i++)
         inventory[i] = copy.inventory[i] ? copy.inventory[i]->clone() : NULL;
+    std::cout << "M-Source copy constructor called "<< std::endl;    
 }
 
 Character& Character::operator=(const Character& copy)
@@ -31,40 +33,53 @@ Character& Character::operator=(const Character& copy)
         name = copy.name;
         for (int i = 0; i < 4; i++)
         {
-            delete inventory[i];
-            inventory[i] = copy.inventory[i] ? copy.inventory[i]->clone() : NULL;
+            if (inventory[i])
+            {
+                delete inventory[i];
+                inventory[i] = NULL;
+            }
         }
+        for (int i = 0; i < 4; i++)
+            inventory[i] = copy.inventory[i] ? copy.inventory[i]->clone() : NULL;
+        std::cout << "Character copy assignment operator called " << std::endl;
     }
     return *this;
 }
+
 
 Character::~Character()
 {
     for (int i = 0; i < 4; i++)
         delete inventory[i];
+    std::cout << "Character destructor called" << std::endl;
 }
 
 std::string const & Character::getName() const
 {
-    return name;
+    return (name);
 }
 
 void Character::equip(AMateria* m)
 {
+    if (!m)
+        return ;
     for (int i = 0; i < 4; i++)
     {
         if (!inventory[i])
         {
             inventory[i] = m;
-            return;
+            return ;
         }
     }
 }
 
 void Character::unequip(int idx)
 {
-    if (idx >= 0 && idx < 4)
+    if (idx >= 0 && idx < 4 && inventory[idx])
+    {
+        delete inventory[idx];
         inventory[idx] = NULL;
+    }
 }
 
 void Character::use(int idx, ICharacter& target)

@@ -14,7 +14,7 @@
 
 int main()
 {
-    std::cout << "===== TESTE 1: Criando DiamondTrap =====" << std::endl;
+    std::cout << "\n===== TESTE 1: Criando DiamondTrap =====" << std::endl;
     DiamondTrap diamond("Diamondy");
     diamond.attack("Target");
     diamond.whoAmI();

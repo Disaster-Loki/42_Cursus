@@ -38,7 +38,7 @@ Dog &Dog::operator=(const Dog &copy)
 
 void Dog::makeSound() const
 {
-    std::cout << this->getType() << ": Bark bark bark bark!" << std::endl;
+    std::cout << this->getType() << ": Woof woof woof woof!" << std::endl;
 }
 
 std::string Dog::getType() const

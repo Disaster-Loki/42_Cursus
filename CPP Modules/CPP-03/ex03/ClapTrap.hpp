@@ -23,7 +23,7 @@ class ClapTrap
 		int attack_damage;
 	public:
 		ClapTrap(std::string name);
-		virtual ~ClapTrap();
+		~ClapTrap();
 		ClapTrap(const ClapTrap &copy);
 		ClapTrap &operator=(const ClapTrap &copy);
 		void attack(const std::string& target);

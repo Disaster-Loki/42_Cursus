@@ -15,7 +15,7 @@
 
 int main()
 {
-    std::cout << "===== TESTE 1: Criando ClapTrap =====" << std::endl;
+    std::cout << "\n===== TESTE 1: Criando ClapTrap =====" << std::endl;
     ClapTrap clap("Clappy");
     clap.attack("Enemy");
     clap.takeDamage(5);
@@ -31,15 +31,11 @@ int main()
     std::cout << "\n===== TESTE 3: Criando FragTrap =====" << std::endl;
     FragTrap frag("Fraggy");
     frag.attack("Villain");
-    frag.takeDamage(40);
-    frag.beRepaired(20);
     frag.highFivesGuys();
 
     std::cout << "\n===== TESTE 4: Energia e Vida Zeradas =====" << std::endl;
     FragTrap weakFrag("WeakFrag");
-    weakFrag.takeDamage(100);
     weakFrag.attack("Ghost");
-    weakFrag.beRepaired(50);
     weakFrag.highFivesGuys();
 
     std::cout << "\n===== TESTE 5: Cópia e Atribuição =====" << std::endl;

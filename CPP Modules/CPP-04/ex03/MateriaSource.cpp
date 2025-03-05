@@ -16,13 +16,43 @@ MateriaSource::MateriaSource()
 {
     for (int i = 0; i < 4; i++)
         materials[i] = NULL;
+    std::cout << "M-Source default constructor called "<< std::endl;
 }
 
 MateriaSource::~MateriaSource()
 {
     for (int i = 0; i < 4; i++)
         delete materials[i];
+    std::cout << "M-Source destructor called "<< std::endl;
 }
+
+MateriaSource::MateriaSource(const MateriaSource &copy)
+{
+    *this = copy;
+    std::cout << "M-Source copy constructor called" << std::endl;
+}
+
+MateriaSource &MateriaSource::operator=(const MateriaSource &copy)
+{
+    if (this != &copy)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            delete materials[i];
+            materials[i] = NULL;
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            if (copy.materials[i])
+                materials[i] = copy.materials[i]->clone();
+            else
+                materials[i] = NULL;
+        }
+        std::cout << "M-Source copy assignment operator called" << std::endl;
+    }
+    return *this;
+}
+
 
 void MateriaSource::learnMateria(AMateria* materia)
 {

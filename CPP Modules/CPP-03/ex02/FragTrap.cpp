@@ -37,39 +37,23 @@ FragTrap::FragTrap(const FragTrap &copy) : ClapTrap(copy)
 
 FragTrap &FragTrap::operator=(const FragTrap &copy)
 {
-    std::cout << "FragTrap copy assignment operator called for " << copy.name << std::endl;
     if (this != &copy)
     {
         ClapTrap::operator=(copy);
+         std::cout << "FragTrap copy assignment operator called for " << copy.name << std::endl;
     }
     return (*this);
 }
 
 void FragTrap::attack(const std::string& target)
 {
-    std::cout << "FragTrap " << this->name << " attacks "
-              << target << ", causing " << this->attack_damage
-              << " points of damage!" << std::endl;
-}
-
-void FragTrap::takeDamage(unsigned int amount)
-{
-    this->hit_point -= amount;
-    if (this->hit_point < 0)
-        this->hit_point = 0;
-    std::cout << "FragTrap " << this->name << " takes "
-              << amount << " points of damage!" << std::endl;
-}
-
-void FragTrap::beRepaired(unsigned int amount)
-{
     if (this->energy_point > 0 && this->hit_point > 0)
     {
-        this->hit_point += amount;
         this->energy_point -= 1;
-        std::cout << "FragTrap " << this->name << " repairs itself, recovering "
-                  << amount << " hit points!" << std::endl;
+        std::cout << "FragTrap " << this->name << " attacks "
+              << target << ", causing " << this->attack_damage
+              << " points of damage!" << std::endl;
     }
     else
-        std::cout << "FragTrap " << this->name << " has no energy to repair!" << std::endl;
+        std::cout << "ScavTrap " << this->name << " has no energy to attack!" << std::endl;
 }
