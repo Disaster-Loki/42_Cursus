@@ -21,7 +21,7 @@ Welcome to my repository, which contains all the **42 Cursus** projects I've wor
 | [Push_swap](https://github.com/Disaster-Loki/42_Cursus/tree/main/Push_swap)                     | An algorithmic sorting project using only two stacks and limited operations. | ✅ Completed |
 | [So_long](https://github.com/Disaster-Loki/42_Cursus/tree/main/So_long)                         | A simple 2D game project built using the minilibX graphical library.         | ✅ Completed |
 | [Minishell](https://github.com/Disaster-Loki/Minishell)                                         | A shell implementation in C that mimics Bash with basic built-in commands.   | ✅ Completed |
-| [Cub3D](https://github.com/Disaster-Loki/Cub3D)                                                 | A 3D raycasting game engine using the MinilibX.                              | 🛠 In Progress |
+| [Cub3D](https://github.com/Disaster-Loki/Cub3D)                                                 | A 3D raycasting game engine using the MinilibX.                              | ✅ Completed  |
 | [CPP Modules (00 - 04)](https://github.com/Disaster-Loki/42_Cursus/tree/main/CPP%20Modules)     | A series of C++ projects covering OOP, memory management, and more.         | ✅ Completed |
 
 ---
