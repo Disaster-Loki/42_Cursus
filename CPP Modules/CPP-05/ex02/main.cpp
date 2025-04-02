@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "Bureaucrat.hpp"
-#include "Form.hpp"
+#include "AForm.hpp"
 
 int main() 
 {
@@ -67,57 +67,6 @@ int main()
     {
         std::cout << e.what() << std::endl;
     }
-
-    // ----------- TESTING FORM CLASS -----------
-    std::cout << "\n----- Testing Form Creation -----" << std::endl;
-    try 
-    {
-        Form form1("Tax Form", 50, 25);
-        std::cout << form1 << std::endl;
-    } 
-    catch (std::exception &e) 
-    {
-        std::cout << e.what() << std::endl;
-    }
-
-    try 
-    {
-        Form form2("Invalid Form", 0, 25);
-        std::cout << form2 << std::endl;
-    } 
-    catch (std::exception &e) 
-    {
-        std::cout << e.what() << std::endl;
-    }
-
-    try 
-    {
-        Form form3("Invalid Form", 160, 25);
-        std::cout << form3 << std::endl;
-    } 
-    catch (std::exception &e) 
-    {
-        std::cout << e.what() << std::endl;
-    }
-
-    std::cout << "\n----- Testing Bureaucrat's signForm() -----" << std::endl;
-    Bureaucrat manager("Manager", 30);
-    Form budget("Budget Approval", 40, 20);
-
-    std::cout << manager << std::endl;
-    std::cout << budget << std::endl;
-
-    manager.signForm(budget);
-    std::cout << "After signing attempt: " << budget << std::endl;
-
-    Bureaucrat junior("Junior Staff", 60);
-    Form report("Project Report", 50, 30);
-
-    std::cout << junior << std::endl;
-    std::cout << report << std::endl;
-
-    junior.signForm(report);
-    std::cout << "After signing attempt: " << report << std::endl;
 
     std::cout << "\n----- All Tests Completed -----" << std::endl;
     
