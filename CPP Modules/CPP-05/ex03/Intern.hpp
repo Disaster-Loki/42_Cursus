@@ -20,7 +20,6 @@ class AForm;
 
 class Intern
 {
-    private:
     public:
         Intern();
         ~Intern();

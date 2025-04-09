@@ -28,16 +28,16 @@ Intern::~Intern()
 AForm *Intern::makeForm(const std::string &name, const std::string &target)
 {
     std::string forms[] = {
-        "SHRUBBERY CREATION",
-        "ROBOTOMY REQUEST",
-        "PRESIDENTIAL PARDON"};
+        "shrubbery creation",
+        "robotomy request",
+        "presidential pardon"};
     
     AForm* (*functions[])(const std::string &target) = {
         ShrubberyCreationForm::CreateForm,
         RobotomyRequestForm::CreateForm,
         PresidentialPardonForm::CreateForm
     };
-    for (int i = 0; i < forms->size(); i++)
+    for (int i = 0; i < 3; i++)
     {
         if (forms[i] == name)
         {
