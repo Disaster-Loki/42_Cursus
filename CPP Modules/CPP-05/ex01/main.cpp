@@ -26,7 +26,6 @@ int main()
     {
         std::cout << e.what() << std::endl;
     }
-    
     try 
     {
         Bureaucrat b("Bob", 0);
@@ -36,7 +35,6 @@ int main()
     {
         std::cout << e.what() << std::endl;
     }
-
     std::cout << "\n----- Testing Valid Bureaucrat Creation -----" << std::endl;
     Bureaucrat c("Charlie", 42);
     std::cout << c << std::endl;
@@ -54,7 +52,6 @@ int main()
     {
         std::cout << e.what() << std::endl;
     }
-
     try 
     {
         Bureaucrat e("Eve", 149);
@@ -79,7 +76,6 @@ int main()
     {
         std::cout << e.what() << std::endl;
     }
-
     try 
     {
         Form form2("Invalid Form", 0, 25);
@@ -89,7 +85,6 @@ int main()
     {
         std::cout << e.what() << std::endl;
     }
-
     try 
     {
         Form form3("Invalid Form", 160, 25);

@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   RobotomyRequestForm.hpp                            :+:      :+:    :+:   */
+/*   ShrubberyCreationForm.hpp                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sde-carv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/25 13:28:57 by sde-carv          #+#    #+#             */
-/*   Updated: 2025/03/25 13:28:59 by sde-carv         ###   ########.fr       */
+/*   Created: 2025/03/25 13:28:42 by sde-carv          #+#    #+#             */
+/*   Updated: 2025/03/25 13:28:46 by sde-carv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ROBOTOMYREQUESTFORM_HPP
-# define ROBOTOMYREQUESTFORM_HPP
+#ifndef SHRUBBERYCREATIONFORM_HPP
+# define SHRUBBERYCREATIONFORM_HPP
 
 #include "AForm.hpp"
-#include <cstdlib>
+#include <fstream>
 
-class RobotomyRequestForm : public AForm
+class ShrubberyCreationForm : public AForm
 {
     private:
         std::string target;
     public:
-        RobotomyRequestForm(const std::string &target);
-        ~RobotomyRequestForm();
-        RobotomyRequestForm(const RobotomyRequestForm &copy);
-        RobotomyRequestForm &operator=(const RobotomyRequestForm &copy);
+        ShrubberyCreationForm(const std::string &target);
+        ~ShrubberyCreationForm();
+        ShrubberyCreationForm(const ShrubberyCreationForm &copy);
+        static AForm* CreateForm(const std::string &target);
+        ShrubberyCreationForm &operator=(const ShrubberyCreationForm &copy);
         void execute(Bureaucrat const &executor) const;
 };
 

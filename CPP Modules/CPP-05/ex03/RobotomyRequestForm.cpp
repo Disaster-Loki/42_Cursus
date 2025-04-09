@@ -30,7 +30,7 @@ RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm &copy)
 : AForm(copy)
 {
     *this = copy;
-    std::cout << "ShrubberyCreationForm copy constructor called" << std::endl;
+    std::cout << "RobotomyRequestForm copy constructor called" << std::endl;
 }
 
 RobotomyRequestForm &RobotomyRequestForm::operator=(const RobotomyRequestForm &copy)
@@ -41,6 +41,11 @@ RobotomyRequestForm &RobotomyRequestForm::operator=(const RobotomyRequestForm &c
         std::cout << "RobotomyRequestForm copy assignment operator called" << std::endl;
     }
     return (*this);
+}
+
+AForm* RobotomyRequestForm::CreateForm(const std::string &target)
+{
+    return (new RobotomyRequestForm(target));
 }
 
 void RobotomyRequestForm::execute(Bureaucrat const &executor) const

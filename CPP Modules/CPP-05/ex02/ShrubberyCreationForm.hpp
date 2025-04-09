@@ -24,8 +24,7 @@ class ShrubberyCreationForm : public AForm
         ShrubberyCreationForm(const std::string &target);
         ~ShrubberyCreationForm();
         ShrubberyCreationForm(const ShrubberyCreationForm &copy);
-        ShrubberyCreationForm &operator=(const ShrubberyCreationForm &copy) = delete;
-
+        ShrubberyCreationForm &operator=(const ShrubberyCreationForm &copy);
         void execute(Bureaucrat const &executor) const;
 };
 

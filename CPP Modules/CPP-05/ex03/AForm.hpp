@@ -40,6 +40,7 @@ class AForm
         int getExecuteGrade() const;
         void checkGradeAForm();
         virtual void execute(Bureaucrat const &executor) const = 0;
+        static AForm* CreateForm(const std::string &target);
         
         class GradeTooHighException : public std::exception {
             public:

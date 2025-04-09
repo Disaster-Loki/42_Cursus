@@ -15,6 +15,7 @@
 Form::Form(const std::string &name, int sign, int execute) 
     : name(name), is_signed(false), sign(sign), execute(execute)
 {
+    checkGradeForm();
     std::cout << "Form constructor called" << std::endl;
 }
 
@@ -46,6 +47,13 @@ void Form::beSigned(const Bureaucrat &bureaucrat) {
     if (bureaucrat.getGrade() > this->sign)
         throw Form::GradeTooLowException();
     this->is_signed = true;
+}
+
+void Form::checkGradeForm(){
+    if (this->sign < 1 || this->execute < 1)
+        throw GradeTooHighException();
+    if (this->sign > 150 || this->execute > 150)
+        throw GradeTooLowException();
 }
 
 const char *Form::GradeTooHighException::what() const throw() {

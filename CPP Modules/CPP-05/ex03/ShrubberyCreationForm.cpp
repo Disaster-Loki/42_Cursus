@@ -40,6 +40,11 @@ ShrubberyCreationForm &ShrubberyCreationForm::operator=(const ShrubberyCreationF
     return (*this);
 }
 
+AForm* ShrubberyCreationForm::CreateForm(const std::string &target)
+{
+    return (new ShrubberyCreationForm(target));
+}
+
 void ShrubberyCreationForm::execute(Bureaucrat const &executor) const
 {
     if (!this->isSigned())

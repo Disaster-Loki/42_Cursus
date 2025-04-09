@@ -24,7 +24,6 @@ int main()
     {
         std::cout << e.what() << std::endl;
     }
-    
     try 
     {
         Bureaucrat b("Bob", 0);
@@ -52,7 +51,6 @@ int main()
     {
         std::cout << e.what() << std::endl;
     }
-
     try 
     {
         Bureaucrat e("Eve", 149);

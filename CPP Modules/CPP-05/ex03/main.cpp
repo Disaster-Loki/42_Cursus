@@ -15,6 +15,7 @@
 #include "ShrubberyCreationForm.hpp"
 #include "RobotomyRequestForm.hpp"
 #include "PresidentialPardonForm.hpp"
+#include "Intern.hpp"
 
 int main() 
 {
@@ -69,52 +70,13 @@ int main()
         std::cout << e.what() << std::endl;
     }
 
-    // ----------- TESTING FORM CREATION AND SIGNING -----------
-
-    std::cout << "\n----- Testing Form Creation and Signing -----" << std::endl;
+    // ----------- TESTING FORM CREATION, SIGNING AND EXECUTION -----------
+    std::cout << "\n----- Testing Form Creation, Signing and Execution -----" << std::endl;
 
     ShrubberyCreationForm shrubberyForm("home");
     RobotomyRequestForm robotomyForm("Alice");
     PresidentialPardonForm pardonForm("Bob");
-    Bureaucrat f("Frank", 50);
-
-    try 
-    {
-        std::cout << "Attempting to sign Shrubbery Creation Form" << std::endl;
-        f.signForm(shrubberyForm);
-        std::cout << "Shrubbery form signed: " << shrubberyForm << std::endl;
-    }
-    catch (std::exception &e) 
-    {
-        std::cout << e.what() << std::endl;
-    }
-    try 
-    {
-        std::cout << "Attempting to sign Robotomy Request Form" << std::endl;
-        f.signForm(robotomyForm);
-        std::cout << "Robotomy form signed: " << robotomyForm << std::endl;
-    }
-    catch (std::exception &e) 
-    {
-        std::cout << e.what() << std::endl;
-    }
-    try 
-    {
-        std::cout << "Attempting to sign Presidential Pardon Form" << std::endl;
-        f.signForm(pardonForm);
-        std::cout << "Presidential Pardon form signed: " << pardonForm << std::endl;
-    }
-    catch (std::exception &e) 
-    {
-        std::cout << e.what() << std::endl;
-    }
-
-    // ----------- TESTING FORM EXECUTION -----------
-
-    std::cout << "\n----- Testing Form Execution -----" << std::endl;
-
     Bureaucrat g("George", 5);
-
     try 
     {
         std::cout << "Attempting to execute Shrubbery Creation Form" << std::endl;
@@ -124,7 +86,6 @@ int main()
     {
         std::cout << e.what() << std::endl;
     }
-    //shrubberyForm.beSigned(g);
     g.signForm(shrubberyForm);
     try 
     {
@@ -144,7 +105,6 @@ int main()
     {
         std::cout << e.what() << std::endl;
     }
-    //robotomyForm.beSigned(g);
     g.signForm(robotomyForm);
     try 
     {
@@ -164,7 +124,6 @@ int main()
     {
         std::cout << e.what() << std::endl;
     }
-    //pardonForm.beSigned(g);
     g.signForm(pardonForm);
     try 
     {
@@ -175,6 +134,45 @@ int main()
     {
         std::cout << e.what() << std::endl;
     }
+
+    // ----------- TESTING INTERN CLASS -----------
+
+    std::cout << "\n----- Testing Intern Class -----" << std::endl;
+
+    Intern someRandomIntern;
+    AForm* form;
+
+    std::cout << "\n--- Testing valid form creation ---" << std::endl;
+    form = someRandomIntern.makeForm("robotomy request", "Bender");
+    if (form) {
+        std::cout << *form << std::endl; 
+        delete form;
+    }
+
+    form = someRandomIntern.makeForm("presidential pardon", "Alice");
+    if (!form)
+    {
+        std::cout << "Erro\n" << std::endl;
+        return (0);
+    }
+    if (form) {
+        std::cout << *form << std::endl; 
+        delete form;
+    }
+
+    form = someRandomIntern.makeForm("shrubbery creation", "Garden");
+    if (form) {
+        std::cout << *form << std::endl; 
+        delete form; 
+    }
+
+    std::cout << "\n--- Testing invalid form creation ---" << std::endl;
+    form = someRandomIntern.makeForm("unknown form", "Test");
+    if (form) {
+        std::cout << *form << std::endl;
+        delete form;
+    }
+
     std::cout << "\n----- All Tests Completed -----" << std::endl;
     return 0;
 }

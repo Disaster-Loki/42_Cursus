@@ -27,7 +27,7 @@ PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm &cop
 : AForm(copy)
 {
     *this = copy;
-    std::cout << "ShrubberyCreationForm copy constructor called" << std::endl;
+    std::cout << "PresidentialPardonForm copy constructor called" << std::endl;
 }
 
 PresidentialPardonForm &PresidentialPardonForm::operator=(const PresidentialPardonForm &copy)
@@ -38,6 +38,11 @@ PresidentialPardonForm &PresidentialPardonForm::operator=(const PresidentialPard
         std::cout << "PresidentialPardonForm copy assignment operator called" << std::endl;
     }
     return (*this);
+}
+
+AForm* PresidentialPardonForm::CreateForm(const std::string &target)
+{
+    return (new PresidentialPardonForm(target));
 }
 
 void PresidentialPardonForm::execute(Bureaucrat const &executor) const
