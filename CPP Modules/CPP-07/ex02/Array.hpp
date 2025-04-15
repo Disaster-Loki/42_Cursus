@@ -12,19 +12,25 @@
 
 #ifndef ARRAY_HPP
 #define ARRAY_HPP
-#include <iostream>
+
+#include <stdexcept>
 
 template <typename T>
-class Array
-{
-    private:
-        Array<T> array = new Array[];
-    public:
-        Array() { Array<T>[]; };
-        ~Array();
-        Array(unsigned int n) { Array<T>[n] = {0}; };
-        Array(const Array<T> &copy) {};
-        Array &operator=(const Array<T> &copy);
+class Array {
+private:
+    T* array;
+    unsigned int length;
+public:
+    Array();
+    Array(unsigned int n);
+    ~Array();
+    Array(const Array& copy);
+    Array& operator=(const Array& copy);
+    T& operator[](unsigned int index);
+    const T& operator[](unsigned int index) const;
+    unsigned int size() const;
 };
+
+#include "Array.tpp"
 
 #endif

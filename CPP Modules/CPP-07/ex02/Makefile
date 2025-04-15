@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME	=	iter
+NAME	=	Array
 CXX		= 	c++
 CFLAGS	=	-Wall -Wextra -Werror -std=c++98
 SRC		=	main.cpp
