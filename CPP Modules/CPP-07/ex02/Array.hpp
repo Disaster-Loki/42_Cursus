@@ -17,8 +17,14 @@
 template <typename T>
 class Array
 {
+    private:
+        Array<T> array = new Array[];
     public:
-        Array() {} ;
+        Array() { Array<T>[]; };
+        ~Array();
+        Array(unsigned int n) { Array<T>[n] = {0}; };
+        Array(const Array<T> &copy) {};
+        Array &operator=(const Array<T> &copy);
 };
 
 #endif
