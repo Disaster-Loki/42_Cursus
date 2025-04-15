@@ -5,21 +5,17 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sde-carv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/15 11:41:12 by sde-carv          #+#    #+#             */
-/*   Updated: 2025/04/15 11:41:38 by sde-carv         ###   ########.fr       */
+/*   Created: 2025/04/15 16:18:11 by sde-carv          #+#    #+#             */
+/*   Updated: 2025/04/15 16:18:13 by sde-carv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ScalarConverter.hpp"
+#include "iter.hpp"
 
-int main(int av, char **args)
-{
-    if (av != 2)
-    {
-        std::cout << "convert [string]" << std::endl;
-        return (1);
-    }
-    ScalarConverter sc;
-    sc.convert(args[1]);
+void print_arrays(int &n){ std::cout << n << std::endl;}
+
+int main(void){
+    int array[5] = {1, 2, 3, 4, 5};
+    ::iter(array, 5, print_arrays);
     return (0);
 }

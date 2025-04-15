@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   whatever.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sde-carv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/15 11:41:12 by sde-carv          #+#    #+#             */
-/*   Updated: 2025/04/15 11:41:38 by sde-carv         ###   ########.fr       */
+/*   Created: 2025/04/15 15:10:10 by sde-carv          #+#    #+#             */
+/*   Updated: 2025/04/15 15:10:11 by sde-carv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ScalarConverter.hpp"
+#ifndef WHATEVER_HPP
+#define WHATEVER_HPP
+#include <iostream>
 
-int main(int av, char **args)
+template <typename T>
+void swap(T& a, T& b) 
 {
-    if (av != 2)
-    {
-        std::cout << "convert [string]" << std::endl;
-        return (1);
-    }
-    ScalarConverter sc;
-    sc.convert(args[1]);
-    return (0);
+    T tmp = a;
+    a = b;
+    b = tmp;
 }
+
+template <typename T>
+T min(T a, T b) { return (a < b ? a : b); }
+
+template <typename T>
+T max(T a, T b) { return (a > b ? a : b); }
+
+#endif
+

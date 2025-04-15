@@ -159,7 +159,6 @@ int main()
         std::cout << *form << std::endl; 
         delete form;
     }
-
     form = someRandomIntern.makeForm("shrubbery creation", "Garden");
     if (form) {
         std::cout << *form << std::endl; 

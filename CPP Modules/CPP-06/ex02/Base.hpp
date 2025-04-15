@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Base.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sde-carv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/15 11:41:12 by sde-carv          #+#    #+#             */
-/*   Updated: 2025/04/15 11:41:38 by sde-carv         ###   ########.fr       */
+/*   Created: 2025/04/15 12:07:59 by sde-carv          #+#    #+#             */
+/*   Updated: 2025/04/15 12:08:01 by sde-carv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ScalarConverter.hpp"
+#ifndef BASE_HPP
+# define BASE_HPP
+#include <iostream>
 
-int main(int av, char **args)
-{
-    if (av != 2)
-    {
-        std::cout << "convert [string]" << std::endl;
-        return (1);
-    }
-    ScalarConverter sc;
-    sc.convert(args[1]);
-    return (0);
-}
+class Base{
+    public: virtual ~Base() = default; 
+};
+
+Base * generate(void);
+void identify(Base* p);
+void identify(Base& p);
+
+#endif

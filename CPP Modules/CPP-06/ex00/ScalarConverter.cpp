@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ScalarConverter.cpp                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sde-carv <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/15 11:41:53 by sde-carv          #+#    #+#             */
+/*   Updated: 2025/04/15 11:41:54 by sde-carv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ScalarConverter.hpp"
 #include <iostream>
 #include <iomanip>
@@ -8,6 +20,8 @@
 
 ScalarConverter::ScalarConverter() {}
 ScalarConverter::~ScalarConverter() {}
+ScalarConverter::ScalarConverter(const ScalarConverter &coppy) {}
+ScalarConverter &ScalarConverter::operator=(const ScalarConverter &copy){ return (*this); }
 
 void ScalarConverter::convert(const std::string &input) {
     if (input == "nan" || input == "nanf") {

@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Array.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sde-carv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/15 11:41:12 by sde-carv          #+#    #+#             */
-/*   Updated: 2025/04/15 11:41:38 by sde-carv         ###   ########.fr       */
+/*   Created: 2025/04/15 16:40:34 by sde-carv          #+#    #+#             */
+/*   Updated: 2025/04/15 16:40:35 by sde-carv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ScalarConverter.hpp"
+#ifndef ARRAY_HPP
+#define ARRAY_HPP
+#include <iostream>
 
-int main(int av, char **args)
+template <typename T>
+class Array
 {
-    if (av != 2)
-    {
-        std::cout << "convert [string]" << std::endl;
-        return (1);
-    }
-    ScalarConverter sc;
-    sc.convert(args[1]);
-    return (0);
-}
+    public:
+        Array() {} ;
+};
+
+#endif
