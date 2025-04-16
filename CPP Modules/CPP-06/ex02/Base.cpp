@@ -4,9 +4,11 @@
 #include "C.hpp"
 #include <cstdlib>
 #include <stdexcept>
+#include <ctime>
 
 Base * generate(void)
 {
+    std::srand(static_cast<unsigned int>(std::time(0)));
     int rand = std::rand() % 3;
     if (rand == 0) return (new A());
     else if (rand == 1) return (new B());
