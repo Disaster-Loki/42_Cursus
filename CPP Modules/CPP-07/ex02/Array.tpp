@@ -1,12 +1,17 @@
 template <typename T>
-Array<T>::Array() : array(NULL), length(0) {}
+Array<T>::Array() : array(NULL), length(0) {
+    std::cout << "Array construtor called" << std::endl;
+}
 
 template <typename T>
-Array<T>::Array(unsigned int n) : array(new T[n]()), length(n) {}
+Array<T>::Array(unsigned int n) : array(new T[n]()), length(n) {
+    std::cout << "Array construtor called" << std::endl;
+}
 
 template <typename T>
 Array<T>::~Array() {
     delete[] array;
+    std::cout << "Array destrutor called" << std::endl;
 }
 
 template <typename T>
@@ -14,6 +19,7 @@ Array<T>::Array(const Array& copy)
 : array(new T[copy.length]), length(copy.length) {
     for (unsigned int i = 0; i < length; ++i)
         array[i] = copy.array[i];
+    std::cout << "Array copy construtor called" << std::endl;
 }
 
 template <typename T>
@@ -24,6 +30,7 @@ Array<T>& Array<T>::operator=(const Array& copy) {
         array = new T[length];
         for (unsigned int i = 0; i < length; ++i)
             array[i] = copy.array[i];
+        std::cout << "Array copy assignment operator called" << std::endl; 
     }
     return *this;
 }
