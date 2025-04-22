@@ -12,7 +12,7 @@
 
 #include "iter.hpp"
 
-void print_arrays(int &n){ std::cout << n << std::endl;}
+void print_arrays(const int &n){ std::cout << n << std::endl;}
 
 int main(void){
     int array[5] = {1, 2, 3, 4, 5};
