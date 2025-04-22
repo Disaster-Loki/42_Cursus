@@ -35,7 +35,7 @@ Span &Span::operator=(const Span &copy){
 
 void Span::addNumber(unsigned int number){
     if (v.size() >= N)
-        throw std::overflow_error("Span is fill");
+        throw std::overflow_error("Span is full");
     v.push_back(number);
     //std::cout << "Number add to Span" << std::endl;
 }
@@ -43,7 +43,6 @@ void Span::addNumber(unsigned int number){
 unsigned int Span::shortestSpan(){
     if (v.size() <= 1)
         throw std::overflow_error("Span empty or only one element");
-    std::vector<unsigned int> v = this->v;
     std::vector<unsigned int> n;
     int len = v.size();
     for (int i = 0; i < len; i++){
@@ -62,7 +61,6 @@ unsigned int Span::shortestSpan(){
 unsigned int Span::longestSpan(){
     if (v.size() <= 1)
         throw std::overflow_error("Span empty or only one element");
-    std::vector<unsigned int> v = this->v;
     std::vector<unsigned int> n;
     int len = v.size();
     for (int i = 0; i < len; i++){

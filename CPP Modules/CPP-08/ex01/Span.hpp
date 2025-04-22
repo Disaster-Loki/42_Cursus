@@ -29,6 +29,12 @@ class Span{
             void addNumber(unsigned int number);
             unsigned int shortestSpan();
             unsigned int longestSpan();
+            template <typename Iter>
+            void addRange(Iter begin, Iter end){
+                if ((std::distance(begin, end) + v.size()) > N)
+                        throw std::runtime_error("Range out of bounds");
+                v.insert(v.begin(), begin, end);
+            }
 };
 
 #endif
