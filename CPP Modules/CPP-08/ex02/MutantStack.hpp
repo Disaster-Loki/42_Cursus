@@ -1,23 +1,23 @@
 #ifndef MUTANTSTACK_HPP
 #define MUTANTSTACK_HPP
-#include <iostream>
-#include <vector>
+
+#include <stack>
 
 template <typename T>
-class MutantStack{
-    private:
-        std::vector<T> v;
-        unsigned int length;
+class MutantStack : public std::stack<T> {
     public:
+        typedef typename std::stack<T>::container_type::iterator iterator;
         MutantStack();
-        MutantStack(unsigned int len);
-        ~MutantStack();
         MutantStack(const MutantStack &copy);
         MutantStack &operator=(const MutantStack &copy);
+        ~MutantStack();
+        void push(unsigned int value);
         void pop();
         unsigned int top();
         unsigned int size();
-        void push(unsigned int value);
+        unsigned int empty();
+        iterator begin();
+        iterator end();
 };
 
 #include "MutantStack.tpp"

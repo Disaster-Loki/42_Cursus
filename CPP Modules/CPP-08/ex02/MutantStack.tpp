@@ -1,44 +1,67 @@
+#ifndef MUTANTSTACK_TPP
+#define MUTANTSTACK_TPP
+
+#include <iostream>
+
 template <typename T>
-MutantStack::MutantStack(): v(NULL), lenght(0){
+MutantStack<T>::MutantStack() {
     std::cout << "MutantStack construtor called" << std::endl;
 }
 
-MutantStack::~MutantStack()
-{
+template <typename T>
+MutantStack<T>::~MutantStack() {
     std::cout << "MutantStack destrutor called" << std::endl;
 }
 
-MutantStack::MutantStack(const MutantStack &copy){
-    *this = copy;
+template <typename T>
+MutantStack<T>::MutantStack(const MutantStack &copy) : std::stack<T>(copy) {
     std::cout << "MutantStack copy construtor called" << std::endl;
 }
 
-MutantStack &MutantStack::operator=(const MutantStack &copy){
-    if (this != &copy){
-        this->v = copy.v;
-        this->length = copy.length;
-    }
-    return (*this);
+template <typename T>
+MutantStack<T> &MutantStack<T>::operator=(const MutantStack &copy) {
+    if (this != &copy)
+        std::stack<T>::operator=(copy);
+    std::cout << "MutantStack copy assignment operator called" << std::endl;
+    return *this;
 }
 
-void MutantStack::push(unsigned int value)
-{
-    v.push(value);
-    std::cout << "Value add sucessfully" << std::endl;
+template <typename T>
+void MutantStack<T>::push(unsigned int value) {
+    this->c.push_back(value);
+    std::cout << "Value added successfully" << std::endl;
 }
 
-//template <typename T>
-unsigned int MutantStack::top()
-{
+template <typename T>
+void MutantStack<T>::pop() {
+    this->c.pop_back();
+    std::cout << "Pop successfully" << std::endl;
+}
+
+template <typename T>
+unsigned int MutantStack<T>::top() {
     std::cout << "Value on top of MutantStack" << std::endl;
-    return (v[v.size() - 1]);
+    return this->c.back();
 }
 
-void MutantStack::pop(){
-    v.remove(MutantStack::top());
-    std::cout << "pop sucessfully" << std::endl;
+template <typename T>
+unsigned int MutantStack<T>::size() {
+    return this->c.size();
 }
 
-unsigned int MutantStack::size(){
-    return (v.size());
+template <typename T>
+unsigned int MutantStack<T>::empty() {
+    return this->c.empty() ? 1 : 0;
 }
+
+template <typename T>
+typename MutantStack<T>::iterator MutantStack<T>::begin() {
+    return this->c.begin();
+}
+
+template <typename T>
+typename MutantStack<T>::iterator MutantStack<T>::end() {
+    return this->c.end();
+}
+
+#endif
