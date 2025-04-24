@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   MutantStack.hpp                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sde-carv <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/24 13:01:08 by sde-carv          #+#    #+#             */
+/*   Updated: 2025/04/24 13:01:10 by sde-carv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MUTANTSTACK_HPP
 #define MUTANTSTACK_HPP
 
@@ -6,7 +18,7 @@
 template <typename T>
 class MutantStack : public std::stack<T> {
     public:
-        typedef typename std::stack<T>::container_type::iterator iterator;
+        using iterator = typename std::stack<T>::container_type::iterator;
         MutantStack();
         MutantStack(const MutantStack &copy);
         MutantStack &operator=(const MutantStack &copy);

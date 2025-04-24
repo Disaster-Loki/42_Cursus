@@ -13,19 +13,16 @@
 #ifndef EASYFIND_HPP
 #define EASYFIND_HPP
 #include <iostream>
+#include <algorithm>
 #include <stdexcept>
 #include <vector>
 
 template <typename T>
-int easyfind(const std::vector<T> &t, int x)
-{
-        int i = -1;
-        while (++i < t.size())
-        {
-            if (t[i] == x)
-                return (i);
-        }
-        throw std::runtime_error("Error 404: Not found!");
-};
+int easyfind(const T &container, int value) {
+    typename T::const_iterator it = std::find(container.begin(), container.end(), value);
+    if (it != container.end())
+        return std::distance(container.begin(), it);
+    throw std::runtime_error("Error 404: Not found!");
+}
 
 #endif

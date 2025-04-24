@@ -12,70 +12,55 @@
 
 #include "Span.hpp"
 
-Span::Span(unsigned int N): N(N) {
-    std::cout << "Span construtor called" << std::endl;
+Span::Span(unsigned int N) : N(N) {
+    std::cout << "Span constructor called" << std::endl;
 }
 
-Span::~Span(){
-    std::cout << "Span destrutor called" << std::endl;
+Span::~Span() {
+    std::cout << "Span destructor called" << std::endl;
 }
 
-Span::Span(const Span &copy){
+Span::Span(const Span& copy) {
     *this = copy;
-    std::cout  << "Span copy construtor called" << std::endl;
+    std::cout << "Span copy constructor called" << std::endl;
 }
 
-Span &Span::operator=(const Span &copy){
-    if (this != &copy){
+Span& Span::operator=(const Span& copy) {
+    if (this != &copy) {
         this->N = copy.N;
         this->v = copy.v;
     }
-    return (*this);
+    return *this;
 }
 
-void Span::addNumber(unsigned int number){
+void Span::addNumber(unsigned int number) {
     if (v.size() >= N)
         throw std::overflow_error("Span is full");
     v.push_back(number);
-    //std::cout << "Number add to Span" << std::endl;
 }
 
-unsigned int Span::shortestSpan(){
+unsigned int Span::shortestSpan() {
     if (v.size() <= 1)
-        throw std::overflow_error("Span empty or only one element");
-    std::vector<unsigned int> n;
-    int len = v.size();
-    for (int i = 0; i < len; i++){
-        int j = -1;
-        while(++j < len)
-        {
-            if (v[i] < v[len - j - 1])
-                n.push_back(abs(v[len - j - 1] - v[i]));
-        }
+        throw std::overflow_error("Not enough elements to compute span");
+
+    std::vector<unsigned int> temp = v;
+    std::sort(temp.begin(), temp.end());
+
+    unsigned int minSpan = std::numeric_limits<unsigned int>::max();
+    for (size_t i = 1; i < temp.size(); ++i) {
+        unsigned int diff = temp[i] - temp[i - 1];
+        if (diff < minSpan)
+            minSpan = diff;
     }
-    auto min = std::min_element(n.begin(), n.end());
-    unsigned int min_x = static_cast<unsigned int>(*min);
-    return (*min);
+    return minSpan;
 }
 
-unsigned int Span::longestSpan(){
+unsigned int Span::longestSpan() {
     if (v.size() <= 1)
-        throw std::overflow_error("Span empty or only one element");
-    std::vector<unsigned int> n;
-    int len = v.size();
-    for (int i = 0; i < len; i++){
-        int j = -1;
-        while(++j < len)
-        {
-            if (v[i] < v[len - j - 1])
-                n.push_back(abs(v[len - j - 1] - v[i]));
-        }
-    }
-    auto max = std::max_element(n.begin(), n.end());
-    unsigned int max_x = static_cast<unsigned int>(*max);
-    return (*max);
+        throw std::overflow_error("Not enough elements to compute span");
+
+    auto [minIt, maxIt] = std::minmax_element(v.begin(), v.end());
+    return *maxIt - *minIt;
 }
-
-
 
 
