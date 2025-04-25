@@ -21,7 +21,7 @@ int main(void){
     v.push_back(15);
     v.push_back(3);
     try{
-        std::cout << ::easyfind(v, 15) << std::endl;
+        std::cout << easyfind(v, 0) << std::endl;
     }catch(std::runtime_error &e){
         std::cout << e.what() << std::endl;
     }
