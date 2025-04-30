@@ -29,6 +29,7 @@ Span& Span::operator=(const Span& copy) {
     if (this != &copy) {
         this->N = copy.N;
         this->v = copy.v;
+        std::cout << "Span copy assignment operator called" << std::endl; 
     }
     return *this;
 }
@@ -43,12 +44,12 @@ unsigned int Span::shortestSpan() {
     if (v.size() <= 1)
         throw std::overflow_error("Not enough elements to compute span");
 
-    std::vector<unsigned int> temp = v;
-    std::sort(temp.begin(), temp.end());
+    std::vector<unsigned int> tmp = v;
+    std::sort(tmp.begin(), tmp.end());
 
     unsigned int minSpan = std::numeric_limits<unsigned int>::max();
-    for (size_t i = 1; i < temp.size(); ++i) {
-        unsigned int diff = temp[i] - temp[i - 1];
+    for (size_t i = 1; i < tmp.size(); ++i) {
+        unsigned int diff = tmp[i] - tmp[i - 1];
         if (diff < minSpan)
             minSpan = diff;
     }

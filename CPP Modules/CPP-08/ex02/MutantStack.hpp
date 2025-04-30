@@ -18,14 +18,14 @@
 template <typename T>
 class MutantStack : public std::stack<T> {
     public:
-        using iterator = typename std::stack<T>::container_type::iterator;
+        typedef typename std::stack<T>::container_type::iterator iterator;
         MutantStack();
         MutantStack(const MutantStack &copy);
         MutantStack &operator=(const MutantStack &copy);
         ~MutantStack();
-        void push(unsigned int value);
+        void push(T value);
         void pop();
-        unsigned int top();
+        T top();
         unsigned int size();
         unsigned int empty();
         iterator begin();

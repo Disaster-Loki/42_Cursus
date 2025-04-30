@@ -27,9 +27,9 @@ MutantStack<T> &MutantStack<T>::operator=(const MutantStack &copy) {
 }
 
 template <typename T>
-void MutantStack<T>::push(unsigned int value) {
+void MutantStack<T>::push(T value) {
     this->c.push_back(value);
-    std::cout << "Value added successfully" << std::endl;
+    std::cout << "Value added successfully: " << value << std::endl;
 }
 
 template <typename T>
@@ -39,13 +39,14 @@ void MutantStack<T>::pop() {
 }
 
 template <typename T>
-unsigned int MutantStack<T>::top() {
-    std::cout << "Value on top of MutantStack" << std::endl;
+T MutantStack<T>::top() {
+    std::cout << "Value on top of MutantStack: ";
     return this->c.back();
 }
 
 template <typename T>
 unsigned int MutantStack<T>::size() {
+    std::cout << "Size: ";
     return this->c.size();
 }
 
