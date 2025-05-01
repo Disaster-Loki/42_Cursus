@@ -13,9 +13,22 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <sstream>
+
+void split(std::string s, char del)
+{
+    std::stringstream ss(s);
+    std::string word;
+    while (!ss.eof()) {
+        std::getline(ss, word, del);
+        std::cout << word << std::endl;
+    }
+}
 
 int main(int av, char **args)
 {
+    split("sebastiao de carvalho", ' ');
+    return (0);
     if (av <= 1){
         std::cout << "Error: could not open file." << std::endl;
         return (1);
@@ -35,8 +48,8 @@ int main(int av, char **args)
         v.push_back(line);
     }
     input.close();
-    for (unsigned int i = 0; i < v.size(); i++)
-        std::cout << v[i] << std::endl;
+    //for (unsigned int i = 0; i < v.size(); i++)
+    //    std::cout << v[i] << std::endl;
     std::cout << "Finished" << std::endl;
     return (0); 
 }
