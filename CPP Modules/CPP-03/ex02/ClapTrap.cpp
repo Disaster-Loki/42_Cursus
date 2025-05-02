@@ -12,14 +12,14 @@
 
 #include "ClapTrap.hpp"
 
-ClapTrap::ClapTrap(): hit_point(10), energy_point(10), attack_damage(0)
+ClapTrap::ClapTrap(): name("Default"), hit_point(10), energy_point(10), attack_damage(0)
 {
 	std::cout << "Default constructor called " << std::endl;
 }
 
-ClapTrap::ClapTrap(std::string name): name(name), hit_point(100), energy_point(100), attack_damage(30)
+ClapTrap::ClapTrap(std::string name): name(name), hit_point(10), energy_point(10), attack_damage(0)
 {
-	std::cout << "Cconstructor called " << name << std::endl;
+	std::cout << "ClapTrap " << name << " constructed" << std::endl;
 }
 
 ClapTrap::~ClapTrap()
@@ -29,8 +29,8 @@ ClapTrap::~ClapTrap()
 
 ClapTrap::ClapTrap(const ClapTrap &copy)
 {
+    *this = copy;
 	std::cout << "Copy construtor called " << name << std::endl;
-	*this = copy;
 }
 
 ClapTrap &ClapTrap::operator=(const ClapTrap &copy)

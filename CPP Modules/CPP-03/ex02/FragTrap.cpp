@@ -12,12 +12,12 @@
 
 #include "FragTrap.hpp"
 
-FragTrap::FragTrap()
+FragTrap::FragTrap() : ClapTrap("Default")
 {
     this->hit_point = 100;
     this->energy_point = 100;
     this->attack_damage = 30;
-	std::cout << "FragTrap default constructor called " << std::endl;
+    std::cout << "FragTrap default constructor called" << std::endl;
 }
 
 FragTrap::FragTrap(std::string name) : ClapTrap(name)
@@ -63,5 +63,5 @@ void FragTrap::attack(const std::string& target)
               << " points of damage!" << std::endl;
     }
     else
-        std::cout << "ScavTrap " << this->name << " has no energy to attack!" << std::endl;
+        std::cout << "FragTrap " << this->name << " has no energy to attack!" << std::endl;
 }

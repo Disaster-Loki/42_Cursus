@@ -12,19 +12,20 @@
 
 #include "ScavTrap.hpp"
 
+ScavTrap::ScavTrap() : ClapTrap("DefaultScav")
+{
+	this->hit_point = 100;
+	this->energy_point = 50;
+	this->attack_damage = 20;
+	std::cout << "ScavTrap default constructor called" << std::endl;
+}
+
 ScavTrap::ScavTrap(std::string name) : ClapTrap(name)
 {
-    std::cout << "ScavTrap constructor called for " << name << std::endl;
-}
-
-ScavTrap::~ScavTrap()
-{
-    std::cout << "ScavTrap destructor called for " << this->name << std::endl;
-}
-
-void ScavTrap::guardGate()
-{
-	std::cout << "ScavTrap " << this->name << " is now in Gate keeper mode" << std::endl;
+	this->hit_point = 100;
+	this->energy_point = 50;
+	this->attack_damage = 20;
+	std::cout << "ScavTrap constructor called for " << name << std::endl;
 }
 
 ScavTrap::ScavTrap(const ScavTrap &copy) : ClapTrap(copy)
@@ -34,23 +35,35 @@ ScavTrap::ScavTrap(const ScavTrap &copy) : ClapTrap(copy)
 
 ScavTrap &ScavTrap::operator=(const ScavTrap &copy)
 {
-    if (this != &copy)
-    {
-        ClapTrap::operator=(copy);
-        std::cout << "ScavTrap copy assignment operator called for " << copy.name << std::endl;
-    }
-    return (*this);
+	if (this != &copy)
+	{
+		ClapTrap::operator=(copy);
+		std::cout << "ScavTrap copy assignment operator called for " << copy.name << std::endl;
+	}
+	return *this;
+}
+
+ScavTrap::~ScavTrap()
+{
+	std::cout << "ScavTrap destructor called for " << this->name << std::endl;
 }
 
 void ScavTrap::attack(const std::string& target)
 {
-    if (this->energy_point > 0 && this->hit_point > 0)
-    {
-        this->energy_point -= 1;
-        std::cout << "ScavTrap " << this->name<< " attacks "
-              << target << ", causing " << this->attack_damage
-              << " points of damage!" << std::endl;
-    }
-    else
-        std::cout << "ScavTrap " << this->name << " has no energy to attack!" << std::endl;
+	if (this->energy_point > 0 && this->hit_point > 0)
+	{
+		this->energy_point--;
+		std::cout << "ScavTrap " << this->name << " attacks "
+				  << target << ", causing " << this->attack_damage
+				  << " points of damage!" << std::endl;
+	}
+	else
+	{
+		std::cout << "ScavTrap " << this->name << " has no energy to attack!" << std::endl;
+	}
+}
+
+void ScavTrap::guardGate()
+{
+	std::cout << "ScavTrap " << this->name << " is now in Gate keeper mode" << std::endl;
 }

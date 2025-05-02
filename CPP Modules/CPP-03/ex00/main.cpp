@@ -19,5 +19,17 @@ int	main(void)
 	A.beRepaired(1);
 	A.beRepaired(2);
 	A.beRepaired(3);
-	return (0);
+
+	std::cout << "---- Testing default constructor ----" << std::endl;
+	ClapTrap B;
+	B.attack("Enemy");
+
+	std::cout << "---- Testing copy constructor ----" << std::endl;
+	ClapTrap C(A);
+
+	std::cout << "---- Testing copy assignment ----" << std::endl;
+	B = C;
+	B.attack("Someone");
+
+	return 0;
 }
