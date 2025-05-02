@@ -12,6 +12,11 @@
 
 #include "ScavTrap.hpp"
 
+ScavTrap::ScavTrap()
+{
+	std::cout << "ScavTrap default constructor called " << std::endl;
+}
+
 ScavTrap::ScavTrap(std::string name) : ClapTrap(name)
 {
     std::cout << "ScavTrap constructor called for " << name << std::endl;

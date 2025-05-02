@@ -22,8 +22,9 @@ class ClapTrap
 		int energy_point;
 		int attack_damage;
 	public:
-		ClapTrap(std::string name);
+		ClapTrap();
 		~ClapTrap();
+		ClapTrap(std::string name);
 		ClapTrap(const ClapTrap &copy);
 		ClapTrap &operator=(const ClapTrap &copy);
 		void attack(const std::string& target);
