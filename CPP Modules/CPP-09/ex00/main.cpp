@@ -10,47 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fstream>
-#include <iostream>
-#include <vector>
-#include <sstream>
+#include "BitcoinExchange.hpp"
 
-void split(std::string s, char del)
-{
-    std::stringstream ss(s);
-    std::string word;
-    while (!ss.eof()) {
-        std::getline(ss, word, del);
-        std::cout << word << std::endl;
-    }
-}
-
-int main(int av, char **args)
-{
-    split("sebastiao de carvalho", ' ');
-    return (0);
-    if (av <= 1){
+int main(int av, char **args) {
+    if (av != 2) {
         std::cout << "Error: could not open file." << std::endl;
-        return (1);
-    }
-    std::string file = args[1];
-    std::ifstream input (file.c_str());
-    if (!input.is_open())
-    {
-        std::cout << "Error: Could not open file" << std::endl;
         return 1;
     }
-    std::string line;
-    std::vector<std::string> v;
-    while (std::getline(input, line))
-    {
-        //std::cout << line << std::endl;
-        v.push_back(line);
+    try {
+        BitcoinExchange bitcoin;
+        std::string file = args[1];
+        bitcoin.openFile(file);
+        bitcoin.showPriceBitcoin();
+        //bitcoin.showDatabase();
+    } catch (const std::exception &e) {
+        std::cout << e.what() << std::endl;
     }
-    input.close();
-    //for (unsigned int i = 0; i < v.size(); i++)
-    //    std::cout << v[i] << std::endl;
-    std::cout << "Finished" << std::endl;
-    return (0); 
+    return 0;
 }
 
