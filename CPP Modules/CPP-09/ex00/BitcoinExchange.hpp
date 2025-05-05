@@ -16,6 +16,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <ctime>
 #include <list>
 #include <string>
 #include <sstream>
@@ -28,8 +29,6 @@
 class BitcoinExchange {
 private:
     std::map<std::string, double> database;
-    std::map<std::string, double> file;
-
 public:
     BitcoinExchange();
     ~BitcoinExchange();
@@ -39,10 +38,10 @@ public:
     void showDatabase() const;
     std::list<std::string> split(std::string s, char del) const;
     void loadDatabase(const std::string filename);
-    int openFile(const std::string filename);
     double getValue(std::string date) const;
-    void showPriceBitcoin() const;
+    int showPriceBitcoin(const std::string filename) const;
     std::string trim(const std::string& str) const;
+    void validate_date(std::ifstream &input) const;
 };
 
 #endif

@@ -13,17 +13,19 @@
 #include "BitcoinExchange.hpp"
 
 int main(int av, char **args) {
-    if (av != 2) {
+    if (av != 2)
+    {
         std::cout << "Error: could not open file." << std::endl;
         return 1;
     }
-    try {
+    try
+    {
         BitcoinExchange bitcoin;
         std::string file = args[1];
-        bitcoin.openFile(file);
-        bitcoin.showPriceBitcoin();
-        //bitcoin.showDatabase();
-    } catch (const std::exception &e) {
+        bitcoin.showPriceBitcoin(file);
+    }
+    catch (const std::exception &e)
+    {
         std::cout << e.what() << std::endl;
     }
     return 0;
