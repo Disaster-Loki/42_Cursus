@@ -15,21 +15,24 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <cctype>
+#include <stack>
 
 class RPN
 {
     private:
-        unsigned int value;
+        int value;
     public:
         RPN();
         ~RPN();
         RPN(const RPN &copy);
         RPN(const std::string &args);
         RPN &operator=(const RPN &copy);
+        int is_operators(char c) const;
         int tokens(const std::string str, char del) const;
         std::vector<std::string> split(const std::string str, char del) const;
-        void processingRPN(const std::string &args) const;
-        unsigned int getValue();
+        void processingRPN(const std::string &args);
+        int getValue() const;
         std::string trim(const std::string& str) const;
 };
 

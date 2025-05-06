@@ -42,7 +42,7 @@ std::string RPN::trim(const std::string& str) const{
 std::vector<std::string> RPN::split(const std::string str, char del) const
 {
     std::string line;
-    std::stringstream ss(str);
+    std::stringstream ss(RPN::trim(str));
     std::vector<std::string> split;
     while (std::getline(ss, line, del))
     {
@@ -52,16 +52,81 @@ std::vector<std::string> RPN::split(const std::string str, char del) const
     return split;
 }
 
-unsigned int RPN::getValue() { return (this->value); }
+int RPN::getValue() const { return (this->value); }
 
-void RPN::processingRPN(const std::string &args) const
+int RPN::is_operators(char c) const
 {
-    std::cout << "Estamos aqui: " << args << std::endl;
-    std::vector<std::string> vec = RPN::split(args, ' ');
-    size_t i = -1;
-    while (++i < vec.size())
-    {
-        std::cout << vec[i] << std::endl;
-    }
+    return (c == '+' || c == '-' || c == '*' || c == '/');
 }
+
+void RPN::processingRPN(const std::string &args)
+{
+    if (args.empty())
+        throw std::runtime_error("Error: Empty argument");
+
+    int i = 0;
+    std::stack<int> stack;
+    while (i < static_cast<int>(args.size()))
+    {
+        if (args[i] != ' ' && !is_operators(args[i]) && !isdigit(args[i]) && (args[i] != '-'))
+        {
+            throw std::invalid_argument("Error");
+        }
+        i++;
+    }
+
+    std::vector<std::string> vec = split(args, ' ');
+    int len = static_cast<int>(vec.size());
+
+    if (len < 3)
+        throw std::runtime_error("Error: Incomplete parameters on the string");
+
+    i = 0;
+    while (i < len) {
+        if (is_operators(vec[i][0]))
+        {
+            if (stack.size() < 2)
+            {
+                throw std::runtime_error("Error: Not enough operands for operation");
+            }
+            int n1 = stack.top();
+            stack.pop();
+            int n2 = stack.top();
+            stack.pop();
+            if (vec[i] == "+") stack.push(n2 + n1);
+            else if (vec[i] == "-") stack.push(n2 - n1);
+            else if (vec[i] == "*") stack.push(n2 * n1);
+            else if (vec[i] == "/")
+            {
+                if (n1 == 0)
+                    throw std::runtime_error("Error: Division by zero");
+                stack.push(n2 / n1);
+            }
+        }
+        else
+        {
+            int n;
+            try
+            {
+                std::stringstream(vec[i]) >> n;
+            } catch (...)
+            {
+                throw std::runtime_error("Error: Invalid number format");
+            }
+            stack.push(n);
+        }
+        i++;
+    }
+    if (stack.size() != 1)
+        throw std::runtime_error("Error: Invalid RPN expression");
+
+    this->value = stack.top();
+}
+
+/*std::ofstream &operator<<(std::ofstream &out, const RPN &rpn)
+{
+    out << rpn.getValue();
+    return (out);
+}*/
+
 

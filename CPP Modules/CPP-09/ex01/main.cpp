@@ -16,11 +16,19 @@ int main(int av, char **args)
 {
     if (av != 2)
     {
-        std::cout << "Error: Missing arguments" << std::endl;
+        std::cout << "Error: Poorly formatted arguments" << std::endl;
         return (1);
     }
-    RPN rpn;
-    std::string arg = args[1];
-    rpn.processingRPN(arg);
+    try
+    {
+        RPN rpn;
+        std::string arg = args[1];
+        rpn.processingRPN(arg);
+        std::cout << "Result: " << rpn.getValue() << std::endl;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
     return (0);   
 }
