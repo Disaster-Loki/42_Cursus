@@ -189,12 +189,11 @@ int BitcoinExchange::showPriceBitcoin(const std::string filename) const
     std::ifstream input(filename.c_str());
 
     if (!input.is_open()) {
-        throw std::runtime_error("Error: Could not open file");
+        throw std::runtime_error("Error: Could not open file.");
     }
     if (database.empty()){
         throw std::runtime_error("Error: Not found database");
     }
-    //BitcoinExchange::validate_date(input);
     std::getline(input, line);
     while (std::getline(input, line)) {
         split = BitcoinExchange::split(line, '|');
@@ -209,7 +208,7 @@ int BitcoinExchange::showPriceBitcoin(const std::string filename) const
                 std::cout << date << " => " << value << " = " << price << std::endl;
             }
             else if (value > 1000)
-                std::cout << "Error: too large a number" << std::endl;
+                std::cout << "Error: too large a number." << std::endl;
             else if ( value < 0)
                 std::cout << "Error: not a positive number." << std::endl;
         }

@@ -24,7 +24,7 @@ int main(int av, char **args)
         RPN rpn;
         std::string arg = args[1];
         rpn.processingRPN(arg);
-        std::cout << "Result: " << rpn.getValue() << std::endl;
+        std::cout << rpn << std::endl;
     }
     catch(const std::exception& e)
     {

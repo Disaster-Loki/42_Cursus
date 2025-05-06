@@ -1,4 +1,3 @@
-#include "RPN.hpp"
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -10,6 +9,8 @@
 /*   Updated: 2025/04/30 16:24:20 by sde-carv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "RPN.hpp"
 
 RPN::RPN(): value (0) {}
 RPN::~RPN() {}
@@ -89,18 +90,16 @@ void RPN::processingRPN(const std::string &args)
             {
                 throw std::runtime_error("Error: Not enough operands for operation");
             }
-            int n1 = stack.top();
-            stack.pop();
-            int n2 = stack.top();
-            stack.pop();
-            if (vec[i] == "+") stack.push(n2 + n1);
-            else if (vec[i] == "-") stack.push(n2 - n1);
-            else if (vec[i] == "*") stack.push(n2 * n1);
+            int b = stack.top(); stack.pop();
+            int a = stack.top(); stack.pop();
+            if (vec[i] == "+") stack.push(a + b);
+            else if (vec[i] == "-") stack.push(a - b);
+            else if (vec[i] == "*") stack.push(a * b);
             else if (vec[i] == "/")
             {
-                if (n1 == 0)
+                if (b == 0)
                     throw std::runtime_error("Error: Division by zero");
-                stack.push(n2 / n1);
+                stack.push(a / b);
             }
         }
         else
@@ -123,10 +122,10 @@ void RPN::processingRPN(const std::string &args)
     this->value = stack.top();
 }
 
-/*std::ofstream &operator<<(std::ofstream &out, const RPN &rpn)
+std::ostream &operator<<(std::ostream &out, const RPN &rpn)
 {
     out << rpn.getValue();
     return (out);
-}*/
+}
 
 

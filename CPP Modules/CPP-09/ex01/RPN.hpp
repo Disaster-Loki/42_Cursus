@@ -36,7 +36,7 @@ class RPN
         std::string trim(const std::string& str) const;
 };
 
-std::ofstream &operator<<(std::ofstream &out, const RPN &rpn);
+std::ostream &operator<<(std::ostream &out, const RPN &rpn);
 
 #endif
 
