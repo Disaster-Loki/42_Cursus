@@ -39,10 +39,9 @@ bool is_valid_number(char **args)
             k++;
         if (i == ft_strlen(args[i]))
             return (false);
-        std::string str = args[i];
         for (; k < ft_strlen(args[i]); ++k)
             if (!isdigit(args[i][k]))
-                return false;
+                return (false);
     }
     return (true);
 }
@@ -52,8 +51,8 @@ void    error_handler(int av, char **args)
     if (av < 2)
         throw std::runtime_error("Error: Missing parameters");
     int num = number_alguments(args);
-    std::cout << num << std::endl;
-    std::cout << is_valid_number(args) << std::endl;
+    //std::cout << num << std::endl;
+    //std::cout << is_valid_number(args) << std::endl;
 }
 
 int main(int av, char **args)
@@ -66,6 +65,5 @@ int main(int av, char **args)
     {
         std::cerr << e.what() << '\n';
     }
-    
     return (0);
 }
