@@ -55,9 +55,23 @@ std::vector<std::string> RPN::split(const std::string str, char del) const
 
 int RPN::getValue() const { return (this->value); }
 
-int RPN::is_operators(char c) const
+int RPN::is_operators(std::string c) const
 {
-    return (c == '+' || c == '-' || c == '*' || c == '/');
+    return (c == "+" || c == "-" || c == "*" || c == "/");
+}
+
+bool RPN::is_valid_number(const std::string& s)
+{
+    if (s.empty()) return false;
+
+    size_t i = 0;
+    if (s[0] == '-' || s[0] == '+') i++;
+    if (i == s.size()) return false;
+    for (; i < s.size(); ++i)
+    {
+        if (!isdigit(s[i])) return false;
+    }
+    return true;
 }
 
 void RPN::processingRPN(const std::string &args)
@@ -67,12 +81,13 @@ void RPN::processingRPN(const std::string &args)
 
     int i = 0;
     std::stack<int> stack;
+
     while (i < static_cast<int>(args.size()))
     {
-        if (args[i] != ' ' && !is_operators(args[i]) && !isdigit(args[i]) && (args[i] != '-'))
-        {
+        std::string str(1, args[i]);
+        if (str != " " && !is_operators(str)
+                && !isdigit(args[i]) && !is_valid_number(str))
             throw std::invalid_argument("Error");
-        }
         i++;
     }
 
@@ -83,8 +98,9 @@ void RPN::processingRPN(const std::string &args)
         throw std::runtime_error("Error: Incomplete parameters on the string");
 
     i = 0;
-    while (i < len) {
-        if (is_operators(vec[i][0]))
+    while (i < len)
+    {
+        if (is_operators(vec[i]))
         {
             if (stack.size() < 2)
             {
@@ -104,23 +120,23 @@ void RPN::processingRPN(const std::string &args)
         }
         else
         {
-            int n;
-            try
-            {
-                std::stringstream(vec[i]) >> n;
-            } catch (...)
-            {
+            if (!is_valid_number(vec[i]))
                 throw std::runtime_error("Error: Invalid number format");
-            }
+
+            int n;
+            std::stringstream ss(vec[i]);
+            ss >> n;
             stack.push(n);
         }
         i++;
     }
+
     if (stack.size() != 1)
         throw std::runtime_error("Error: Invalid RPN expression");
 
     this->value = stack.top();
 }
+
 
 std::ostream &operator<<(std::ostream &out, const RPN &rpn)
 {

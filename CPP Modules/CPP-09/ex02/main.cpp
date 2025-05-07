@@ -10,4 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "PmergeMe.hpp"
 
+int main(int av, char **args)
+{
+    (void) av;
+    (void) args;
+    std::cout << "Estamos aqui" << std::endl;
+    return (0);
+}
