@@ -16,7 +16,6 @@
 #include <vector>
 #include <sstream>
 #include <cctype>
-#include <stack>
 
 class RPN
 {
