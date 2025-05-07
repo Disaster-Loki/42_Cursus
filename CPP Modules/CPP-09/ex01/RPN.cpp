@@ -80,7 +80,7 @@ void RPN::processingRPN(const std::string &args)
         throw std::runtime_error("Error: Empty argument");
 
     int i = 0;
-    std::stack<int> stack;
+    std::vector<int> stack;
 
     while (i < static_cast<int>(args.size()))
     {
@@ -106,16 +106,16 @@ void RPN::processingRPN(const std::string &args)
             {
                 throw std::runtime_error("Error: Not enough operands for operation");
             }
-            int b = stack.top(); stack.pop();
-            int a = stack.top(); stack.pop();
-            if (vec[i] == "+") stack.push(a + b);
-            else if (vec[i] == "-") stack.push(a - b);
-            else if (vec[i] == "*") stack.push(a * b);
+            int b = stack.back(); stack.pop_back();
+            int a = stack.back(); stack.pop_back();
+            if (vec[i] == "+") stack.push_back(a + b);
+            else if (vec[i] == "-") stack.push_back(a - b);
+            else if (vec[i] == "*") stack.push_back(a * b);
             else if (vec[i] == "/")
             {
                 if (b == 0)
                     throw std::runtime_error("Error: Division by zero");
-                stack.push(a / b);
+                stack.push_back(a / b);
             }
         }
         else
@@ -126,7 +126,7 @@ void RPN::processingRPN(const std::string &args)
             int n;
             std::stringstream ss(vec[i]);
             ss >> n;
-            stack.push(n);
+            stack.push_back(n);
         }
         i++;
     }
@@ -134,7 +134,7 @@ void RPN::processingRPN(const std::string &args)
     if (stack.size() != 1)
         throw std::runtime_error("Error: Invalid RPN expression");
 
-    this->value = stack.top();
+    this->value = stack.back();
 }
 
 

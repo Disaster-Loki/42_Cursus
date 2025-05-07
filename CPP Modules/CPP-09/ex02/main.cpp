@@ -12,10 +12,36 @@
 
 #include "PmergeMe.hpp"
 
+int number_alguments(char **args)
+{
+    int i = 0;
+    while (args[i]) i++;
+    return (i);
+}
+
+void    error_handler(int av, char **args)
+{
+    if (av < 2)
+        throw std::runtime_error("Error: Missing parameters");
+    int i = 0;
+    int num = number_alguments(args);
+    while (++i < num)
+    {
+        int j = 0;
+        
+    }
+}
+
 int main(int av, char **args)
 {
-    (void) av;
-    (void) args;
-    std::cout << "Estamos aqui" << std::endl;
+    try
+    {
+        error_handler(av, args);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    
     return (0);
 }

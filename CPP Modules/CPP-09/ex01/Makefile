@@ -11,13 +11,15 @@
 # **************************************************************************** #
 
 NAME			= RPN
-CXX				= c++ 
-CXXFLAGS		= -Wall -Wextra -Werror -std=c++98
+CPP				= c++ 
+FLAGS		= -Wall -Wextra -Werror -std=c++98
 SRC				= main.cpp RPN.cpp
 OBJ				= $(SRC:.cpp=.o)
 all: $(NAME)
 $(NAME): $(OBJ)
-		 $(CXX) $(CXXFLAGS) -o $(NAME) $(OBJ)
+		 $(CPP) $(FLAGS) -o $(NAME) $(OBJ)
+%.o: %.cpp
+	 $(CPP) $(FLAGS) -c $<
 clean:
 		rm -f $(OBJ)
 fclean: clean
