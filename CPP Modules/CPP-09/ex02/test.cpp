@@ -6,9 +6,7 @@ void printvec(std::vector<int> vec)
 {
     int i = 0;
     while (i < vec.size())
-    {
         std::cout << vec[i++] << " ";
-    }
 }
 
 bool is_sorted(std::vector<int> vec)
@@ -38,32 +36,16 @@ void merge(std::vector<int> & array, std::vector<int> & left, std::vector<int> &
     while (j < left.size() && k < right.size())
     {
         if (left[j] < right[k])
-        {
-            array[i] = left[j];
-            i++;
-            j++;
-        }
+            array[i++] = left[j++];
         else if (left[j] > right[k])
-        {
-            array[i] = right[k];
-            k++;
-            i++;
-        }
+            array[i++] = right[k++];
     }
 
     while (j < left.size())
-    {
-        array[i] = left[j];
-        i++;
-        j++;
-    }
+        array[i++] = left[j++];
 
     while (k < right.size())
-    {
-        array[i] = right[k];
-        i++;
-        k++;
-    }
+        array[i++] = right[k++];
 }
 
 void mergeSort(std::vector<int> & vec)
@@ -73,42 +55,63 @@ void mergeSort(std::vector<int> & vec)
         if (is_sorted(vec))
             return ;
         int mid = (vec.size() / 2);
-        std::cout << "Mid: " << mid << std::endl;
         std::vector<int> left = dividy_by_range(vec, 0, mid);
-        std::cout << "Left: "; printvec(left); std::cout << std::endl;
         std::vector<int> right = dividy_by_range(vec, mid, vec.size());
-        std::cout << "Right: "; printvec(right); std::cout << std::endl;
         mergeSort(left);
         mergeSort(right);
-        
-        std::cout << "Realiazndo o merge" << std::endl;
-        std::cout << "Left: "; printvec(left); std::cout << std::endl;
-        std::cout << "Right: "; printvec(right); std::cout << std::endl;
-        std::cout << "Vec: "; printvec(vec); std::cout << std::endl;
+
         merge(vec, left, right);
    }
-}
-
-void swap(std::vector<int> & vec, int & j)
-{
-    int tmp = vec[j];
-    vec[j] = vec[j - 1];
-    vec[j - 1] = tmp;
-    j = j - 1;
 }
 
 void insertionSort(std::vector<int> & vec)
 {
     int i = 1, j = 0;
     int len = vec.size() - 1;
-    std::cout << "Before: "; printvec(vec); std::cout << std::endl;
     for (; i <= len; i++)
     {
         j = i;
         while (j > 0 && vec[j - 1] > vec[j])
-            swap(vec, j);
+        {
+            int tmp = vec[j];
+            vec[j] = vec[j - 1];
+            vec[j - 1] = tmp;
+            j = j - 1;
+        }
     }
-    std::cout << "After: "; printvec(vec); std::cout << std::endl;
+}
+
+int binarySearch(std::vector<int> vec, int key)
+{
+    int left = 0;
+    int right = vec.size() - 1;
+    while (left <= right)
+    {
+        int mid = left + (right - left) / 2;
+        if (key == vec[mid])
+            return (mid);
+        else if (key > vec[mid])
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+    return (-1);
+}
+
+void dividy_by_groups(std::vector<int> & vec, std::vector<int, int> & mat, int start, int end)
+{
+    while (start < end)
+    {
+        mat.push_back(vec[start], vec[end]);
+    }
+}
+
+void mergeInsertionSort(std::vector<int> & vec)
+{
+    if (vec.size() > 1)
+    {
+        std::vector<int, int> vec2;
+    }
 }
 
 int main(void)
@@ -122,7 +125,12 @@ int main(void)
     vec.push_back(4);
     vec.push_back(8);
     vec.push_back(2);
-    //mergeSort(vec);
-    insertionSort(vec);
+    mergeSort(vec);
+    //insertionSort(vec);
+    std::cout << "Vec: "; printvec(vec); std::cout << std::endl;
+
+
+    //std::sort(vec.begin(), vec.end());
+    //std::cout << "BinarySearch: " << binarySearch(vec, 10) << std::endl;
     return (0);
 }
