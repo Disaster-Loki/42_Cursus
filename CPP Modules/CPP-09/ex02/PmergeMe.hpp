@@ -14,6 +14,8 @@
 #define PMERGEME_HPP
 #include <iostream>
 #include <cctype>
+#include <queue>
+#include <stack>
 
 class PmergeMe
 {

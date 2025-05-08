@@ -2,11 +2,10 @@
 #include <vector>
 #include <algorithm>
 
-void printvec(std::vector<int> vec, int low, int high)
+void printvec(std::vector<int> vec)
 {
-    int i = low;
-    int size = high;
-    while (i <= size)
+    int i = 0;
+    while (i < vec.size())
     {
         std::cout << vec[i++] << " ";
     }
@@ -15,41 +14,101 @@ void printvec(std::vector<int> vec, int low, int high)
 bool is_sorted(std::vector<int> vec)
 {
     int i = -1;
-    int size = vec.size();
-    while (++i < size)
+    while (++i < vec.size())
     {
         if (vec[i] > vec[i + 1])
-        {
-            std::cout << "Nao esta sorteada" << std::endl;
             return (false);
-        }
     }
-    std::cout << "Esta sorteada" << std::endl;
     return (true);
 }
 
-void mergeSort(std::vector<int> & vec, int low, int high)
+std::vector<int> dividy_by_range(std::vector<int> vec, int start, int end)
 {
-    if (is_sorted(vec))
-        return ;
-    if (low + high == 1)
+    int i = start;
+    std::vector<int> array;
+    while (i < end)
+        array.push_back(vec[i++]);
+    return (array);
+}
+
+void merge(std::vector<int> & array, std::vector<int> & left, std::vector<int> & right)
+{
+    int i, j, k; i = j = k = 0;
+
+    while (j < left.size() && k < right.size())
     {
-        std::cout << "Tem dois" << std::endl;
-        if (vec[low] > vec[high])
+        if (left[j] < right[k])
         {
-            int tmp = vec[low];
-            vec[low] = vec[high];
-            vec[high] = tmp;
+            array[i] = left[j];
+            i++;
+            j++;
         }
-        return ;
+        else if (left[j] > right[k])
+        {
+            array[i] = right[k];
+            k++;
+            i++;
+        }
     }
-    std::cout << "Low: " << low << std::endl;
-    std::cout << "High: " << high << std::endl;
-    std::cout << "Fazendo a metade" << std::endl;
-    int mid = (int)((low + high) / 2);
-    std::cout << "Mid: " << mid << std::endl;
-    mergeSort(vec, low, mid);
-    mergeSort(vec, mid + 1, high);
+
+    while (j < left.size())
+    {
+        array[i] = left[j];
+        i++;
+        j++;
+    }
+
+    while (k < right.size())
+    {
+        array[i] = right[k];
+        i++;
+        k++;
+    }
+}
+
+void mergeSort(std::vector<int> & vec)
+{
+   if (vec.size() > 1)
+   {
+        if (is_sorted(vec))
+            return ;
+        int mid = (vec.size() / 2);
+        std::cout << "Mid: " << mid << std::endl;
+        std::vector<int> left = dividy_by_range(vec, 0, mid);
+        std::cout << "Left: "; printvec(left); std::cout << std::endl;
+        std::vector<int> right = dividy_by_range(vec, mid, vec.size());
+        std::cout << "Right: "; printvec(right); std::cout << std::endl;
+        mergeSort(left);
+        mergeSort(right);
+        
+        std::cout << "Realiazndo o merge" << std::endl;
+        std::cout << "Left: "; printvec(left); std::cout << std::endl;
+        std::cout << "Right: "; printvec(right); std::cout << std::endl;
+        std::cout << "Vec: "; printvec(vec); std::cout << std::endl;
+        merge(vec, left, right);
+   }
+}
+
+void swap(std::vector<int> & vec, int & j)
+{
+    int tmp = vec[j];
+    vec[j] = vec[j - 1];
+    vec[j - 1] = tmp;
+    j = j - 1;
+}
+
+void insertionSort(std::vector<int> & vec)
+{
+    int i = 1, j = 0;
+    int len = vec.size() - 1;
+    std::cout << "Before: "; printvec(vec); std::cout << std::endl;
+    for (; i <= len; i++)
+    {
+        j = i;
+        while (j > 0 && vec[j - 1] > vec[j])
+            swap(vec, j);
+    }
+    std::cout << "After: "; printvec(vec); std::cout << std::endl;
 }
 
 int main(void)
@@ -59,19 +118,11 @@ int main(void)
     vec.push_back(5);
     vec.push_back(7);
     vec.push_back(9);
-    vec.push_back(2);
     vec.push_back(1);
-    vec.push_back(0);
-    vec.push_back(6);
+    vec.push_back(4);
     vec.push_back(8);
-
-    printvec(vec, 0, vec.size() - 1);
-    std::cout << "\nIniciando o MergeSort" << std::endl;
-    int low = 0;
-    int high = vec.size() - 1;
-    mergeSort(vec, low, high);
-    std::cout << "Sera que esta organizado MergeSort" << std::endl;
-    printvec(vec, 0, vec.size() - 1);
-    std::cout << std::endl;
+    vec.push_back(2);
+    //mergeSort(vec);
+    insertionSort(vec);
     return (0);
 }
