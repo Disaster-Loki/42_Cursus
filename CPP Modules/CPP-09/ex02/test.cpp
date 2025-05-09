@@ -128,7 +128,7 @@ void insertionContainer(std::vector<int> & M, std::vector<int> & m)
     i = -1;
     while (++i < m.size())
     {
-        
+
     }
 }
 
@@ -178,7 +178,7 @@ void mergeInsertionSort(std::vector<int> & vec)
         mergeSort(M);
         std::cout << "M: "; printvec(M); std::cout << std::endl;
         std::cout << "Fase 4 - Inserir m em M um por um" << std::endl;
-        insertionContainer()
+        //insertionContainer();
     }
 }
 
