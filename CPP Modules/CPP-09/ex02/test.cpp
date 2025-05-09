@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <utility>
 #include <algorithm>
 
 void printvec(std::vector<int> vec)
@@ -98,19 +99,68 @@ int binarySearch(std::vector<int> vec, int key)
     return (-1);
 }
 
-void dividy_by_groups(std::vector<int> & vec, std::vector<int, int> & mat, int start, int end)
+void printPares(std::pair<int, int> p[], int size)
 {
-    while (start < end)
+    for (int i = 0; i < size; ++i)
     {
-        mat.push_back(vec[start], vec[end]);
+        std::cout << "Pairs: "
+                  << p[i].first << ", "
+                  << p[i].second << std::endl;
     }
 }
+
+std::pair<int, int> formPares(int x, int y)
+{
+    std::pair<int, int> p;
+    p.first = x;
+    p.second = y;
+    return (p);
+}
+
 
 void mergeInsertionSort(std::vector<int> & vec)
 {
     if (vec.size() > 1)
     {
-        std::vector<int, int> vec2;
+        int len = vec.size() / 2;
+        std::pair<int, int> p[len];
+        int i = -1, j = 0;
+        std::cout << "Fase 1 - Formar Pares" << std::endl;
+        if (vec.size() % 2 == 0)
+        {
+            while (++i < len)
+            {
+                p[i] = formPares(vec[j], vec[j + 1]);
+                j += 2;
+            }
+        }
+        printPares(p, len);
+        std::cout << "Fase 2 - Ordenar os pares e separar os numeros > e <" << std::endl;
+        i = -1;
+        while (++i < len)
+        {
+            if (p[i].first > p[i].second)
+            {
+                int tmp = p[i].first;
+                p[i].first = p[i].second;
+                p[i].second = tmp;
+            }
+        }
+        std::cout << "Ordenado" << std::endl;
+        printPares(p, len);
+        std::cout << "Len: " << len << std::endl;
+        std::vector<int> M;
+        std::vector<int> m;
+        i = -1;
+        while (++i < len)
+        {
+            m.push_back(p[i].first);
+            M.push_back(p[i].second);
+        }
+        std::cout << "m: "; printvec(m); std::cout << std::endl;
+        std::cout << "M: "; printvec(M); std::cout << std::endl;
+        std::cout << "Fase 3 - Ordenar o vector M" << std::endl;
+        
     }
 }
 
@@ -125,12 +175,15 @@ int main(void)
     vec.push_back(4);
     vec.push_back(8);
     vec.push_back(2);
-    mergeSort(vec);
+    //vec.push_back(6);
+    //vec.push_back(0);
+    //mergeSort(vec);
     //insertionSort(vec);
     std::cout << "Vec: "; printvec(vec); std::cout << std::endl;
-
-
     //std::sort(vec.begin(), vec.end());
     //std::cout << "BinarySearch: " << binarySearch(vec, 10) << std::endl;
+
+
+    mergeInsertionSort(vec);
     return (0);
 }
