@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <utility>
+#include <deque>
 #include <algorithm>
 
 void printvec(std::vector<int> vec)
@@ -117,6 +118,20 @@ std::pair<int, int> formPares(int x, int y)
     return (p);
 }
 
+void insertionContainer(std::vector<int> & M, std::vector<int> & m)
+{
+    int i = -1;
+    std::deque<int> list;
+
+    while (++i < M.size())
+        list.push_back(M[i]);
+    i = -1;
+    while (++i < m.size())
+    {
+        
+    }
+}
+
 
 void mergeInsertionSort(std::vector<int> & vec)
 {
@@ -160,7 +175,10 @@ void mergeInsertionSort(std::vector<int> & vec)
         std::cout << "m: "; printvec(m); std::cout << std::endl;
         std::cout << "M: "; printvec(M); std::cout << std::endl;
         std::cout << "Fase 3 - Ordenar o vector M" << std::endl;
-        
+        mergeSort(M);
+        std::cout << "M: "; printvec(M); std::cout << std::endl;
+        std::cout << "Fase 4 - Inserir m em M um por um" << std::endl;
+        insertionContainer()
     }
 }
 
