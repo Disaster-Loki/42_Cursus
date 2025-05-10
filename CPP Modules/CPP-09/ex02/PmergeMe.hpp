@@ -14,13 +14,19 @@
 #define PMERGEME_HPP
 #include <iostream>
 #include <cctype>
-#include <queue>
-#include <stack>
+#include <deque>
+#include <forward_list>
 
 class PmergeMe
 {
     private:
+        std::deque<int> deque;
+        std::forward_list<int> forward_list;
     public:
+        PmergeMe();
+        PmergeMe(char **number);
+        PmergeMe(const PmergeMe &copy);
+        PmergeMe &operator=(const PmergeMe &copy);
 };
 
 #endif
