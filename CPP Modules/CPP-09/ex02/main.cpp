@@ -20,46 +20,19 @@ int number_alguments(char **args)
     return (i);
 }
 
-int ft_strlen(char *str)
-{
-    int i = -1;
-    while (str[++i]);
-    return (i);
-}
-
-bool is_valid_number(char **args)
-{
-    int i = -1;
-
-    ++args;
-    while (args[++i])
-    {
-        int k = 0;
-        if (args[i][0] == '-' || args[i][0] == '+')
-            k++;
-        if (i == ft_strlen(args[i]))
-            return (false);
-        for (; k < ft_strlen(args[i]); ++k)
-            if (!isdigit(args[i][k]))
-                return (false);
-    }
-    return (true);
-}
-
-void    error_handler(int av, char **args)
-{
-    if (av < 2)
-        throw std::runtime_error("Error: Missing parameters");
-    int num = number_alguments(args);
-    //std::cout << num << std::endl;
-    //std::cout << is_valid_number(args) << std::endl;
-}
-
 int main(int av, char **args)
 {
+    if (av < 2)
+    {
+        std::cout << "Error" << std::endl;
+        return (1);
+    }
     try
     {
-        error_handler(av, args);
+        //error_handler(av, args);
+        (void)av;
+        PmergeMe pmergeMe;
+        pmergeMe.masterProgram(av, args);
     }
     catch(const std::exception& e)
     {
