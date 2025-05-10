@@ -11,6 +11,12 @@ void printvec(std::vector<int> vec)
         std::cout << vec[i++] << " ";
 }
 
+void printDeque(std::deque<int> dq)
+{
+    for (auto x: dq)
+        std::cout << x << " ";
+}
+
 bool is_sorted(std::vector<int> vec)
 {
     int i = -1;
@@ -118,6 +124,42 @@ std::pair<int, int> formPares(int x, int y)
     return (p);
 }
 
+int binarySearchIndex(std::deque<int>& dq, int key)
+{
+    int left = 0;
+    int right = dq.size();
+
+    while (left < right)
+    {
+        int mid = left + (right - left) / 2;
+        if (dq[mid] < key)
+            left = mid + 1;
+        else
+            right = mid;
+    }
+    return left;
+}
+
+void binaryTree(std::vector<int> vec, int start, int end, std::vector<int> & order)
+{
+    if (start > end) return ;
+
+    int mid = (start + end) / 2;
+    order.push_back(vec[mid]);
+
+    binaryTree(vec, start, mid - 1, order);
+    binaryTree(vec, mid + 1, end, order);
+}
+
+std::vector<int> order(std::vector<int> & vec)
+{
+    std::vector<int> order;
+    int start = 0;
+    int end = vec.size() - 1;
+    binaryTree(vec, start, end, order);
+    return (order);
+}
+
 void insertionContainer(std::vector<int> & M, std::vector<int> & m)
 {
     int i = -1;
@@ -125,13 +167,25 @@ void insertionContainer(std::vector<int> & M, std::vector<int> & m)
 
     while (++i < M.size())
         list.push_back(M[i]);
+    std::cout << "List - M" << std::endl;
+    printDeque(list); std::cout << std::endl;
     i = -1;
+    mergeSort(m);
+    m = order(m);
+    std::cout << "Order" << std::endl;
+    printvec(m); std::cout << std::endl;
     while (++i < m.size())
     {
-
+        std::cout << "Buscando o index" << std::endl;
+        int index = binarySearchIndex(list, m[i]);
+        std::cout << "Index["<< index << "]: " << m[i] << std::endl; 
+        list.insert(list.begin() + index, m[i]);
+        std::cout << "List:";
+        printDeque(list); std::cout << std::endl;
     }
+    std::cout << "Ford-John Order" << std::endl;
+    printDeque(list); std::cout << std::endl;
 }
-
 
 void mergeInsertionSort(std::vector<int> & vec)
 {
@@ -178,7 +232,7 @@ void mergeInsertionSort(std::vector<int> & vec)
         mergeSort(M);
         std::cout << "M: "; printvec(M); std::cout << std::endl;
         std::cout << "Fase 4 - Inserir m em M um por um" << std::endl;
-        //insertionContainer();
+        insertionContainer(M, m);
     }
 }
 
