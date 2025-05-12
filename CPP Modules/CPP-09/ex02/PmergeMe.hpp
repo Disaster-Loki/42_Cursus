@@ -15,18 +15,21 @@
 #include <iostream>
 #include <cctype>
 #include <deque>
+#include <cstdlib>
 #include <algorithm>
 #include <sstream>
 #include <climits>
+#include <set>
 
 class PmergeMe
 {
     private:
+        char **args;
         std::deque<int> deque;
         //forward_list<int> forward_list;
     public:
         PmergeMe();
-        PmergeMe(char **numbers);
+        PmergeMe(int av, char **args);
         PmergeMe(const PmergeMe &copy);
         PmergeMe &operator=(const PmergeMe &copy);
         std::string trim(const std::string& str) const;
@@ -38,6 +41,10 @@ class PmergeMe
         int valSpace(char *s);
         int isValInteger(std::string s);
         int hasDuplicates(std::string *s);
+        int countLine(char **args);
+        char **dup(char **args);
+        std::string *transformInput(char **args);
+        std::deque<int> formDeque(std::string *input);
 };
 
 #endif

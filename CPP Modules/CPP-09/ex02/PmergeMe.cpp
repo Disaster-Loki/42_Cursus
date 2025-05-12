@@ -12,11 +12,31 @@
 
 #include "PmergeMe.hpp"
 
+void printDeque(const std::deque<int>& dq)
+{
+    for (std::deque<int>::const_iterator it = dq.begin(); it != dq.end(); ++it)
+        std::cout << *it << " ";
+    std::cout << std::endl;
+}
+
+void printRes(const std::string *res)
+{
+    int i = -1;
+    std::cout << "Esteve aqui\n";
+    std::cout << res[i + 2] << " ";
+    while (!res[++i].empty())
+    {
+        std::cout << "Line" << std::endl;
+        std::cout << res[i] << " ";
+    }
+}
+
 PmergeMe::PmergeMe() {}
 
-PmergeMe::PmergeMe(char **numbers)
+PmergeMe::PmergeMe(int av, char **args)
 {
-    (void)numbers;
+    (void)av;
+    (void)args;
 }
 
 PmergeMe::PmergeMe(const PmergeMe &copy)
@@ -29,7 +49,6 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &copy)
     if (this != &copy)
     {
         this->deque = copy.deque;
-        //this->forward_list = copy.forward_list;
     }
     return (*this);
 }
@@ -58,12 +77,13 @@ std::string *PmergeMe::split(const std::string str, char del) const
     std::string line;
     int len = tokens(str, del);
     std::stringstream ss(PmergeMe::trim(str));
-    std::string *split = new std::string[len];
+    std::string *split = new std::string[len + 1];
     while (std::getline(ss, line, del))
     {
         line = PmergeMe::trim(line);
         split[i++] = line;
     }
+    split[i] = "";
     return (split);
 }
 
@@ -78,81 +98,153 @@ int PmergeMe::valSpace(char *s)
 
 int PmergeMe::isValInteger(std::string s)
 {
-    int i = 0;
-    long num = 0;
-    int sign = 1;
-
+    size_t i = 0;
     if (s.empty())
         return 0;
-    if (s[i] == '-' || s[i] == '+')
-    {
-        if (s[i] == '-')
-            sign = -1;
+    if (s[i] == '+' || s[i] == '-')
         i++;
-    }
-    if (i >= (int)s.size())
+    if (i >= s.size())
         return 0;
-    while (i < (int)s.size())
+    while (i < s.size())
     {
         if (!isdigit(s[i]))
             return 0;
-        num = num * 10 + (s[i] - '0');
-        if ((sign == 1 && num > INT_MAX) || (sign == -1 && -num < INT_MIN))
-            return 0;
         i++;
     }
+    std::istringstream iss(s);
+    long val; iss >> val;
+    if (iss.fail() || !iss.eof() || val < INT_MIN || val > INT_MAX || val < 1)
+        return 0;
     return 1;
 }
 
 int PmergeMe::hasDuplicates(std::string *s)
 {
-    int	i;
-	int	j;
-
-	i = -1;
-	while (s[++i].empty())
-	{
-		j = i + 1;
-		while (s[j].empty())
-		{
-			if (std::atoi(s[i].c_str()) == std::atoi(s[j].c_str()))
-				return (1);
-			j++;
-		}
-	}
-	return (0);
+    std::set<int> seen;
+    for (int i = 0; !s[i].empty(); ++i)
+    {
+        int num = std::atoi(s[i].c_str());
+        if (seen.count(num))
+            return 1;
+        seen.insert(num);
+    }
+    return 0;
 }
 
 void PmergeMe::valSingleArgument(char *arg)
 {
-    int		i = -1;
+    size_t	i = 0;
 	std::string	*split;
     std::string str = arg;
-
 	if (*arg == '\0')
 		throw std::invalid_argument("Error");
 	if (valSpace(arg))
         throw std::invalid_argument("Error");
 	split = PmergeMe::split(str.c_str(), ' ');
-	while (split[++i].empty())
+	while (!split[i].empty())
 	{
 		if (!PmergeMe::isValInteger(split[i]))
+        {
+            delete[] split;
             throw std::invalid_argument("Error");
+        }
+        i++;
 	}
 	if (PmergeMe::hasDuplicates(split))
+    {
+        delete[] split;
         throw std::invalid_argument("Error");
+    }
 	delete[] split;
+}
+
+int PmergeMe::countLine(char **args)
+{
+    int i = 0;
+
+    while (args[++i]);
+    return (i);
+}
+
+std::string *PmergeMe::transformInput(char **args)
+{
+    int i = 0;
+    int len = PmergeMe::countLine(args);
+    std::cout << "Len: " << len << std::endl;
+    std::string *res = new std::string[len + 1];
+    while (args[i])
+    {
+        std::string line = args[i];
+        res[i] = line.c_str();
+        i++;
+    }
+    res[i] = "";
+    return (res);
+}
+
+void PmergeMe::valMultipleArguments(char **args)
+{
+    size_t i = 0;
+    while (args[++i])
+	{
+        std::string line = args[i];
+		if (!PmergeMe::isValInteger(line.c_str()))
+            throw std::invalid_argument("Error");
+	}
+    std::string *res = PmergeMe::transformInput(args);
+	if (PmergeMe::hasDuplicates(res))
+    {
+        std::cout << "Here\n";
+        delete[] res;
+        throw std::invalid_argument("Error");
+    }
+	delete[] res;
 }
 
 void PmergeMe::errorHandler(int av, char **args)
 {
     if (av == 2)
         PmergeMe::valSingleArgument(args[1]);
-    //else
-    //    PmergeMe::valMultipleArguments(args);
+    else
+        PmergeMe::valMultipleArguments(args);
+}
+
+std::deque<int> PmergeMe::formDeque(std::string *input)
+{
+    size_t i = 0;
+    std::deque<int> dq;
+    while (!input[i].empty())
+    {
+        int n = std::atoi(input[i].c_str());
+        std::cout << "N: " << n << std::endl;
+        dq.push_back(n);
+    }
+    return (dq);
+}
+
+char **PmergeMe::dup(char **args)
+{
+    int len = PmergeMe::countLine(args);
+    char **dup = new char*[len + 1];
+
+    int i = 0;
+    int j = 1;
+    while (args[j])
+        dup[i++] = args[j++];
+    dup[i] = NULL;
+    return dup;
 }
 
 void PmergeMe::masterProgram(int av, char **args)
 {
     PmergeMe::errorHandler(av, args);
+    this->args = PmergeMe::dup(args);
+
+    std::cout << "Called transform" << std::endl;
+    std::string *res = PmergeMe::transformInput(args);
+    //printRes(res);
+    //std::cout << "Inputs" << std::endl;
+    //this->deque = PmergeMe::formDeque(res);
+    //printDeque(this->deque);
+    delete[] res;
 }
