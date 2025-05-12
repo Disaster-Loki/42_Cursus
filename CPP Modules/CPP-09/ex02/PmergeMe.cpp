@@ -22,12 +22,11 @@ void printDeque(const std::deque<int>& dq)
 void printRes(const std::string *res)
 {
     int i = -1;
-    std::cout << "Esteve aqui\n";
     while (!res[++i].empty())
     {
-        std::cout << "Line" << std::endl;
         std::cout << res[i] << " ";
     }
+    std::cout << std::endl;
 }
 
 PmergeMe::PmergeMe() {}
@@ -169,7 +168,6 @@ std::string *PmergeMe::transformInput(char **args)
 {
     int i = 0;
     int len = PmergeMe::countLine(args);
-    std::cout << "Len: " << len << std::endl;
     std::string *res = new std::string[len + 1];
     while (args[i])
     {
@@ -184,16 +182,16 @@ std::string *PmergeMe::transformInput(char **args)
 void PmergeMe::valMultipleArguments(char **args)
 {
     size_t i = 0;
-    while (args[++i])
+    while (args[i])
 	{
         std::string line = args[i];
 		if (!PmergeMe::isValInteger(line.c_str()))
             throw std::invalid_argument("Error");
+        i++;
 	}
     std::string *res = PmergeMe::transformInput(args);
 	if (PmergeMe::hasDuplicates(res))
     {
-        std::cout << "Here\n";
         delete[] res;
         throw std::invalid_argument("Error");
     }
@@ -215,33 +213,20 @@ std::deque<int> PmergeMe::formDeque(std::string *input)
     while (!input[i].empty())
     {
         int n = std::atoi(input[i].c_str());
-        std::cout << "N: " << n << std::endl;
         dq.push_back(n);
+        i++;
     }
     return (dq);
 }
 
-char **PmergeMe::dup(char **args)
-{
-    int len = PmergeMe::countLine(args);
-    char **dup = new char*[len + 1];
-
-    int i = 0;
-    int j = 1;
-    while (args[j])
-        dup[i++] = args[j++];
-    dup[i] = NULL;
-    return dup;
-}
-
 void PmergeMe::masterProgram(int av, char **args)
 {
+    if (av > 2)
+        args = &args[1];
     PmergeMe::errorHandler(av, args);
-    std::cout << "Called transform" << std::endl;
     std::string *res = PmergeMe::transformInput(args);
-    //printRes(res);
-    //std::cout << "Inputs" << std::endl;
-    //this->deque = PmergeMe::formDeque(res);
-    //printDeque(this->deque);
+    printRes(res);
+    std::cout << "Inputs" << std::endl;
+    this->deque = PmergeMe::formDeque(res);
     delete[] res;
 }

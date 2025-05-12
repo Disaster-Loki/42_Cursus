@@ -24,7 +24,6 @@
 class PmergeMe
 {
     private:
-        char **args;
         std::deque<int> deque;
         //forward_list<int> forward_list;
     public:
@@ -42,7 +41,6 @@ class PmergeMe
         int isValInteger(std::string s);
         int hasDuplicates(std::string *s);
         int countLine(char **args);
-        char **dup(char **args);
         std::string *transformInput(char **args);
         std::deque<int> formDeque(std::string *input);
 };
