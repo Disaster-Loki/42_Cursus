@@ -23,7 +23,6 @@ void printRes(const std::string *res)
 {
     int i = -1;
     std::cout << "Esteve aqui\n";
-    std::cout << res[i + 2] << " ";
     while (!res[++i].empty())
     {
         std::cout << "Line" << std::endl;
@@ -238,8 +237,6 @@ char **PmergeMe::dup(char **args)
 void PmergeMe::masterProgram(int av, char **args)
 {
     PmergeMe::errorHandler(av, args);
-    this->args = PmergeMe::dup(args);
-
     std::cout << "Called transform" << std::endl;
     std::string *res = PmergeMe::transformInput(args);
     //printRes(res);
