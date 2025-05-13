@@ -30,7 +30,8 @@ int main(int av, char **args)
     try
     {
         //error_handler(av, args);
-        (void)av;
+        if (av > 2)
+            args = &args[1];
         PmergeMe pmergeMe;
         pmergeMe.masterProgram(av, args);
     }

@@ -22,7 +22,7 @@
 #include <cctype>
 #include <string>
 #include <ctime>
-#include <list>
+#include <vector>
 #include <map>
 
 class BitcoinExchange {
@@ -35,7 +35,7 @@ public:
     BitcoinExchange& operator=(const BitcoinExchange& copy);
 
     void showDatabase() const;
-    std::list<std::string> split(std::string s, char del) const;
+    std::vector<std::string> split(std::string s, char del) const;
     void loadDatabase(const std::string filename);
     double getValue(std::string date) const;
     int showPriceBitcoin(const std::string filename) const;

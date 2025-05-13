@@ -52,8 +52,8 @@ void BitcoinExchange::showDatabase() const {
     }
 }
 
-std::list<std::string> BitcoinExchange::split(std::string s, char del) const {
-    std::list<std::string> result;
+std::vector<std::string> BitcoinExchange::split(std::string s, char del) const {
+    std::vector<std::string> result;
     std::stringstream ss(s);
     std::string word;
     while (std::getline(ss, word, del)) {
@@ -66,7 +66,7 @@ std::list<std::string> BitcoinExchange::split(std::string s, char del) const {
 void BitcoinExchange::loadDatabase(const std::string filename)
 {
     std::string line;
-    std::list<std::string> split;
+    std::vector<std::string> split;
     std::ifstream input(filename.c_str());
 
     if (!input.is_open()) {
@@ -101,8 +101,8 @@ double BitcoinExchange::getValue(std::string date) const
         return it->second;
     }
 
-    std::list<std::string> split = BitcoinExchange::split(date, '-');
-    std::list<std::string>::iterator it_split = split.begin();
+    std::vector<std::string> split = BitcoinExchange::split(date, '-');
+    std::vector<std::string>::iterator it_split = split.begin();
     int year = std::atoi(it_split->c_str());
     ++it_split;
     int month = std::atoi(it_split->c_str());
@@ -148,8 +148,8 @@ double BitcoinExchange::getValue(std::string date) const
 void BitcoinExchange::validate_date(std::ifstream &input) const
 {
     std::string line;
-    std::list<std::string> split;
-    std::list<std::string> split2;
+    std::vector<std::string> split;
+    std::vector<std::string> split2;
     std::streampos initial_pos = input.tellg();
     std::getline(input, line);
     while (std::getline(input, line))
@@ -158,8 +158,8 @@ void BitcoinExchange::validate_date(std::ifstream &input) const
         std::string date = split.front();
         if (date.find('-') == std::string::npos)
             throw std::invalid_argument("Error: Invalid Format on Date");
-        std::list<std::string> split2 = BitcoinExchange::split(date, '-');
-        std::list<std::string>::iterator it_split = split2.begin();
+        std::vector<std::string> split2 = BitcoinExchange::split(date, '-');
+        std::vector<std::string>::iterator it_split = split2.begin();
         if (split2.size() != 3)
             throw std::runtime_error("Error: Invalid Format on Date");
         int year = std::atoi(it_split->c_str()); ++it_split;
@@ -185,7 +185,7 @@ int BitcoinExchange::showPriceBitcoin(const std::string filename) const
     std::string line;
     std::string date;
     std::string value_str;
-    std::list<std::string> split;
+    std::vector<std::string> split;
     std::ifstream input(filename.c_str());
 
     if (!input.is_open()) {

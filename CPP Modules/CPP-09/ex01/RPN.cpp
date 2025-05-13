@@ -40,17 +40,28 @@ std::string RPN::trim(const std::string& str) const{
     return (str.substr(start, end - start + 1));
 }
 
-std::vector<std::string> RPN::split(const std::string str, char del) const
+size_t RPN::tokens(const std::string str, char del) const
 {
+        size_t  len = -1;
+        len = std::count(str.begin(), str.end(), del);
+        return (str.size() - len);
+}
+
+std::string *RPN::split(const std::string str, char del, size_t& size) const
+{
+    int i = 0;
     std::string line;
+    size_t len = tokens(str, del);
     std::stringstream ss(RPN::trim(str));
-    std::vector<std::string> split;
+    std::string *split = new std::string[len + 1];
     while (std::getline(ss, line, del))
     {
         line = RPN::trim(line);
-        split.push_back(line);
+        split[i++] = line;
     }
-    return split;
+    split[i] = "";
+    size = i;
+    return (split);
 }
 
 int RPN::getValue() const { return (this->value); }
@@ -79,10 +90,10 @@ void RPN::processingRPN(const std::string &args)
     if (args.empty())
         throw std::runtime_error("Error: Empty argument");
 
-    int i = 0;
-    std::vector<int> stack;
+    size_t i = 0;
+    std::stack<int> stack;
 
-    while (i < static_cast<int>(args.size()))
+    while (i < args.size())
     {
         std::string str(1, args[i]);
         if (str != " " && !is_operators(str)
@@ -90,51 +101,61 @@ void RPN::processingRPN(const std::string &args)
             throw std::invalid_argument("Error");
         i++;
     }
-
-    std::vector<std::string> vec = split(args, ' ');
-    int len = static_cast<int>(vec.size());
+    size_t len = 0;
+    std::string *spt = RPN::split(args, ' ', len);
 
     if (len < 3)
+    {
+        delete[] spt;
         throw std::runtime_error("Error: Incomplete parameters on the string");
-
+    }
     i = 0;
     while (i < len)
     {
-        if (is_operators(vec[i]))
+        if (is_operators(spt[i]))
         {
             if (stack.size() < 2)
             {
+
                 throw std::runtime_error("Error: Not enough operands for operation");
             }
-            int b = stack.back(); stack.pop_back();
-            int a = stack.back(); stack.pop_back();
-            if (vec[i] == "+") stack.push_back(a + b);
-            else if (vec[i] == "-") stack.push_back(a - b);
-            else if (vec[i] == "*") stack.push_back(a * b);
-            else if (vec[i] == "/")
+            int b = stack.top(); stack.pop();
+            int a = stack.top(); stack.pop();
+            if (spt[i] == "+") stack.push(a + b);
+            else if (spt[i] == "-") stack.push(a - b);
+            else if (spt[i] == "*") stack.push(a * b);
+            else if (spt[i] == "/")
             {
                 if (b == 0)
+                {
+                    delete[] spt;
                     throw std::runtime_error("Error: Division by zero");
-                stack.push_back(a / b);
+                }
+                stack.push(a / b);
             }
         }
         else
         {
-            if (!is_valid_number(vec[i]))
+            if (!is_valid_number(spt[i]))
+            {
+                delete[] spt;
                 throw std::runtime_error("Error: Invalid number format");
+            }
 
             int n;
-            std::stringstream ss(vec[i]);
+            std::stringstream ss(spt[i]);
             ss >> n;
-            stack.push_back(n);
+            stack.push(n);
         }
         i++;
     }
-
     if (stack.size() != 1)
+    {
+        delete[] spt;
         throw std::runtime_error("Error: Invalid RPN expression");
-
-    this->value = stack.back();
+    }
+    delete[] spt;
+    this->value = stack.top();
 }
 
 

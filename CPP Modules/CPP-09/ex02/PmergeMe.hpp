@@ -20,13 +20,17 @@
 #include <sstream>
 #include <climits>
 #include <set>
+#include <list>
 #include <utility>
+#include <ctime>
+#include <sys/time.h>
+#include <iomanip>
 
 class PmergeMe
 {
     private:
         std::deque<int> deque;
-        //forward_list<int> forward_list;
+        std::list<int> list;
     public:
         PmergeMe();
         PmergeMe(int av, char **args);
@@ -47,6 +51,9 @@ class PmergeMe
         void mergeInsertionSort(std::deque<int> & vec);
         std::pair<int, int> formPares(int x, int y);
         void mergeSort(std::deque<int> & vec);
+        template <typename T>
+        void swap(T& a, T& b);
+        double currentTime(void);
         void insertionContainer(std::deque<int> & M, std::deque<int> & m);
 };
 
