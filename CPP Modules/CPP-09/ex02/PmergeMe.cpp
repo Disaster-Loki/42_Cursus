@@ -359,6 +359,22 @@ void PmergeMe::merge(std::list<int>& array, std::list<int>& left, std::list<int>
     }
 }
 
+void PmergeMe::merge2(std::deque<int> & array, std::deque<int> & left, std::deque<int> & right)
+{
+    size_t i, j, k; i = j = k = 0;
+
+    while (j < left.size() && k < right.size())
+    {
+        if (left[j] < right[k])
+            array[i++] = left[j++];
+        else if (left[j] > right[k])
+            array[i++] = right[k++];
+    }
+    while (j < left.size())
+        array[i++] = left[j++];
+    while (k < right.size())
+        array[i++] = right[k++];
+}
 
 void PmergeMe::mergeSort(std::list<int> & vec)
 {
@@ -403,6 +419,17 @@ void PmergeMe::binaryTree(std::list<int> vec, int start, int end, std::list<int>
 
     binaryTree(vec, start, mid - 1, order);
     binaryTree(vec, mid + 1, end, order);
+}
+
+void PmergeMe::binaryTree2(std::deque<int> vec, int start, int end, std::deque<int> & order)
+{
+    if (start > end) return ;
+
+    int mid = (start + end) / 2;
+    order.push_back(vec[mid]);
+
+    binaryTree2(vec, start, mid - 1, order);
+    binaryTree2(vec, mid + 1, end, order);
 }
 
 std::list<int> PmergeMe::order(std::list<int> & vec)
@@ -575,10 +602,9 @@ void PmergeMe::masterProgram(int av, char **args)
     std::cout << "Before: "; printList(this->list);
     mergeInsertionSort(this->list);
     std::cout << "After: "; printList(this->list);
-    delete[] res;
     endTime = currentTime() - startTime;
-    std::cout << "Time to process a range of " << this->deque.size()
-                << " elements with std::deque : " << std::fixed << std::setprecision(5)
+    std::cout << "Time to process a range of " << this->list.size()
+                << " elements with std::list : " << std::fixed << std::setprecision(5)
                     << endTime << " us" << std::endl;
     startTime = currentTime();
     this->deque = PmergeMe::formDeque(res);
