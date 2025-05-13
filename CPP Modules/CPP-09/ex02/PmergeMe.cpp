@@ -219,6 +219,200 @@ std::deque<int> PmergeMe::formDeque(std::string *input)
     return (dq);
 }
 
+std::pair<int, int> PmergeMe::formPares(int x, int y)
+{
+    std::pair<int, int> p;
+    p.first = x;
+    p.second = y;
+    return (p);
+}
+
+void printPares(std::pair<int, int> p[], int size)
+{
+    for (int i = 0; i < size; ++i)
+    {
+        std::cout << "Pairs: "
+                  << p[i].first << ", "
+                  << p[i].second << std::endl;
+    }
+}
+
+bool is_sorted(const std::deque<int>& vec)
+{
+    if (vec.size() < 2)
+        return true;
+
+    std::deque<int>::const_iterator it = vec.begin();
+    std::deque<int>::const_iterator next = it;
+    ++next;
+
+    while (next != vec.end())
+    {
+        if (*it > *next)
+            return false;
+        ++it;
+        ++next;
+    }
+    return true;
+}
+
+std::deque<int> dividy_by_range(std::deque<int> vec, int start, int end)
+{
+    int i = start;
+    std::deque<int> array;
+    while (i < end)
+        array.push_back(vec[i++]);
+    return (array);
+}
+
+void merge(std::deque<int> & array, std::deque<int> & left, std::deque<int> & right)
+{
+    size_t i, j, k; i = j = k = 0;
+
+    while (j < left.size() && k < right.size())
+    {
+        if (left[j] < right[k])
+            array[i++] = left[j++];
+        else if (left[j] > right[k])
+            array[i++] = right[k++];
+    }
+
+    while (j < left.size())
+        array[i++] = left[j++];
+
+    while (k < right.size())
+        array[i++] = right[k++];
+}
+
+void PmergeMe::mergeSort(std::deque<int> & vec)
+{
+   if (vec.size() > 1)
+   {
+        if (is_sorted(vec))
+            return ;
+        int mid = (vec.size() / 2);
+        std::deque<int> left = dividy_by_range(vec, 0, mid);
+        std::deque<int> right = dividy_by_range(vec, mid, vec.size());
+        mergeSort(left);
+        mergeSort(right);
+
+        merge(vec, left, right);
+   }
+}
+
+void binaryTree(std::deque<int> vec, int start, int end, std::deque<int> & order)
+{
+    if (start > end) return ;
+
+    int mid = (start + end) / 2;
+    order.push_back(vec[mid]);
+
+    binaryTree(vec, start, mid - 1, order);
+    binaryTree(vec, mid + 1, end, order);
+}
+
+std::deque<int> order(std::deque<int> & vec)
+{
+    std::deque<int> order;
+    int start = 0;
+    int end = vec.size() - 1;
+    binaryTree(vec, start, end, order);
+    return (order);
+}
+
+int binarySearchIndex(std::deque<int>& dq, int key)
+{
+    int left = 0;
+    int right = dq.size();
+
+    while (left < right)
+    {
+        int mid = left + (right - left) / 2;
+        if (dq[mid] < key)
+            left = mid + 1;
+        else
+            right = mid;
+    }
+    return left;
+}
+
+void PmergeMe::insertionContainer(std::deque<int> & M, std::deque<int> & m)
+{
+    size_t i = -1;
+    std::deque<int> list;
+
+    while (++i < M.size())
+        list.push_back(M[i]);
+    std::cout << "List - M" << std::endl;
+    printDeque(list);
+    i = -1;
+    mergeSort(m);
+    m = order(m);
+    std::cout << "Order" << std::endl;
+    printDeque(m); std::cout << std::endl;
+    while (++i < m.size())
+    {
+        std::cout << "Buscando o index" << std::endl;
+        int index = binarySearchIndex(list, m[i]);
+        std::cout << "Index["<< index << "]: " << m[i] << std::endl; 
+        list.insert(list.begin() + index, m[i]);
+        std::cout << "List:";
+        printDeque(list); std::cout << std::endl;
+    }
+    std::cout << "Ford-John Order" << std::endl;
+    printDeque(list); std::cout << std::endl;
+}
+
+
+void PmergeMe::mergeInsertionSort(std::deque<int> & vec)
+{
+    if (vec.size() > 1)
+    {
+        int len = vec.size() / 2;
+        std::pair<int, int> p[len];
+        int i = -1, j = 0;
+        std::cout << "Fase 1 - Formar Pares" << std::endl;
+        if (vec.size() % 2 == 0)
+        {
+            while (++i < len)
+            {
+                p[i] = PmergeMe::formPares(vec[j], vec[j + 1]);
+                j += 2;
+            }
+        }
+        printPares(p, len);
+        std::cout << "Fase 2 - Ordenar os pares e separar os numeros > e <" << std::endl;
+        i = -1;
+        while (++i < len)
+        {
+            if (p[i].first > p[i].second)
+            {
+                int tmp = p[i].first;
+                p[i].first = p[i].second;
+                p[i].second = tmp;
+            }
+        }
+        std::cout << "Ordenado" << std::endl;
+        printPares(p, len);
+        std::cout << "Len: " << len << std::endl;
+        std::deque<int> M;
+        std::deque<int> m;
+        i = -1;
+        while (++i < len)
+        {
+            m.push_back(p[i].first);
+            M.push_back(p[i].second);
+        }
+        std::cout << "m: "; printDeque(m);
+        std::cout << "M: "; printDeque(M);
+        std::cout << "Fase 3 - Ordenar o vector M" << std::endl;
+        PmergeMe::mergeSort(M);
+        std::cout << "M: "; printDeque(M); std::cout << std::endl;
+        std::cout << "Fase 4 - Inserir m em M um por um" << std::endl;
+        insertionContainer(M, m);
+    }
+}
+
 void PmergeMe::masterProgram(int av, char **args)
 {
     if (av > 2)
@@ -228,5 +422,7 @@ void PmergeMe::masterProgram(int av, char **args)
     printRes(res);
     std::cout << "Inputs" << std::endl;
     this->deque = PmergeMe::formDeque(res);
+    mergeInsertionSort(this->deque);
+    //printDeque(this->deque);
     delete[] res;
 }

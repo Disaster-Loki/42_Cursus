@@ -20,6 +20,7 @@
 #include <sstream>
 #include <climits>
 #include <set>
+#include <utility>
 
 class PmergeMe
 {
@@ -43,6 +44,10 @@ class PmergeMe
         int countLine(char **args);
         std::string *transformInput(char **args);
         std::deque<int> formDeque(std::string *input);
+        void mergeInsertionSort(std::deque<int> & vec);
+        std::pair<int, int> formPares(int x, int y);
+        void mergeSort(std::deque<int> & vec);
+        void insertionContainer(std::deque<int> & M, std::deque<int> & m);
 };
 
 #endif
