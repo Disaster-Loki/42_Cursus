@@ -32,8 +32,8 @@ int main(int av, char **args)
         //error_handler(av, args);
         if (av > 2)
             args = &args[1];
-        PmergeMe pmergeMe;
-        pmergeMe.masterProgram(av, args);
+        PmergeMe pmergeMe(av, args);
+
     }
     catch(const std::exception& e)
     {

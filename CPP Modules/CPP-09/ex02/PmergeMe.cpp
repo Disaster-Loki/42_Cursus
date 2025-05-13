@@ -541,7 +541,7 @@ void PmergeMe::mergeInsertionSort2(std::deque<int> & vec)
     }
     PmergeMe::mergeSort2(M);
     insertionContainer2(M, m);
-    if (aux)
+    if (vec.size() % 2 != 0)
     {
         int index = binarySearchIndex2(this->deque, aux);
         this->deque.insert(deque.begin() + index, aux);
@@ -551,15 +551,17 @@ void PmergeMe::mergeInsertionSort2(std::deque<int> & vec)
 void PmergeMe::mergeInsertionSort(std::list<int> & vec)
 {
     if (vec.size() <= 1)
-        return ;
-    size_t aux;
+        return;
+    size_t aux = 0;
     std::list<int> M;
     std::list<int> m;
     size_t len = vec.size() / 2;
     std::pair<int, int> p[len];
     size_t i = -1;
     if (vec.size() % 2 == 1)
+    {
         aux = vec.back();
+    }
     std::list<int>::const_iterator it = vec.begin();
     std::list<int>::const_iterator next = it;
     next++;
@@ -575,7 +577,7 @@ void PmergeMe::mergeInsertionSort(std::list<int> & vec)
     }
     PmergeMe::mergeSort(M);
     insertionContainer(M, m);
-    if (aux)
+    if (vec.size() % 2 == 1)
     {
         int index = binarySearchIndex(this->list, aux);
         std::list<int>::iterator it = this->list.begin();
