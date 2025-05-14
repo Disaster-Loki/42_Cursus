@@ -16,7 +16,7 @@ int main(int av, char **args)
 {
     if (av != 2)
     {
-        std::cout << "Error: Poorly formatted arguments" << std::endl;
+        std::cout << "Error: Wrong formatted arguments" << std::endl;
         return (1);
     }
     try

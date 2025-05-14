@@ -16,6 +16,10 @@ BitcoinExchange::BitcoinExchange() {
     BitcoinExchange::loadDatabase("data.csv");
 }
 
+BitcoinExchange::BitcoinExchange(const std::string & file) {
+    BitcoinExchange::loadDatabase(file);
+}
+
 BitcoinExchange::~BitcoinExchange() {}
 
 BitcoinExchange::BitcoinExchange(const BitcoinExchange &copy) {
@@ -70,8 +74,7 @@ void BitcoinExchange::loadDatabase(const std::string filename)
     std::ifstream input(filename.c_str());
 
     if (!input.is_open()) {
-        std::cout << "Error: Could not open file" << std::endl;
-        return;
+        throw std::runtime_error("Error: Could not open database file");
     }
     std::getline(input, line);
     while (std::getline(input, line)) {
@@ -84,10 +87,10 @@ void BitcoinExchange::loadDatabase(const std::string filename)
             if (value >= 0) {
                 this->database[date] = value;
             } else {
-                std::cout << "Invalid value: " << value_str << std::endl;
+                throw std::runtime_error("Error: Invalid value: " + value_str);
             }
         } else {
-            std::cout << "Invalid line: " << line << std::endl;
+            throw std::runtime_error("Error: Invalid line: " + line);
         }
     }
 }
@@ -145,39 +148,6 @@ double BitcoinExchange::getValue(std::string date) const
     return -1;
 }
 
-void BitcoinExchange::validate_date(std::ifstream &input) const
-{
-    std::string line;
-    std::vector<std::string> split;
-    std::vector<std::string> split2;
-    std::streampos initial_pos = input.tellg();
-    std::getline(input, line);
-    while (std::getline(input, line))
-    {
-        split = BitcoinExchange::split(line, '|');
-        std::string date = split.front();
-        if (date.find('-') == std::string::npos)
-            throw std::invalid_argument("Error: Invalid Format on Date");
-        std::vector<std::string> split2 = BitcoinExchange::split(date, '-');
-        std::vector<std::string>::iterator it_split = split2.begin();
-        if (split2.size() != 3)
-            throw std::runtime_error("Error: Invalid Format on Date");
-        int year = std::atoi(it_split->c_str()); ++it_split;
-        int month = std::atoi(it_split->c_str()); ++it_split;
-        int day = std::atoi(it_split->c_str());
-
-        if (day < 1 || day > 31)
-            throw std::invalid_argument("Error: Invalid day on Date");
-        if (month < 1 || month > 12)
-            throw std::invalid_argument("Error: Invalid month on Date");
-        std::time_t t = std::time(NULL);
-        std::tm* now = std::localtime(&t);
-        if (year < 0 || year > now->tm_year + 1900)
-            throw std::invalid_argument("Error: Invalid year on Date");
-    }
-    input.seekg(initial_pos);
-}
-
 int BitcoinExchange::showPriceBitcoin(const std::string filename) const
 {
     double value;
@@ -194,7 +164,12 @@ int BitcoinExchange::showPriceBitcoin(const std::string filename) const
     if (database.empty()){
         throw std::runtime_error("Error: Not found database");
     }
-    std::getline(input, line);
+    if (std::getline(input, line))
+    {
+        std::vector<std::string> spl = BitcoinExchange::split(line, '|');
+        if (spl[0] != "date" || spl[1] != "value")
+            throw std::runtime_error("Error: First line invalid");
+    }
     while (std::getline(input, line)) {
         split = BitcoinExchange::split(line, '|');
         if (split.size() == 2)
@@ -207,6 +182,8 @@ int BitcoinExchange::showPriceBitcoin(const std::string filename) const
                 price = value * BitcoinExchange::getValue(date);
                 std::cout << date << " => " << value << " = " << price << std::endl;
             }
+            else if (value == 0)
+                std::cout << "Error: neutral number" << std::endl;
             else if (value > 1000)
                 std::cout << "Error: too large a number." << std::endl;
             else if ( value < 0)

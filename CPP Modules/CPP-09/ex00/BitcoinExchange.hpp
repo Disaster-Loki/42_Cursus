@@ -31,6 +31,7 @@ private:
 public:
     BitcoinExchange();
     ~BitcoinExchange();
+    BitcoinExchange(const std::string & file);
     BitcoinExchange(const BitcoinExchange& copy);
     BitcoinExchange& operator=(const BitcoinExchange& copy);
 
@@ -40,7 +41,6 @@ public:
     double getValue(std::string date) const;
     int showPriceBitcoin(const std::string filename) const;
     std::string trim(const std::string& str) const;
-    void validate_date(std::ifstream &input) const;
 };
 
 #endif

@@ -12,14 +12,6 @@
 
 #include "PmergeMe.hpp"
 
-int number_alguments(char **args)
-{
-    int i = -1;
-    ++args;
-    while (args[++i]);
-    return (i);
-}
-
 int main(int av, char **args)
 {
     if (av < 2)

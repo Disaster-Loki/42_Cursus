@@ -34,6 +34,10 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &copy)
     return (*this);
 }
 
+std::deque<int> PmergeMe::getDeque() const { return (this->deque); }
+
+std::list<int> PmergeMe::getList() const { return (this->list); }
+
 void PmergeMe::printDeque(const std::deque<int>& dq)
 {
     for (std::deque<int>::const_iterator it = dq.begin(); it != dq.end(); ++it)
@@ -528,22 +532,24 @@ void PmergeMe::masterProgram(int av, char **args)
         throw std::invalid_argument("Error");
     if (av > 2)
         args = &args[1];
-
+    double startTime, endTime;
     PmergeMe::errorHandler(av, args);
     std::string *res = PmergeMe::transformInput(args);
 
     // List
+    startTime = currentTime();
     this->list = PmergeMe::formList(res);
     if (isSorted(this->list))
     {
         delete[]res;
         throw std::runtime_error("Warning: Ordered sequence");
     }
+    startTime = currentTime() - startTime;
     std::cout << "Before: "; printList(this->list);
+    startTime = currentTime() - startTime;
 
-    double startTime = currentTime();
     mergeInsertionSort(this->list);
-    double endTime = currentTime();
+    endTime = currentTime();
 
     std::cout << "After: "; printList(this->list);
     std::cout << "Time to process a range of " << this->list.size()
@@ -551,13 +557,13 @@ void PmergeMe::masterProgram(int av, char **args)
               << (endTime - startTime) << " us" << std::endl;
 
     // Deque
+    startTime = currentTime();
     this->deque = PmergeMe::formDeque(res);
     if (isSorted2(this->deque))
     {
         delete[]res;
         throw std::runtime_error("Warning: Ordered sequence");
     }
-    startTime = currentTime();
     mergeInsertionSort2(this->deque);
     endTime = currentTime();
     delete[] res;

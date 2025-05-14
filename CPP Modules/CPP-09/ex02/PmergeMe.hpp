@@ -37,6 +37,8 @@ class PmergeMe
         PmergeMe(const PmergeMe &copy);
         PmergeMe &operator=(const PmergeMe &copy);
 
+        std::deque<int> getDeque() const;
+        std::list<int> getList() const;
         int valSpace(char *s);
         double currentTime(void);
         void swap(int& a, int& b);

@@ -116,7 +116,7 @@ void RPN::processingRPN(const std::string &args)
         {
             if (stack.size() < 2)
             {
-
+                delete[] spt;
                 throw std::runtime_error("Error: Not enough operands for operation");
             }
             int b = stack.top(); stack.pop();
