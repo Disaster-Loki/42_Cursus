@@ -12,30 +12,6 @@
 
 #include "PmergeMe.hpp"
 
-void printDeque(const std::deque<int>& dq)
-{
-    for (std::deque<int>::const_iterator it = dq.begin(); it != dq.end(); ++it)
-        std::cout << *it << " ";
-    std::cout << std::endl;
-}
-
-void printList(const std::list<int>& dq)
-{
-    for (std::list<int>::const_iterator it = dq.begin(); it != dq.end(); ++it)
-        std::cout << *it << " ";
-    std::cout << std::endl;
-}
-
-void printRes(const std::string *res)
-{
-    int i = -1;
-    while (!res[++i].empty())
-    {
-        std::cout << res[i] << " ";
-    }
-    std::cout << std::endl;
-}
-
 PmergeMe::PmergeMe() {}
 
 PmergeMe::PmergeMe(int av, char **args)
@@ -58,45 +34,35 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &copy)
     return (*this);
 }
 
+void PmergeMe::printDeque(const std::deque<int>& dq)
+{
+    for (std::deque<int>::const_iterator it = dq.begin(); it != dq.end(); ++it)
+        std::cout << *it << " ";
+    std::cout << std::endl;
+}
+
+void PmergeMe::printList(const std::list<int>& dq)
+{
+    for (std::list<int>::const_iterator it = dq.begin(); it != dq.end(); ++it)
+        std::cout << *it << " ";
+    std::cout << std::endl;
+}
+
+void PmergeMe::printRes(const std::string *res)
+{
+    int i = -1;
+    while (!res[++i].empty())
+    {
+        std::cout << res[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
 void PmergeMe::swap(int& a, int& b)
 {
     int tmp = a;
     a = b;
     b = tmp;
-}
-
-std::string PmergeMe::trim(const std::string& str) const{
-    size_t start = 0;
-    size_t end = str.size() - 1;
-
-    while (start < str.size() && std::isspace(str[start]))
-        start++;
-    while (end > start && std::isspace(str[end]))
-        end--;
-    return (str.substr(start, end - start + 1));
-}
-
-size_t tokens(const std::string str, char del)
-{
-        size_t  len = -1;
-        len = std::count(str.begin(), str.end(), del);
-        return (str.size() - len);
-}
-
-std::string *PmergeMe::split(const std::string str, char del) const
-{
-    int i = 0;
-    std::string line;
-    int len = tokens(str, del);
-    std::stringstream ss(PmergeMe::trim(str));
-    std::string *split = new std::string[len + 1];
-    while (std::getline(ss, line, del))
-    {
-        line = PmergeMe::trim(line);
-        split[i++] = line;
-    }
-    split[i] = "";
-    return (split);
 }
 
 int PmergeMe::valSpace(char *s)
@@ -143,33 +109,6 @@ int PmergeMe::hasDuplicates(std::string *s)
     return 0;
 }
 
-void PmergeMe::valSingleArgument(char *arg)
-{
-    size_t	i = 0;
-	std::string	*split;
-    std::string str = arg;
-	if (*arg == '\0')
-		throw std::invalid_argument("Error");
-	if (valSpace(arg))
-        throw std::invalid_argument("Error");
-	split = PmergeMe::split(str.c_str(), ' ');
-	while (!split[i].empty())
-	{
-		if (!PmergeMe::isValInteger(split[i]))
-        {
-            delete[] split;
-            throw std::invalid_argument("Error");
-        }
-        i++;
-	}
-	if (PmergeMe::hasDuplicates(split))
-    {
-        delete[] split;
-        throw std::invalid_argument("Error");
-    }
-	delete[] split;
-}
-
 int PmergeMe::countLine(char **args)
 {
     int i = 0;
@@ -192,8 +131,9 @@ std::string *PmergeMe::transformInput(char **args)
     return (res);
 }
 
-void PmergeMe::valMultipleArguments(char **args)
+void PmergeMe::errorHandler(int av, char **args)
 {
+    (void)av;
     size_t i = 0;
     while (args[i])
 	{
@@ -209,14 +149,6 @@ void PmergeMe::valMultipleArguments(char **args)
         throw std::invalid_argument("Error");
     }
 	delete[] res;
-}
-
-void PmergeMe::errorHandler(int av, char **args)
-{
-    if (av == 2)
-        PmergeMe::valSingleArgument(args[1]);
-    else
-        PmergeMe::valMultipleArguments(args);
 }
 
 std::list<int> PmergeMe::formList(std::string *input)
@@ -253,7 +185,7 @@ std::pair<int, int> PmergeMe::formPares(int x, int y)
     return (p);
 }
 
-void printPares(std::pair<int, int> p[], int size)
+void PmergeMe::printPares(std::pair<int, int> p[], int size)
 {
     for (int i = 0; i < size; ++i)
     {
@@ -471,7 +403,6 @@ int PmergeMe::binarySearchIndex(std::list<int>& lst, int key)
     return left;
 }
 
-
 int PmergeMe::binarySearchIndex2(std::deque<int>& dq, int key)
 {
     int left = 0;
@@ -522,7 +453,7 @@ void PmergeMe::mergeInsertionSort2(std::deque<int> & vec)
 {
     if (vec.size() <= 1)
         return ;
-    size_t aux;
+    size_t aux = 0;
     std::deque<int> M;
     std::deque<int> m;
     size_t len = vec.size() / 2;
@@ -541,7 +472,7 @@ void PmergeMe::mergeInsertionSort2(std::deque<int> & vec)
     }
     PmergeMe::mergeSort2(M);
     insertionContainer2(M, m);
-    if (vec.size() % 2 != 0)
+    if (aux != 0)
     {
         int index = binarySearchIndex2(this->deque, aux);
         this->deque.insert(deque.begin() + index, aux);
@@ -559,9 +490,7 @@ void PmergeMe::mergeInsertionSort(std::list<int> & vec)
     std::pair<int, int> p[len];
     size_t i = -1;
     if (vec.size() % 2 == 1)
-    {
         aux = vec.back();
-    }
     std::list<int>::const_iterator it = vec.begin();
     std::list<int>::const_iterator next = it;
     next++;
@@ -577,7 +506,7 @@ void PmergeMe::mergeInsertionSort(std::list<int> & vec)
     }
     PmergeMe::mergeSort(M);
     insertionContainer(M, m);
-    if (vec.size() % 2 == 1)
+    if (aux != 0)
     {
         int index = binarySearchIndex(this->list, aux);
         std::list<int>::iterator it = this->list.begin();
@@ -595,25 +524,45 @@ double PmergeMe::currentTime()
 
 void PmergeMe::masterProgram(int av, char **args)
 {
-    double startTime, endTime;
+    if (av <= 2)
+        throw std::invalid_argument("Error");
+    if (av > 2)
+        args = &args[1];
+
     PmergeMe::errorHandler(av, args);
     std::string *res = PmergeMe::transformInput(args);
 
-    startTime = currentTime();
+    // List
     this->list = PmergeMe::formList(res);
+    if (isSorted(this->list))
+    {
+        delete[]res;
+        throw std::runtime_error("Warning: Ordered sequence");
+    }
     std::cout << "Before: "; printList(this->list);
+
+    double startTime = currentTime();
     mergeInsertionSort(this->list);
+    double endTime = currentTime();
+
     std::cout << "After: "; printList(this->list);
-    endTime = currentTime() - startTime;
     std::cout << "Time to process a range of " << this->list.size()
-                << " elements with std::list : " << std::fixed << std::setprecision(5)
-                    << endTime << " us" << std::endl;
-    startTime = currentTime();
+              << " elements with std::list : " << std::fixed << std::setprecision(5)
+              << (endTime - startTime) << " us" << std::endl;
+
+    // Deque
     this->deque = PmergeMe::formDeque(res);
+    if (isSorted2(this->deque))
+    {
+        delete[]res;
+        throw std::runtime_error("Warning: Ordered sequence");
+    }
+    startTime = currentTime();
     mergeInsertionSort2(this->deque);
+    endTime = currentTime();
     delete[] res;
-    endTime = currentTime() - startTime;
+
     std::cout << "Time to process a range of " << this->deque.size()
-                << " elements with std::deque : " << std::fixed << std::setprecision(5)
-                    << endTime << " us" << std::endl;
+              << " elements with std::deque : " << std::fixed << std::setprecision(5)
+              << (endTime - startTime) << " us" << std::endl;
 }
