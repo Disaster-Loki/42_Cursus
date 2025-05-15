@@ -86,6 +86,9 @@ void BitcoinExchange::loadDatabase(const std::string filename)
         if (split[0] != "date" || split[1] != "exchange_rate")
             throw std::runtime_error("Error: Invalid first line in database");
     }
+    if (line.empty())
+        throw std::runtime_error("Error: Empty dateabase");
+    line = "";
     while (std::getline(input, line)) {
         split = BitcoinExchange::split(line, ',');
         if (split.size() == 2) {
@@ -99,9 +102,11 @@ void BitcoinExchange::loadDatabase(const std::string filename)
                 throw std::runtime_error("Error: Invalid value: " + value_str + "in database");
             }
         } else {
-            throw std::runtime_error("Error: Invalid line: " + line + "in database");
+            throw std::runtime_error("Error: Invalid line: " + line + " in database");
         }
     }
+    if (line.empty())
+        throw std::runtime_error("Error: Empty data in dateabase");
 }
 
 double BitcoinExchange::getValue(std::string date) const
@@ -175,10 +180,17 @@ int BitcoinExchange::showPriceBitcoin(const std::string filename) const
     }
     if (std::getline(input, line))
     {
+        if (line.find('|') == std::string::npos)
+            throw std::runtime_error("Error: Missing '|' in line: " + line);
         std::vector<std::string> spl = BitcoinExchange::split(line, '|');
+        if (spl[0].empty() || spl[1].empty())
+            throw std::runtime_error("Error: Invalid line in file");
         if (spl[0] != "date" || spl[1] != "value")
             throw std::runtime_error("Error: First line invalid");
     }
+    if (line.empty())
+        throw std::runtime_error("Error: Empty file");
+    line = "";
     while (std::getline(input, line)) {
         split = BitcoinExchange::split(line, '|');
         if (split.size() == 2)
@@ -206,6 +218,8 @@ int BitcoinExchange::showPriceBitcoin(const std::string filename) const
             std::cout << "Error: bad input => " << line << std::endl;
         }
     }
+    if (line.empty())
+        throw std::runtime_error("Error: Empty data");
     input.close();
     return 0;
 }
