@@ -76,7 +76,16 @@ void BitcoinExchange::loadDatabase(const std::string filename)
     if (!input.is_open()) {
         throw std::runtime_error("Error: Could not open database file");
     }
-    std::getline(input, line);
+    if (std::getline(input, line))
+    {
+        if (line.find(',') == std::string::npos)
+            throw std::runtime_error("Error: Missing ',' in line: " + line);
+        split = BitcoinExchange::split(line, ',');
+        if (split[0].empty() || split[1].empty())
+            throw std::runtime_error("Error: Invalid line in database");
+        if (split[0] != "date" || split[1] != "exchange_rate")
+            throw std::runtime_error("Error: Invalid first line in database");
+    }
     while (std::getline(input, line)) {
         split = BitcoinExchange::split(line, ',');
         if (split.size() == 2) {
@@ -87,10 +96,10 @@ void BitcoinExchange::loadDatabase(const std::string filename)
             if (value >= 0) {
                 this->database[date] = value;
             } else {
-                throw std::runtime_error("Error: Invalid value: " + value_str);
+                throw std::runtime_error("Error: Invalid value: " + value_str + "in database");
             }
         } else {
-            throw std::runtime_error("Error: Invalid line: " + line);
+            throw std::runtime_error("Error: Invalid line: " + line + "in database");
         }
     }
 }
@@ -180,7 +189,10 @@ int BitcoinExchange::showPriceBitcoin(const std::string filename) const
             if (value > 0 && value <= 1000)
             {
                 price = value * BitcoinExchange::getValue(date);
-                std::cout << date << " => " << value << " = " << price << std::endl;
+                if (price < 0)
+                    std::cout << "Error: value not found" << std::endl;
+                else 
+                    std::cout << date << " => " << value << " = " << price << std::endl;
             }
             else if (value == 0)
                 std::cout << "Error: neutral number" << std::endl;
