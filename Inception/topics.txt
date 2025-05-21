@@ -1,0 +1,113 @@
+🐳 Inception (Notas Completas)
+1️⃣ CONCEITOS
+❓ O que é Docker?
+Docker é uma plataforma para desenvolver, entregar e executar aplicações em containers. Ele permite que a aplicação seja isolada do sistema operacional, garantindo que funcione da mesma forma em qualquer ambiente (desenvolvimento, staging ou produção).
+
+⚙️ Conceitos Fundamentais
+📦 1. Container
+Um ambiente leve, isolado e portátil para rodar sua aplicação.
+
+Compartilha o kernel do host.
+
+Leve: usa menos recursos que VMs.
+
+Isolado: tem seu próprio sistema de arquivos, rede e processos.
+
+Reprodutível: funciona igual em qualquer lugar.
+
+🧱 2. Imagem
+Modelo imutável para criar containers.
+
+Contém:
+
+Sistema de arquivos
+
+Bibliotecas e dependências
+
+Código da aplicação
+
+Criadas a partir de um Dockerfile.
+
+📜 3. Dockerfile
+Arquivo de texto com instruções para criar uma imagem.
+
+Exemplos de instruções:
+FROM alpine
+COPY . /app
+RUN apk add --no-cache python3
+CMD ["python3", "/app/main.py"]
+☁️ 4. Docker Hub
+Repositório online de imagens Docker (público ou privado).
+
+Você pode:
+
+🔽 pull: baixar imagens existentes.
+
+🔼 push: enviar suas imagens personalizadas.
+
+🔧 5. Docker Engine
+Serviço em segundo plano (dockerd) que gerencia imagens, containers, volumes, redes, etc.
+
+2️⃣ COMANDOS DOCKER
+🔍 IMAGENS
+Ação	Comando
+Ver imagens instaladas	docker images
+Baixar imagem	docker pull nome:tag
+Remover imagem	docker rmi nome
+Criar imagem com Dockerfile	docker build -t nome-imagem .
+Ver histórico da imagem	docker history nome-imagem
+Ver detalhes da imagem	docker inspect nome-imagem
+Ver todas camadas de imagens	docker image ls
+
+📦 CONTAINERS
+Ação	Comando
+Rodar container interativo	docker run -it nome-imagem
+Rodar e apagar ao sair	docker run --rm nome-imagem comando
+Rodar com nome	docker run --name meucontainer nome-imagem
+Rodar em segundo plano	docker run -d nome-imagem
+Ver containers ativos	docker ps
+Ver todos (ativos e parados)	docker ps -a
+Parar container	docker stop id_ou_nome
+Iniciar container parado	docker start id_ou_nome
+Reiniciar container	docker restart id_ou_nome
+Remover container	docker rm id_ou_nome
+Ver logs	docker logs id_ou_nome
+Acessar container	docker exec -it nome bash
+Detalhes do container	docker inspect nome
+
+🚀 PULL / PUSH de IMAGENS
+Ação	Comando
+Baixar imagem	docker pull nome:tag
+Enviar imagem para Docker Hub	docker push usuario/nome:tag
+Fazer login no Docker Hub	docker login
+Taguear imagem local	docker tag nome-local usuario/nome:tag
+
+🗂️ VOLUMES (Persistência de dados)
+Ação	Comando
+Criar volume	docker volume create nome
+Listar volumes	docker volume ls
+Ver detalhes	docker volume inspect nome
+Remover volume	docker volume rm nome
+Usar volume no container	docker run -v nome:/caminho container
+Bind mount (diretório local)	docker run -v $(pwd):/app container
+
+🌐 REDES (Entre containers)
+Ação	Comando
+Criar rede	docker network create minha-rede
+Listar redes	docker network ls
+Conectar container	docker network connect minha-rede container
+Desconectar container	docker network disconnect minha-rede container
+Detalhes da rede	docker network inspect minha-rede
+
+🧼 LIMPEZA
+Ação	Comando
+Remover containers parados	docker container prune
+Remover imagens não utilizadas	docker image prune
+Limpar tudo (⚠️ cuidado!)	docker system prune
+
+🧪 OUTROS ÚTEIS
+Ação	Comando
+Ver versão do Docker	docker --version
+Ver info do Docker	docker info
+Salvar imagem em arquivo	docker save nome > nome.tar
+Carregar imagem de arquivo	docker load < nome.tar
