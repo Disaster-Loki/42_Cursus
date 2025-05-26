@@ -1,26 +1,22 @@
 FROM debian:bullseye
 
-# Variáveis de ambiente
-ENV DEBIAN_FRONTEND=noninteractive \
-    MARIADB_ROOT_PASSWORD=rootpass \
-    MARIADB_DATABASE=mydb \
-    MARIADB_USER=user \
-    MARIADB_PASSWORD=userpass
-
-# Instala dependências e o servidor MariaDB
+# Install required packages and MariaDB server
 RUN apt-get update && \
     apt-get install -y mariadb-server && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Copia arquivo de configuração personalizado (opcional)
+# Create required directory for the MariaDB socket
+RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
+
+# Copy custom MariaDB config (optional)
 COPY conf/mariadb.cnf /etc/mysql/mariadb.conf.d/99-custom.cnf
 
-# Inicializa o banco de dados e cria usuários no primeiro run
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+# Copy init script
+COPY conf/init.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/init.sh
 
 EXPOSE 3306
-
-ENTRYPOINT ["docker-entrypoint.sh"]
+# Init creating root
+ENTRYPOINT ["init.sh"]
 CMD ["mysqld"]

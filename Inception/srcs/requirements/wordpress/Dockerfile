@@ -1,3 +1,4 @@
+# Base Image
 FROM debian:bullseye
 
 # Update packages and install dependencies
