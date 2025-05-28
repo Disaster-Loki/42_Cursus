@@ -34,6 +34,6 @@ down:
 	$(COMMAND) -f $(DCOMPOSE) down
 
 fdown:
-	down --rmi all -v
+	$(COMMAND) -f $(DCOMPOSE) down --rmi all -v
 
 re: down build up
