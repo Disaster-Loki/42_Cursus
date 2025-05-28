@@ -12,11 +12,11 @@ RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
 # Copy custom MariaDB config (optional)
 COPY conf/mariadb.cnf /etc/mysql/mariadb.conf.d/99-custom.cnf
 
-# Copy init script
-COPY conf/init.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/init.sh
+# Copy entrypoint script
+COPY conf/entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 3306
-# Init creating root
-ENTRYPOINT ["init.sh"]
+# entrypoint creating root
+ENTRYPOINT ["entrypoint.sh"]
 CMD ["mysqld"]

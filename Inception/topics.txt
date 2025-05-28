@@ -111,3 +111,253 @@ Ver versão do Docker	docker --version
 Ver info do Docker	docker info
 Salvar imagem em arquivo	docker save nome > nome.tar
 Carregar imagem de arquivo	docker load < nome.tar
+
+🧱 O QUE É DOCKER COMPOSE (versão mais clara possível)
+🧠 O que é o Docker Compose?
+
+    Docker Compose é uma ferramenta oficial da Docker.
+
+    Serve para definir e executar múltiplos containers Docker de uma vez só, com um único arquivo de configuração.
+
+    Esse arquivo se chama: docker-compose.yml.
+
+📄 O que é o docker-compose.yml?
+🔤 YML ou YAML?
+
+    YAML = "YAML Ain’t Markup Language" (é um tipo de arquivo de texto usado para configurações).
+
+    Muito usado em projetos modernos (Docker, Kubernetes, GitHub Actions, CI/CD, etc).
+
+    O Docker Compose usa o docker-compose.yml para descrever como os containers devem ser configurados e executados.
+
+🤓 Por que as linhas começam com - em YAML?
+
+O - em YAML indica que estamos lidando com uma lista de valores (também chamada de array).
+Exemplo:
+
+cores:
+  - azul
+  - vermelho
+  - verde
+
+Isso significa:
+
+{
+  "cores": ["azul", "vermelho", "verde"]
+}
+
+Em docker-compose.yml, você usa - para coisas como:
+
+ports:
+  - "8000:8000"
+
+Porque você está definindo uma lista de portas. Pode ter uma ou várias.
+✅ EXPLICAÇÃO DO ARQUIVO docker-compose.yml
+Exemplo completo:
+
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - DEBUG=true
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=1234
+
+🧱 Linha por linha explicada
+version: '3.8'
+
+    Indica a versão da linguagem do Docker Compose.
+
+    Use sempre '3.8' (a mais estável para projetos atuais).
+
+services:
+
+    Aqui você lista todos os containers que quer rodar.
+
+    Cada serviço dentro de services será um container.
+
+web:
+
+    Nome do serviço (você pode escolher o nome: web, backend, api, etc).
+
+    Aqui estamos criando um container para a aplicação web.
+
+build: .
+
+    O Compose vai procurar um Dockerfile na pasta atual (.) para construir a imagem do container web.
+
+ports:
+
+ports:
+  - "8000:8000"
+
+    Isso é uma lista de mapeamentos de portas.
+
+    Primeiro número → porta no seu computador.
+
+    Segundo número → porta no container.
+
+    Ex: acessar localhost:8000 vai até o container na porta 8000.
+
+volumes:
+
+volumes:
+  - .:/app
+
+    Monta um volume: compartilha arquivos entre o host (seu PC) e o container.
+
+    . : /app → pasta atual do seu PC será usada como /app dentro do container.
+
+    Assim, se você alterar um arquivo local, ele também muda no container.
+
+environment:
+
+environment:
+  - DEBUG=true
+
+    Define variáveis de ambiente para dentro do container.
+
+    Funciona como se você escrevesse export DEBUG=true no terminal dentro do container.
+
+    Muito usado para senhas, chaves de API, configs de modo de debug etc.
+
+image: postgres:13
+
+    Ao invés de construir uma imagem (como em build), aqui você usa uma imagem pronta do Docker Hub.
+
+    Nesse caso, está puxando o PostgreSQL versão 13.
+
+🔧 COMANDOS DO DOCKER COMPOSE (explicados um por um)
+🟢 docker-compose up
+
+    Lê o arquivo docker-compose.yml.
+
+    Constrói os containers se necessário.
+
+    Inicia os containers definidos no arquivo.
+
+    Exibe os logs no terminal.
+
+    Use quando: quer rodar os containers com log aparecendo.
+
+🟢 docker-compose up --build
+
+    Igual ao up, mas força uma reconstrução da imagem mesmo se já tiver sido construída antes.
+
+    Use quando: você mudou o Dockerfile ou os arquivos de código e quer garantir que tudo será reconstruído.
+
+🟢 docker-compose up -d
+
+    Inicia os containers em modo detached (em segundo plano).
+
+    Você não vê os logs no terminal.
+
+    Use quando: quer deixar tudo rodando sem ocupar o terminal.
+
+🔴 docker-compose down
+
+    Para e remove todos os containers definidos no arquivo.
+
+    Remove a rede criada entre os serviços.
+
+    Remove tudo, menos volumes nomeados e imagens.
+
+    Use quando: quer parar os serviços e limpar tudo.
+
+🛑 docker-compose stop
+
+    Apenas para os containers.
+
+    Não os remove (você pode rodar docker-compose start depois para subir de novo).
+
+🔄 docker-compose restart
+
+    Reinicia os containers.
+
+🔍 docker-compose ps
+
+    Mostra os containers ativos do projeto atual.
+
+📜 docker-compose logs
+
+    Mostra os logs dos containers.
+
+    Use docker-compose logs -f para seguir os logs ao vivo.
+
+💻 docker-compose exec [serviço] [comando]
+
+    Roda um comando dentro de um container já rodando.
+
+Exemplo:
+
+docker-compose exec web bash
+
+→ Abre o terminal dentro do container chamado web.
+🌐 Comunicação entre os serviços
+
+Os serviços dentro do docker-compose.yml falam entre si pelo NOME definido.
+
+Exemplo:
+
+    O serviço web pode se conectar ao banco db usando o host db.
+
+# Conectar ao Postgres
+host = "db"
+port = 5432
+
+🧪 Exemplo simples e completo para testar
+
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    environment:
+      - DEBUG=true
+
+  redis:
+    image: redis:alpine
+
+Com esse Compose:
+
+    Você roda sua aplicação Flask (porta 5000).
+
+    Ela se conecta ao Redis (usando o nome redis).
+
+🧼 Arquivo .env (opcional)
+
+Você pode colocar variáveis num arquivo .env:
+
+POSTGRES_USER=admin
+POSTGRES_PASSWORD=1234
+
+E no docker-compose.yml, referenciar assim:
+
+environment:
+  - POSTGRES_USER=${POSTGRES_USER}
+  - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+🔚 RESUMO FINAL
+Conceito	Explicação curta
+services:	Cada serviço vira um container separado
+build:	Cria imagem a partir do Dockerfile
+image:	Usa imagem pronta do Docker Hub
+ports:	Mapeia portas PC → container
+volumes:	Compartilha pastas entre PC e container
+environment:	Define variáveis de ambiente
+- (hífen)	Indica uma lista de valores no YAML
+.yml	Arquivo de texto de configuração com indentação

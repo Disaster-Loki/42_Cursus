@@ -1,0 +1,30 @@
+networks:
+  app_net:
+
+services:
+  nginx:
+    build: ./requirements/nginx
+    ports:
+      - "443:443"
+    networks:
+      - app_net
+    restart: always
+
+  wordpress:
+    depends_on:
+      - mariadb
+    build: ./requirements/wordpress
+    networks:
+      - app_net
+    restart: always
+
+  mariadb:
+    build: ./requirements/mariadb
+    ports:
+      - "3306:3306"
+    environment:
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MARIADB_USER=${MARIADB_USER}
+    networks:
+      - app_net
+    restart: always

@@ -10,4 +10,23 @@
 #                                                                              #
 # **************************************************************************** #
 
+D-COMPOSE = srcs/docker-compose.yml
 
+all: up
+
+up:
+	docker compose -f $(D-COMPOSE) up -d
+
+stop:
+	docker compose -f $(D-COMPOSE) stop
+
+build:
+	docker compose -f $(D-COMPOSE) --build -d
+
+logs:
+	docker compose -f $(D-COMPOSE) logs
+
+down:
+	docker compose -f $(D-COMPOSE) down --rmi all -v
+
+re: down build up
