@@ -16,6 +16,8 @@ services:
     build: ./requirements/wordpress
     networks:
       - app_net
+    volumes:
+      - wordpress_data:/var/www/html
     restart: always
 
   mariadb:
@@ -27,4 +29,10 @@ services:
       - MARIADB_USER=${MARIADB_USER}
     networks:
       - app_net
+    volumes:
+      - mariadb_data:/var/lib/mysql
     restart: always
+
+volumes:
+  mariadb_data:
+  wordpress_data:

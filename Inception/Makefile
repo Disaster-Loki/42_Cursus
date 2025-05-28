@@ -26,6 +26,9 @@ build:
 logs:
 	docker compose -f $(D-COMPOSE) logs
 
+ps:
+	docker compose -f $(D-COMPOSE) ps
+
 down:
 	docker compose -f $(D-COMPOSE) down --rmi all -v
 
