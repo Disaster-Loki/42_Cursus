@@ -114,47 +114,60 @@ Carregar imagem de arquivo	docker load < nome.tar
 
 🧱 O QUE É DOCKER COMPOSE (versão mais clara possível)
 🧠 O que é o Docker Compose?
+Docker Compose é uma ferramenta oficial da Docker.
 
-    Docker Compose é uma ferramenta oficial da Docker.
+👉 Serve para definir e executar múltiplos containers Docker de uma vez só, com um único arquivo de configuração.
 
-    Serve para definir e executar múltiplos containers Docker de uma vez só, com um único arquivo de configuração.
-
-    Esse arquivo se chama: docker-compose.yml.
+Esse arquivo se chama: docker-compose.yml.
 
 📄 O que é o docker-compose.yml?
 🔤 YML ou YAML?
+YAML = "YAML Ain’t Markup Language" → é um tipo de arquivo de texto usado para configurações.
 
-    YAML = "YAML Ain’t Markup Language" (é um tipo de arquivo de texto usado para configurações).
+Muito usado em projetos modernos como:
 
-    Muito usado em projetos modernos (Docker, Kubernetes, GitHub Actions, CI/CD, etc).
+Docker
 
-    O Docker Compose usa o docker-compose.yml para descrever como os containers devem ser configurados e executados.
+Kubernetes
+
+GitHub Actions
+
+CI/CD pipelines
+
+O Docker Compose usa o docker-compose.yml para descrever como os containers devem ser configurados e executados.
 
 🤓 Por que as linhas começam com - em YAML?
+O - em YAML indica que estamos lidando com uma lista de valores (array).
 
-O - em YAML indica que estamos lidando com uma lista de valores (também chamada de array).
 Exemplo:
 
+yaml
+Copy
+Edit
 cores:
   - azul
   - vermelho
   - verde
+Equivale a:
 
-Isso significa:
-
+json
+Copy
+Edit
 {
   "cores": ["azul", "vermelho", "verde"]
 }
+Em docker-compose.yml você usa listas para:
 
-Em docker-compose.yml, você usa - para coisas como:
-
+yaml
+Copy
+Edit
 ports:
   - "8000:8000"
-
-Porque você está definindo uma lista de portas. Pode ter uma ou várias.
 ✅ EXPLICAÇÃO DO ARQUIVO docker-compose.yml
 Exemplo completo:
-
+yaml
+Copy
+Edit
 version: '3.8'
 
 services:
@@ -164,159 +177,202 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+      - logs:/var/logs
     environment:
       - DEBUG=true
+    networks:
+      - app-network
 
   db:
     image: postgres:13
+    volumes:
+      - db-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=1234
+    networks:
+      - app-network
 
+volumes:
+  db-data:
+  logs:
+
+networks:
+  app-network:
 🧱 Linha por linha explicada
 version: '3.8'
+Indica a versão da linguagem Docker Compose.
 
-    Indica a versão da linguagem do Docker Compose.
-
-    Use sempre '3.8' (a mais estável para projetos atuais).
+Use '3.8' para projetos modernos.
 
 services:
+Aqui você lista todos os containers que quer rodar.
 
-    Aqui você lista todos os containers que quer rodar.
+Cada entrada é um serviço = container.
 
-    Cada serviço dentro de services será um container.
+web: (ou qualquer outro nome)
+Nome do serviço (personalizável).
 
-web:
-
-    Nome do serviço (você pode escolher o nome: web, backend, api, etc).
-
-    Aqui estamos criando um container para a aplicação web.
+Pode ser web, api, backend, frontend, etc.
 
 build: .
+O Compose procura um Dockerfile na pasta atual . para construir a imagem.
 
-    O Compose vai procurar um Dockerfile na pasta atual (.) para construir a imagem do container web.
+image: nome:versão
+Usa uma imagem pronta do Docker Hub.
+
+Exemplo: postgres:13 ou redis:alpine.
 
 ports:
-
+yaml
+Copy
+Edit
 ports:
   - "8000:8000"
+Mapeia porta da máquina host para o container.
 
-    Isso é uma lista de mapeamentos de portas.
+Primeiro número: máquina local.
 
-    Primeiro número → porta no seu computador.
+Segundo número: dentro do container.
 
-    Segundo número → porta no container.
+volumes: (dois tipos)
+Bind Mount (local → container)
 
-    Ex: acessar localhost:8000 vai até o container na porta 8000.
-
-volumes:
-
+yaml
+Copy
+Edit
 volumes:
   - .:/app
+Compartilha arquivos entre o host e o container.
 
-    Monta um volume: compartilha arquivos entre o host (seu PC) e o container.
+Alterar algo localmente reflete no container.
 
-    . : /app → pasta atual do seu PC será usada como /app dentro do container.
+Named Volume (persistência gerenciada pelo Docker)
 
-    Assim, se você alterar um arquivo local, ele também muda no container.
+yaml
+Copy
+Edit
+volumes:
+  - db-data:/var/lib/postgresql/data
+Persiste dados entre reinicializações.
+
+O volume db-data é gerenciado automaticamente.
 
 environment:
-
+yaml
+Copy
+Edit
 environment:
-  - DEBUG=true
+  - VARIAVEL=valor
+Define variáveis de ambiente dentro do container.
 
-    Define variáveis de ambiente para dentro do container.
+Exemplo: DEBUG=true, API_KEY=xyz.
 
-    Funciona como se você escrevesse export DEBUG=true no terminal dentro do container.
+networks: (por serviço)
+yaml
+Copy
+Edit
+networks:
+  - app-network
+Permite que containers se comuniquem entre si.
 
-    Muito usado para senhas, chaves de API, configs de modo de debug etc.
+Os containers podem se referenciar pelo nome do serviço.
 
-image: postgres:13
+volumes: (no final do arquivo)
+yaml
+Copy
+Edit
+volumes:
+  db-data:
+  logs:
+Define volumes nomeados globais usados nos serviços.
 
-    Ao invés de construir uma imagem (como em build), aqui você usa uma imagem pronta do Docker Hub.
+networks: (no final do arquivo)
+yaml
+Copy
+Edit
+networks:
+  app-network:
+Cria redes personalizadas entre os serviços.
 
-    Nesse caso, está puxando o PostgreSQL versão 13.
+💻 COMANDOS DO DOCKER COMPOSE (todos explicados)
+▶️ Subir os containers
+docker-compose up
+Lê o arquivo docker-compose.yml.
 
-🔧 COMANDOS DO DOCKER COMPOSE (explicados um por um)
-🟢 docker-compose up
+Constrói as imagens (se necessário).
 
-    Lê o arquivo docker-compose.yml.
+Sobe todos os containers e mostra os logs no terminal.
 
-    Constrói os containers se necessário.
+docker-compose up --build
+Igual ao up, mas força reconstrução das imagens mesmo que já existam.
 
-    Inicia os containers definidos no arquivo.
+docker-compose up -d
+Sobe os containers em segundo plano (detached mode).
 
-    Exibe os logs no terminal.
+🛑 Parar e remover os containers
+docker-compose down
+Para e remove todos os containers.
 
-    Use quando: quer rodar os containers com log aparecendo.
+Remove a rede e os volumes anônimos (mas não os volumes nomeados).
 
-🟢 docker-compose up --build
+docker-compose down -v
+Remove também os volumes nomeados.
 
-    Igual ao up, mas força uma reconstrução da imagem mesmo se já tiver sido construída antes.
+docker-compose stop
+Apenas para os containers (não remove).
 
-    Use quando: você mudou o Dockerfile ou os arquivos de código e quer garantir que tudo será reconstruído.
+docker-compose rm
+Remove containers parados.
 
-🟢 docker-compose up -d
+🔄 Outros comandos úteis
+docker-compose restart
+Reinicia todos os containers.
 
-    Inicia os containers em modo detached (em segundo plano).
+docker-compose start
+Inicia containers parados.
 
-    Você não vê os logs no terminal.
-
-    Use quando: quer deixar tudo rodando sem ocupar o terminal.
-
-🔴 docker-compose down
-
-    Para e remove todos os containers definidos no arquivo.
-
-    Remove a rede criada entre os serviços.
-
-    Remove tudo, menos volumes nomeados e imagens.
-
-    Use quando: quer parar os serviços e limpar tudo.
-
-🛑 docker-compose stop
-
-    Apenas para os containers.
-
-    Não os remove (você pode rodar docker-compose start depois para subir de novo).
-
-🔄 docker-compose restart
-
-    Reinicia os containers.
-
-🔍 docker-compose ps
-
-    Mostra os containers ativos do projeto atual.
-
-📜 docker-compose logs
-
-    Mostra os logs dos containers.
-
-    Use docker-compose logs -f para seguir os logs ao vivo.
-
-💻 docker-compose exec [serviço] [comando]
-
-    Roda um comando dentro de um container já rodando.
+docker-compose exec [serviço] [comando]
+Executa um comando em um container rodando.
 
 Exemplo:
 
+bash
+Copy
+Edit
 docker-compose exec web bash
+→ Abre terminal dentro do container web.
 
-→ Abre o terminal dentro do container chamado web.
-🌐 Comunicação entre os serviços
+docker-compose run [serviço] [comando]
+Executa um comando em um novo container.
 
-Os serviços dentro do docker-compose.yml falam entre si pelo NOME definido.
+docker-compose ps
+Mostra os containers ativos.
+
+docker-compose logs
+Mostra os logs de todos os serviços.
+
+bash
+Copy
+Edit
+docker-compose logs -f
+→ Segue os logs em tempo real.
+
+🌐 Comunicação entre containers (network interna)
+Dentro do docker-compose, os serviços podem se comunicar pelo nome.
 
 Exemplo:
 
-    O serviço web pode se conectar ao banco db usando o host db.
-
-# Conectar ao Postgres
+python
+Copy
+Edit
+# Para o serviço web se conectar ao banco
 host = "db"
 port = 5432
-
-🧪 Exemplo simples e completo para testar
-
+🧪 Exemplo mínimo funcional com Flask + Redis
+yaml
+Copy
+Edit
 version: '3.8'
 
 services:
@@ -328,36 +384,41 @@ services:
       - .:/app
     environment:
       - DEBUG=true
+    networks:
+      - app-network
 
   redis:
     image: redis:alpine
+    networks:
+      - app-network
 
-Com esse Compose:
+networks:
+  app-network:
+🧼 Usando arquivo .env
+Crie um arquivo .env:
 
-    Você roda sua aplicação Flask (porta 5000).
-
-    Ela se conecta ao Redis (usando o nome redis).
-
-🧼 Arquivo .env (opcional)
-
-Você pode colocar variáveis num arquivo .env:
-
+env
+Copy
+Edit
 POSTGRES_USER=admin
 POSTGRES_PASSWORD=1234
+No Compose:
 
-E no docker-compose.yml, referenciar assim:
-
+yaml
+Copy
+Edit
 environment:
   - POSTGRES_USER=${POSTGRES_USER}
   - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-
 🔚 RESUMO FINAL
 Conceito	Explicação curta
 services:	Cada serviço vira um container separado
 build:	Cria imagem a partir do Dockerfile
 image:	Usa imagem pronta do Docker Hub
-ports:	Mapeia portas PC → container
-volumes:	Compartilha pastas entre PC e container
-environment:	Define variáveis de ambiente
-- (hífen)	Indica uma lista de valores no YAML
-.yml	Arquivo de texto de configuração com indentação
+ports:	Mapeia portas: host → container
+volumes:	Compartilha pastas ou cria persistência
+environment:	Define variáveis de ambiente dentro do container
+networks:	Permite que serviços se comuniquem entre si
+.env	Arquivo externo com variáveis
+- (hífen)	Representa listas em YAML
+.yml	Arquivo de configuração com indentação obrigatória
