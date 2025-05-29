@@ -35,7 +35,7 @@ RUN a2ensite wordpress && \
     a2dissite 000-default
 
 # Expose Apache's default port
-EXPOSE 80
+EXPOSE 9000
 
 # Start Apache in the foreground
 CMD ["apachectl", "-D", "FOREGROUND"]

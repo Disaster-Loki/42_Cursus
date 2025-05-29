@@ -3,14 +3,18 @@ networks:
 
 services:
   nginx:
+    container_name: nginx
     build: ./requirements/nginx
     ports:
       - "443:443"
     networks:
       - app_net
+    #volumes:
+    # - wordpress_data: /var/www/html
     restart: always
 
   wordpress:
+    container_name: wordpress
     depends_on:
       - mariadb
     build: ./requirements/wordpress
@@ -21,6 +25,7 @@ services:
     restart: always
 
   mariadb:
+    container_name: mariadb
     build: ./requirements/mariadb
     ports:
       - "3306:3306"
@@ -34,5 +39,16 @@ services:
     restart: always
 
 volumes:
-  mariadb_data:
   wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/sde-carv/data/wordpress
+      o: bind
+
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/sde-carv/data/mariadb
+      o: bind

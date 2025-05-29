@@ -8,7 +8,6 @@ if [ ! -d /var/lib/mysql/mysql ]; then
 
   # Start MariaDB in safe mode without networking
   mysqld_safe --skip-networking &
-  sleep 5
 
   echo "Setting root password and creating database/user..."
   mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';"
@@ -20,7 +19,6 @@ if [ ! -d /var/lib/mysql/mysql ]; then
 
   # Stop the background MariaDB process
   killall mysqld
-  sleep 2
 fi
 
 # Execute default command (mysqld)
