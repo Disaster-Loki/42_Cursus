@@ -9,8 +9,8 @@ services:
       - "443:443"
     networks:
       - app_net
-    #volumes:
-    # - wordpress_data: /var/www/html
+    volumes:
+      - wordpress_data: /var/www/html
     restart: always
 
   wordpress:
