@@ -18,6 +18,13 @@ services:
     depends_on:
       - mariadb
     build: ./requirements/wordpress
+    environment:
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
+      - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
+      - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
+      - DOMAIN_NAME=$(DOMAIN_NAME)
     networks:
       - app_net
     volumes:

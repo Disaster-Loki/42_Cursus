@@ -1,3 +1,4 @@
+# Base image
 FROM debian:bullseye
 
 # Install Nginx and OpenSSL
@@ -9,14 +10,12 @@ RUN mkdir -p /etc/ssl/private /etc/ssl/certs && \
     -keyout /etc/ssl/private/ssl-cert-snakeoil.key \
     -out /etc/ssl/certs/ssl-cert-snakeoil.pem \
     -subj "/C=US/ST=State/L=City/O=Organization/OU=Unit/CN=localhost"
-
+ 
 # Copy the Nginx configuration to the appropriate directory
 COPY conf/nginx.conf /etc/nginx/sites-available/default
 
-# Enable Nginx to start automatically
-RUN update-rc.d nginx enable
-RUN service nginx start
-
+# Expose HTTPS port
 EXPOSE 443
 
+# Start Nginx in the foreground
 CMD ["nginx", "-g", "daemon off;"]

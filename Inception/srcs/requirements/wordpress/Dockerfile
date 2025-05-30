@@ -19,12 +19,19 @@ RUN apt-get update && apt-get install -y \
     php-zip \
     && apt-get clean
 
+# Create folder for WordPress
+RUN mkdir -p /srv/www
+
 # Download and install WordPress
-RUN mkdir -p /srv/www && \
-    curl -o /tmp/wordpress.tar.gz https://wordpress.org/latest.tar.gz && \
+RUN curl -o /tmp/wordpress.tar.gz https://wordpress.org/latest.tar.gz && \
     tar -xzf /tmp/wordpress.tar.gz -C /srv/www && \
-    chown -R www-data:www-data /srv/www/wordpress && \
     rm /tmp/wordpress.tar.gz
+
+# Copy custom wp-config.php
+COPY conf/wp-config.php /srv/www/wordpress/wp-config.php
+
+# Set permissions
+RUN chown -R www-data:www-data /srv/www/wordpress
 
 # Copy Apache configuration file
 COPY conf/wordpress.conf /etc/apache2/sites-available/wordpress.conf
@@ -34,7 +41,7 @@ RUN a2ensite wordpress && \
     a2enmod rewrite && \
     a2dissite 000-default
 
-# Expose Apache's default port
+# Expose Apache's port
 EXPOSE 9000
 
 # Start Apache in the foreground
