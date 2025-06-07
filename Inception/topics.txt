@@ -422,3 +422,51 @@ networks:	Permite que serviços se comuniquem entre si
 .env	Arquivo externo com variáveis
 - (hífen)	Representa listas em YAML
 .yml	Arquivo de configuração com indentação obrigatória
+
+
+Um daemon (também chamado de "servidor") é um programa que roda em segundo plano no
+sistema operacional, executando tarefas automaticamente e sem interrupção. Eles são
+essenciais para manter o sistema funcionando, realizando tarefas como controlar
+redes, gerenciar arquivos, ou executar serviços em segundo plano. 
+Como funcionam os daemons:
+    1. Início:
+    Os daemons são geralmente iniciados durante o processo de inicialização do
+    sistema, através de scripts de inicialização ou do processo init. 
+
+  2. Execução:
+  Uma vez iniciados, os daemons geralmente continuam a executar indefinidamente,
+  aguardando eventos específicos ou condições para executar suas tarefas. 
+  3. Funções:
+  Os daemons desempenham diversas funções, como:
+
+    Gerenciar redes: Tratando pedidos de conexão e encaminhando dados. 
+
+Controlar serviços: Executando serviços em segundo plano, como servidores web,
+servidores de banco de dados, etc. Monitorar eventos: Reagindo a eventos do
+sistema, como alterações em arquivos ou eventos de rede. Realizar tarefas
+ agendadas: Executando tarefas em horários específicos, como backups. 
+
+4. Desassociação:
+Os daemons são desassociados do terminal de controle, o que significa que eles
+não estão diretamente vinculados a uma janela de terminal ou sessão do usuário. 
+5. Processo de fundo:
+Eles são executados como um processo de fundo, o que significa que eles não 
+bloqueiam a interação do usuário. 
+6. Manutenção do sistema:
+Os daemons são importantes para a manutenção do sistema, garantindo que as 
+tarefas do sistema sejam executadas de forma eficiente e confiável. 
+
+Exemplos de daemons:
+
+    NTP Daemon: Sincroniza o relógio do sistema com outros computadores na rede.
+    Servidor web: Processa requisições HTTP e entrega páginas web.
+    Servidor de banco de dados: Gerencia dados em um banco de dados.
+    Cron Daemon: Executa tarefas agendadas. 
+
+Importância dos daemons:
+Os daemons são essenciais para o funcionamento de um sistema operacional, pois
+ eles executam tarefas que são importantes para o desempenho do sistema, sem 
+ interrupção da interação do usuário. Eles são a base de muitos serviços e
+ aplicações que usamos diariamente.
+
+

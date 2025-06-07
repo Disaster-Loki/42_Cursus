@@ -1,0 +1,23 @@
+# Basic image
+FROM debian:bullseye
+
+# Update packages
+RUN apt-get update
+
+# Install vsftpd and necessary packages
+RUN apt-get install -y vsftpd
+
+# Configure user in ftp
+RUN useradd -m ftpuser && \
+    echo "ftpuser:ftppassword" | chpasswd && \
+    mkdir -p /home/ftpuser/ftp && \
+    chown -R ftpuser:ftpuser /home/ftpuser/ftp
+   
+# Copy vsftpd configuration file
+COPY conf/vsftpd.conf /etc/vsftpd.conf
+
+# Expose FTP port
+EXPOSE 21 30000-30009
+
+# Start vsftpd in the foreground
+CMD ["vsftpd", "/etc/vsftpd.conf"]

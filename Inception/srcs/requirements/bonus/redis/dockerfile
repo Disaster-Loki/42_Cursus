@@ -1,0 +1,18 @@
+# Basic image
+FROM debian:bullseye
+
+# Update packages
+RUN apt-get update
+
+# Install Redis server
+RUN apt-get install -y redis-server && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Expose Redis default port
+EXPOSE 6379
+
+# Start Redis server in the foreground
+CMD ["redis-server", "--protected-mode", "no"]
+
+
+

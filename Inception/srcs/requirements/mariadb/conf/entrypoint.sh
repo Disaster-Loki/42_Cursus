@@ -1,43 +1,53 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
-DATADIR="/var/lib/mysql"
-
-# 1. Initialize database if it doesn't exist
-if [ ! -d "$DATADIR/mysql" ]; then
-  echo "[MariaDB] Initializing database..."
-  mariadb-install-db --user=mysql --datadir="$DATADIR" > /dev/null
+# Carrega variáveis sensíveis dos arquivos de secrets, se existirem
+if [ -f "$MARIADB_ROOT_PASSWORD_FILE" ]; then
+  export MARIADB_ROOT_PASSWORD=$(cat "$MARIADB_ROOT_PASSWORD_FILE")
+fi
+if [ -f "$MARIADB_PASSWORD_FILE" ]; then
+  export WORDPRESS_DB_PASSWORD=$(cat "$MARIADB_PASSWORD_FILE")
 fi
 
-# 2. Start mysqld in the background
-mysqld --user=mysql &
+echo ">> Entering entrypoint.sh"
 
-# 3. Wait for mysqld to be ready to accept connections
-echo "[MariaDB] Waiting for server to be ready..."
-timeout=30
-until mysqladmin ping --silent; do
-  timeout=$((timeout - 1))
-  if [ $timeout -le 0 ]; then
-    echo "[MariaDB] Server did not respond in time."
-    exit 1
-  fi
-done
+# Adjust permissions for MySQL directories
+chown -R mysql:mysql /run/mysqld /var/lib/mysql
 
-# 4. Run initial SQL setup if first time
-if [ ! -f "$DATADIR/.initialized" ]; then
-  echo "[MariaDB] Running initial SQL setup..."
+DB_INITIALIZED_FLAG="/var/lib/mysql/.db_initialized"
+INIT_SQL_FILE="/tmp/init_mariadb.sql" # Keeping /tmp for now, as it worked directly.
 
-  mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';"
-  mysql -e "CREATE DATABASE IF NOT EXISTS \`${MARIADB_DATABASE}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
-  mysql -e "CREATE USER IF NOT EXISTS '${MARIADB_USER}'@'%' IDENTIFIED BY '${MARIADB_PASSWORD}';"
-  mysql -e "GRANT ALL PRIVILEGES ON \`${MARIADB_DATABASE}\`.* TO '${MARIADB_USER}'@'%';"
-  mysql -e "FLUSH PRIVILEGES;"
+# Check if database has already been initialized
+if [ ! -f "$DB_INITIALIZED_FLAG" ]; then
+    echo "Initializing database..."
+    mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql > /dev/null
 
-  touch "$DATADIR/.initialized"
+    echo ">> Generating temporary initialization script..."
+    # IMPORTANT: No leading whitespace on the SQL lines below this point!
+    cat <<EOF > "$INIT_SQL_FILE"
+USE mysql;
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';
+CREATE DATABASE IF NOT EXISTS ${MARIADB_DATABASE};
+CREATE USER IF NOT EXISTS '${WORDPRESS_DB_USER}'@'%' IDENTIFIED BY '${WORDPRESS_DB_PASSWORD}';
+GRANT ALL PRIVILEGES ON ${WORDPRESS_DB_NAME}.* TO '${WORDPRESS_DB_USER}'@'%';
+FLUSH PRIVILEGES;
+EOF
+
+    # Ensure the temporary file is readable by the 'mysql' user
+    chown mysql:mysql "$INIT_SQL_FILE"
+    chmod 600 "$INIT_SQL_FILE"
+
+    # Create the initialization flag before starting mysqld with --init-file
+    touch "$DB_INITIALIZED_FLAG"
+
+    echo ">> Starting mysqld with --init-file for initial configuration..."
+    exec mysqld --user=mysql --init-file="$INIT_SQL_FILE"
+
+else
+    echo ">> Database already initialized and configured."
+    # Remove the temporary SQL file if the database is already initialized
+    rm -f "$INIT_SQL_FILE"
 fi
 
-# 5. Stop background mysqld and run it in foreground
-kill %1
-wait %1 2>/dev/null || true
-
+echo ">> Initialization complete. Starting mysqld..."
 exec mysqld --user=mysql

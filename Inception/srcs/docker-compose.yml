@@ -18,13 +18,14 @@ services:
     depends_on:
       - mariadb
     build: ./requirements/wordpress
+    env_file:
+      - .env
     environment:
-      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
-      - MARIADB_DATABASE=${MARIADB_DATABASE}
-      - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
-      - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
-      - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
-      - DOMAIN_NAME=$(DOMAIN_NAME)
+      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/db_password.txt
+      CREDENTIALS_FILE: /run/secrets/credentials.txt
+    secrets:
+      - db_password.txt
+      - credentials.txt
     networks:
       - app_net
     volumes:
@@ -34,14 +35,26 @@ services:
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb
+    env_file:
+      - .env
     environment:
-      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
-      - MARIADB_USER=${MARIADB_USER}
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/db_root_password.txt
+      MARIADB_PASSWORD_FILE: /run/secrets/db_password.txt
+    secrets:
+      - db_root_password.txt
+      - db_password.txt
     networks:
       - app_net
     volumes:
       - mariadb_data:/var/lib/mysql
     restart: always
+  
+  redis:
+     container_name: redis
+     build: ./requirements/bonus/redis
+     networks:
+        - app_net
+     restart: always
 
 volumes:
   wordpress_data:
@@ -57,3 +70,11 @@ volumes:
       type: none
       device: /home/sde-carv/data/mariadb
       o: bind
+
+secrets:
+  db_root_password.txt:
+    file: ../secrets/db_root_password.txt
+  db_password.txt:
+    file: ../secrets/db_password.txt
+  credentials.txt:
+    file: ../secrets/credentials.txt

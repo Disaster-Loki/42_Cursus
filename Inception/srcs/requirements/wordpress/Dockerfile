@@ -41,6 +41,9 @@ RUN a2ensite wordpress && \
     a2enmod rewrite && \
     a2dissite 000-default
 
+# Set global ServerName to suppress Apache warning
+RUN echo 'ServerName localhost' > /etc/apache2/conf-available/servername.conf && a2enconf servername
+
 # Expose Apache's port
 EXPOSE 9000
 

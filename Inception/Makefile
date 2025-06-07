@@ -1,14 +1,14 @@
-# **************************************************************************** #
+#******************************************************************************#
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sde-carv <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: sde-carv <sde-carv@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/20 16:32:50 by sde-carv          #+#    #+#              #
-#    Updated: 2025/05/20 16:32:51 by sde-carv         ###   ########.fr        #
+#    Updated: 2025/06/04 07:29:39 by sde-carv         ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #
+#******************************************************************************#
 
 DIR = srcs
 DCOMPOSE = $(DIR)/docker-compose.yml
@@ -56,6 +56,8 @@ clean:
 
 fclean:
 	clear
-	$(COMMAND) -f $(DCOMPOSE) down --rmi all -v
+	$(COMMAND) -f $(DCOMPOSE) down --rmi all -v --remove-orphans
+	docker image prune -af
+	docker rmi $(shell docker images -q | grep -v "<none>" || true) 2>/dev/null || true
 
 re: fclean build
