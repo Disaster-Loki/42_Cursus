@@ -469,4 +469,175 @@ Os daemons são essenciais para o funcionamento de um sistema operacional, pois
  interrupção da interação do usuário. Eles são a base de muitos serviços e
  aplicações que usamos diariamente.
 
+==============================
+FTP (File Transfer Protocol)
+==============================
 
+O que é?
+FTP é um protocolo de rede para transferir arquivos entre computadores em uma rede TCP/IP.
+
+Principais conceitos:
+- Cliente FTP: Programa que se conecta ao servidor para transferir arquivos.
+- Servidor FTP: Programa que recebe conexões e gerencia arquivos.
+- Porta padrão: 21 (e portas passivas para dados).
+- Autenticação: Normalmente exige usuário e senha.
+
+Comandos básicos no terminal:
+- ftp <host> <porta>         # conecta ao servidor FTP
+- ls                        # lista arquivos e pastas
+- cd <pasta>                # muda de diretório
+- pwd                       # mostra diretório atual
+- get <arquivo>             # baixa arquivo do servidor
+- put <arquivo>             # envia arquivo para o servidor
+- mget <arquivos>           # baixa vários arquivos
+- mput <arquivos>           # envia vários arquivos
+- mkdir <pasta>             # cria pasta
+- delete <arquivo>          # apaga arquivo
+- bye / quit                # encerra a sessão
+
+Exemplo de sessão:
+ftp localhost 21
+Usuário: ftpuser
+Senha: ftppassword
+ls
+put arquivo.txt
+get outro.txt
+bye
+
+Dicas:
+- O diretório inicial do usuário FTP é configurado no servidor.
+- Permissões dependem do vsftpd.conf.
+- Para segurança, prefira SFTP ou FTPS.
+
+==============================
+Redis Cache
+==============================
+
+O que é?
+Redis é um banco de dados em memória, usado como cache, broker de mensagens e estrutura chave-valor.
+
+Principais conceitos:
+- Armazenamento em memória: Muito rápido, mas volátil.
+- Chave-valor: Dados como pares (key, value).
+- Tipos: strings, listas, sets, hashes, sorted sets, etc.
+- Persistência opcional.
+- Porta padrão: 6379.
+
+Comandos básicos (redis-cli):
+- redis-cli                  # abre o terminal do Redis
+- set chave valor            # define um valor
+- get chave                  # lê um valor
+- del chave                  # apaga uma chave
+- keys *                     # lista todas as chaves
+- incr chave                 # incrementa valor inteiro
+- lpush lista valor          # adiciona valor a uma lista
+- lrange lista 0 -1          # mostra todos os itens da lista
+- flushall                   # apaga todos os dados
+- exit                       # sai do redis-cli
+
+Exemplo de uso:
+redis-cli
+set nome "Joao"
+get nome
+lpush tarefas "estudar"
+lrange tarefas 0 -1
+exit
+
+Dicas:
+- Redis é muito usado para cache de sessões, filas, contadores e pub/sub.
+- Por padrão, não tem autenticação (mas pode ser configurado).
+- Use com cuidado para dados críticos, pois a memória é volátil.
+
+==============================
+MariaDB (Banco de Dados)
+==============================
+
+O que é?
+MariaDB é um sistema de gerenciamento de banco de dados relacional, compatível com MySQL.
+
+Principais conceitos:
+- SGBD relacional: Armazena dados em tabelas com relações.
+- SQL: Linguagem para manipular dados.
+- Porta padrão: 3306.
+- Usuário, senha e banco configurados na inicialização.
+
+Comandos básicos (mysql):
+- mysql -u <user> -p         # conecta ao banco
+- SHOW DATABASES;           # lista bancos
+- USE <banco>;              # seleciona banco
+- SHOW TABLES;              # lista tabelas
+- DESCRIBE <tabela>;        # estrutura da tabela
+- SELECT * FROM <tabela>;   # mostra dados
+- EXIT;                     # sai do mysql
+
+Exemplo de uso:
+mysql -u root -p
+CREATE DATABASE testdb;
+CREATE USER 'user'@'%' IDENTIFIED BY 'senha';
+GRANT ALL PRIVILEGES ON testdb.* TO 'user'@'%';
+FLUSH PRIVILEGES;
+EXIT;
+
+Dicas:
+- Use volumes para persistir dados.
+- Configure variáveis de ambiente para usuário, senha e banco.
+
+==============================
+Nginx (Servidor Web)
+==============================
+
+O que é?
+Nginx é um servidor web leve e eficiente, usado para servir sites, fazer proxy reverso e balanceamento de carga.
+
+Principais conceitos:
+- Servidor web: Responde a requisições HTTP/HTTPS.
+- Proxy reverso: Encaminha requisições para outros serviços.
+- Porta padrão: 80 (HTTP), 443 (HTTPS).
+- Configuração via nginx.conf.
+
+Comandos básicos:
+- nginx -t                   # testa configuração
+- nginx -s reload            # recarrega configuração
+- nginx -v                   # mostra versão
+
+Exemplo de configuração:
+server {
+    listen 80;
+    server_name localhost;
+    location / {
+        proxy_pass http://wordpress:9000;
+    }
+}
+
+Dicas:
+- Use volumes para mapear nginx.conf.
+- Combine com outros serviços via Docker Compose.
+
+==============================
+WordPress (CMS)
+==============================
+
+O que é?
+WordPress é um sistema de gerenciamento de conteúdo (CMS) para criar sites e blogs.
+
+Principais conceitos:
+- CMS: Plataforma para criar e gerenciar sites.
+- PHP: Linguagem usada pelo WordPress.
+- Banco de dados: Usa MariaDB/MySQL.
+- Porta padrão: 9000 (PHP-FPM), 80 (via Nginx).
+
+Comandos úteis (no container):
+- wp core install            # instala o WordPress
+- wp plugin install <nome>   # instala plugin
+- wp theme install <nome>    # instala tema
+- wp user create ...         # cria usuário
+
+Exemplo de fluxo:
+- Nginx recebe requisição HTTP.
+- Encaminha para WordPress (PHP-FPM).
+- WordPress consulta MariaDB.
+- Resposta volta para o usuário.
+
+Dicas:
+- Configure wp-config.php com dados do banco.
+- Use volumes para persistir uploads e plugins.

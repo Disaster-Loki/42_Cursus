@@ -1,0 +1,36 @@
+FROM debian:bullseye
+
+LABEL maintainer="sde-carv42@42Luanda.com"
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+      curl \
+      ca-certificates \
+      tar \
+      gzip \
+      file \
+      tini \
+ && rm -rf /var/lib/apt/lists/*
+
+ARG VERSION=2.27.8
+
+WORKDIR /tmp
+
+RUN curl -fSL \
+      https://github.com/portainer/portainer/releases/download/${VERSION}/portainer-${VERSION}-linux-amd64.tar.gz \
+    -o portainer.tar.gz \
+ && gzip -t portainer.tar.gz \
+ && tar -xzf portainer.tar.gz \
+      --strip-components=1 \
+      -C /usr/local/bin \
+ && chmod 755 /usr/local/bin/portainer \
+ && rm portainer.tar.gz
+
+COPY tools/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod 755 /usr/local/bin/entrypoint.sh
+
+VOLUME /data
+EXPOSE 9000
+
+ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/bin/entrypoint.sh"]

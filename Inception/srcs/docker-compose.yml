@@ -1,40 +1,49 @@
-networks:
-  app_net:
-
 services:
   nginx:
     container_name: nginx
+    image: nginx
     build: ./requirements/nginx
+    pull_policy: never
+    env_file:
+      - .env
     ports:
       - "443:443"
-    networks:
-      - app_net
     volumes:
       - wordpress_data:/var/www/html
+    networks:
+      - app_net
     restart: always
 
   wordpress:
     container_name: wordpress
-    depends_on:
-      - mariadb
+    image: wordpress
     build: ./requirements/wordpress
+    pull_policy: never
     env_file:
       - .env
+    depends_on:
+      - mariadb
     environment:
       WORDPRESS_DB_PASSWORD_FILE: /run/secrets/db_password.txt
       CREDENTIALS_FILE: /run/secrets/credentials.txt
+      WP_USER_PASSWORD: /run/secrets/wp_user_password.txt
+      WP_USER2_PASSWORD: /run/secrets/wp_user2_password.txt
     secrets:
       - db_password.txt
       - credentials.txt
-    networks:
-      - app_net
+      - wp_user_password.txt
+      - wp_user2_password.txt
     volumes:
       - wordpress_data:/var/www/html
+    networks:
+      - app_net
     restart: always
 
   mariadb:
     container_name: mariadb
+    image: mariadb
     build: ./requirements/mariadb
+    pull_policy: never
     env_file:
       - .env
     environment:
@@ -43,18 +52,82 @@ services:
     secrets:
       - db_root_password.txt
       - db_password.txt
-    networks:
-      - app_net
     volumes:
       - mariadb_data:/var/lib/mysql
+    networks:
+      - app_net
     restart: always
-  
+
   redis:
-     container_name: redis
-     build: ./requirements/bonus/redis
-     networks:
-        - app_net
-     restart: always
+    container_name: redis
+    image: redis
+    build: ./requirements/bonus/redis
+    pull_policy: never
+    depends_on:
+      - wordpress
+    networks:
+      - app_net
+    restart: always
+
+  ftp:
+    container_name: ftp
+    image: ftp
+    build:
+      context: ./requirements/bonus/ftp
+      dockerfile: dockerfile
+      args:
+        FTP_USER: ${FTP_USER}
+        FTP_PASSWORD: /run/secrets/ftp_password.txt
+    pull_policy: never
+    depends_on:
+      - wordpress
+    volumes:
+      - wordpress_data:/var/www/html
+    ports:
+      - "21:21"
+      - "30000-30009:30000-30009"
+    secrets:
+      - ftp_password.txt
+    networks:
+      - app_net
+    restart: always
+
+  static-site:
+    container_name: static-site
+    image: static-site
+    build: ./requirements/bonus/static-site
+    pull_policy: never
+    networks:
+      - app_net
+    restart: always
+
+  adminer:
+    container_name: adminer
+    image: adminer
+    build: ./requirements/bonus/adminer
+    pull_policy: never
+    networks:
+      - app_net
+    restart: always
+
+  portainer:
+    container_name: portainer
+    image: portainer
+    build: ./requirements/bonus/portainer
+    pull_policy: never
+    ports:
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    secrets:
+      - portainer_password.txt
+    environment:
+      P_USER: ${P_USER}
+      P_PASSWORD: /run/secrets/portainer_password.txt
+    networks:
+      - app_net
+    restart: always
 
 volumes:
   wordpress_data:
@@ -71,10 +144,23 @@ volumes:
       device: /home/sde-carv/data/mariadb
       o: bind
 
+  portainer_data:
+
 secrets:
   db_root_password.txt:
     file: ../secrets/db_root_password.txt
   db_password.txt:
     file: ../secrets/db_password.txt
+  wp_user_password.txt:
+    file: ../secrets/wp_user_password.txt
+  wp_user2_password.txt:
+    file: ../secrets/wp_user2_password.txt
   credentials.txt:
     file: ../secrets/credentials.txt
+  ftp_password.txt:
+    file: ../secrets/ftp_password.txt
+  portainer_password.txt:
+    file: ../secrets/portainer_password.txt
+
+networks:
+  app_net:

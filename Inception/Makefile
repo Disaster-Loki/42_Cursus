@@ -6,7 +6,7 @@
 #    By: sde-carv <sde-carv@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/20 16:32:50 by sde-carv          #+#    #+#              #
-#    Updated: 2025/06/04 07:29:39 by sde-carv         ###   ########.fr        #
+#    Updated: 2025/07/05 16:42:10 by sde-carv         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -19,7 +19,12 @@ IS_UP := $(shell docker ps -q -f name=nginx)
 
 all: up
 
-up:
+dirs:
+	@sudo mkdir -p $(HOME)/data/wordpress
+	@sudo mkdir -p $(HOME)/data/mariadb
+	@echo "Ensured ~/data/wordpress and ~/data/mariadb exist."
+
+up: dirs
 	@if [ -z "$(IS_UP)" ]; then \
 		echo "Starting the containers..."; \
 		$(COMMAND) -f $(DCOMPOSE) up -d; \
@@ -59,5 +64,10 @@ fclean:
 	$(COMMAND) -f $(DCOMPOSE) down --rmi all -v --remove-orphans
 	docker image prune -af
 	docker rmi $(shell docker images -q | grep -v "<none>" || true) 2>/dev/null || true
+
+ffclean: fclean
+	sudo rm -rf $(HOME)/data/*
+	sudo rm -rf $(HOME)/data/.[!.]* $(HOME)/data/..?*
+	@echo "Force-cleaned ~/data contents with sudo."
 
 re: fclean build

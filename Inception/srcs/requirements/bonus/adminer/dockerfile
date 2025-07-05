@@ -1,0 +1,31 @@
+FROM debian:bullseye
+
+# Update package lists and upgrade installed packages
+RUN apt-get update && \
+    apt-get upgrade -y
+
+# Install Apache, PHP, and Adminer
+RUN apt-get install -y \
+    apache2 \
+    php \
+    php-curl \
+    libapache2-mod-php \
+    php-cli \
+    php-mysql \
+    php-gd \
+    php-fpm \
+    adminer
+
+# Enable PHP-FPM and Adminer default configs
+RUN a2enconf php*-fpm && \
+    a2enconf adminer
+
+# Custom Adminer alias at /adminer
+COPY conf/adminer.conf /etc/apache2/conf-available/custom-adminer.conf
+RUN a2enconf custom-adminer
+
+# Expose port 80
+EXPOSE 80
+
+# Run Apache in foreground
+CMD ["apache2ctl", "-D", "FOREGROUND"]

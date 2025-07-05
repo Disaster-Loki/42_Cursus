@@ -71,6 +71,3 @@ if (!defined('ABSPATH')) define('ABSPATH', __DIR__ . '/');
 
 // Load WordPress settings
 require_once ABSPATH . 'wp-settings.php';
-
-// apt update && apt install -y redis-tools
-// redis-cli -h redis ping

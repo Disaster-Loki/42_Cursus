@@ -30,13 +30,17 @@ RUN curl -o /tmp/wordpress.tar.gz https://wordpress.org/latest.tar.gz && \
 # Copy custom wp-config.php
 COPY conf/wp-config.php /srv/www/wordpress/wp-config.php
 
-# Set permissions
+# Install WP-CLI
+RUN curl -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+    chmod +x /usr/local/bin/wp
+
+# Set permissions for WordPress directory
 RUN chown -R www-data:www-data /srv/www/wordpress
 
 # Copy Apache configuration file
 COPY conf/wordpress.conf /etc/apache2/sites-available/wordpress.conf
 
-# Enable site and configurations
+# Enable site and Apache modules
 RUN a2ensite wordpress && \
     a2enmod rewrite && \
     a2dissite 000-default
@@ -44,8 +48,12 @@ RUN a2ensite wordpress && \
 # Set global ServerName to suppress Apache warning
 RUN echo 'ServerName localhost' > /etc/apache2/conf-available/servername.conf && a2enconf servername
 
+# Copy entrypoint script and make it executable
+COPY tools/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 # Expose Apache's port
 EXPOSE 9000
 
-# Start Apache in the foreground
-CMD ["apachectl", "-D", "FOREGROUND"]
+# Use custom entrypoint script to start container
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

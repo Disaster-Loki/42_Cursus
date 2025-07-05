@@ -1,23 +1,23 @@
-# Basic image
+# Use Debian as base image
 FROM debian:bullseye
 
-# Update packages
-RUN apt-get update
+# Install packages
+RUN apt-get update && apt-get install -y vsftpd openssl
 
-# Install vsftpd and necessary packages
-RUN apt-get install -y vsftpd
+# Create required folder
+RUN mkdir -p /var/run/vsftpd/empty
 
-# Configure user in ftp
-RUN useradd -m ftpuser && \
-    echo "ftpuser:ftppassword" | chpasswd && \
-    mkdir -p /home/ftpuser/ftp && \
-    chown -R ftpuser:ftpuser /home/ftpuser/ftp
-   
-# Copy vsftpd configuration file
+# Copy configuration and entrypoint script
 COPY conf/vsftpd.conf /etc/vsftpd.conf
+COPY tools/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-# Expose FTP port
+# Set environment variable for username (optional)
+ARG FTP_USER
+ENV FTP_USER=${FTP_USER:-ftpuser}
+
+# Expose ports for FTP and passive mode
 EXPOSE 21 30000-30009
 
-# Start vsftpd in the foreground
-CMD ["vsftpd", "/etc/vsftpd.conf"]
+# Run entrypoint script
+CMD ["/entrypoint.sh"]
