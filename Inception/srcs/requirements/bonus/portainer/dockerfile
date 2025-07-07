@@ -1,8 +1,6 @@
 FROM debian:bullseye
 
-LABEL maintainer="sde-carv42@42Luanda.com"
-ENV DEBIAN_FRONTEND=noninteractive
-
+# Install dependencies (including Python and bcrypt)
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
       curl \
@@ -11,12 +9,20 @@ RUN apt-get update \
       gzip \
       file \
       tini \
+      python3 \
+      python3-pip \
+ && pip3 install bcrypt \
  && rm -rf /var/lib/apt/lists/*
 
+# Create "portainer" user and group
+RUN groupadd --system portainer && useradd --system --no-create-home --gid portainer portainer
+
+# Define Portainer version
 ARG VERSION=2.27.8
 
 WORKDIR /tmp
 
+# Download and install Portainer binary
 RUN curl -fSL \
       https://github.com/portainer/portainer/releases/download/${VERSION}/portainer-${VERSION}-linux-amd64.tar.gz \
     -o portainer.tar.gz \
@@ -25,12 +31,22 @@ RUN curl -fSL \
       --strip-components=1 \
       -C /usr/local/bin \
  && chmod 755 /usr/local/bin/portainer \
+ && chown portainer:portainer /usr/local/bin/portainer \
  && rm portainer.tar.gz
 
+# Copy the custom entrypoint script
 COPY tools/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod 755 /usr/local/bin/entrypoint.sh
+RUN chmod 755 /usr/local/bin/entrypoint.sh \
+ && chown portainer:portainer /usr/local/bin/entrypoint.sh
 
-VOLUME /data
-EXPOSE 9000
+# Create data directory and adjust ownership
+RUN mkdir -p /data && chown -R portainer:portainer /data
 
+# Expose HTTPS port
+EXPOSE 9443
+
+# Switch to non-root user
+USER portainer
+
+# Define entrypoint
 ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/bin/entrypoint.sh"]

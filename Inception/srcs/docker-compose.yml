@@ -114,6 +114,7 @@ services:
     container_name: portainer
     image: portainer
     build: ./requirements/bonus/portainer
+    user: root
     pull_policy: never
     ports:
       - "9443:9443"
@@ -145,6 +146,7 @@ volumes:
       o: bind
 
   portainer_data:
+    name: portainer_data
 
 secrets:
   db_root_password.txt:
@@ -164,3 +166,4 @@ secrets:
 
 networks:
   app_net:
+    name: app_net
