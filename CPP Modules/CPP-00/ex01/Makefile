@@ -22,16 +22,18 @@ YELLOW      = \033[33m
 ORANGE      = \033[38;5;208m
 GREEN       = \033[32m
 
-SRC_FILES = main.CXX		\
-			contact.CXX 	\
-			phonebook.CXX 	\
+HDRS  		= contact.hpp		\
+			  phonebook.hpp		\
 
+SRCS 		= main.CXX			\
+			  contact.CXX 		\
+			  phonebook.CXX 	\
 
-OBJ_FILES = $(SRC_FILES:.CXX=.o)
+OBJ_FILES = $(SRCS:.CXX=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJ_FILES)
+$(NAME): $(OBJ_FILES) $(HDRS)
 	$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJ_FILES)
 	clear
 	@echo "$(GREEN)COMPILATION COMPLETE$(RESET)"

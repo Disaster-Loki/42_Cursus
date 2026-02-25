@@ -17,21 +17,6 @@
 
 PhoneBook::PhoneBook():index(0) {}
 
-bool	contains_digit(const std::string &str)
-{
-    int    i = -1;
-
-    while (str[++i])
-    {
-        if (isdigit(str[i]))
-        {
-        	std::cout << "    Parameter cannot be number!" << std::endl;
-        	return (true);
-        }
-    }
-    return (false);
-}
-
 bool is_number(const std::string &str)
 {
     if (str.empty())
@@ -161,31 +146,6 @@ std::string truncate(const std::string &str) {
     return (str);
 }
 
-int	ft_atoi(const std::string& str)
-{
-	int	i;
-	int	neg;
-	int	res;
-
-	i = 0;
-	neg = 1;
-	res = 0;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			neg *= -1;
-		i++;
-	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		res = (str[i] - '0') + (res * 10);
-		i++;
-	}
-	return (res * neg);
-}
-
 void PhoneBook::displayContacts()
 {
     int i;
@@ -224,8 +184,7 @@ void PhoneBook::displayContacts()
         std::cout << "Invalid index!" << std::endl;
         return;
     }
-    index = ft_atoi(str);
-    //std::cin.ignore();
+    index = std::atoi(str.c_str());
     displayContentContact(index);
 }
 

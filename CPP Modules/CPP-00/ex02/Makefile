@@ -12,8 +12,8 @@
 
 NAME        = account
 
-CXX          = c++
-CXXFLAGS      = -Wall -Wextra -Werror -std=c++98
+CXX         = c++
+CXXFLAGS    = -Wall -Wextra -Werror -std=c++98
 
 RESET       = \033[0m
 RED         = \033[31m
@@ -22,14 +22,16 @@ YELLOW      = \033[33m
 ORANGE      = \033[38;5;208m
 GREEN       = \033[32m
 
-SRC_FILES = Account.CXX		\
-			tests.CXX 		\
+HDRS        = Account.hpp \
 
-OBJ_FILES = $(SRC_FILES:.CXX=.o)
+SRCS        = Account.cpp \
+              tests.cpp   \
+
+OBJ_FILES   = $(SRCS:.cpp=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJ_FILES)
+$(NAME): $(OBJ_FILES) $(HDRS)
 	$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJ_FILES)
 	clear
 	@echo "$(GREEN)COMPILATION COMPLETE$(RESET)"
